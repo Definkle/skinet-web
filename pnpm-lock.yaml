@@ -29,6 +29,12 @@ dependencies:
   '@angular/router':
     specifier: ^21.0.2
     version: 21.0.2(@angular/common@21.0.2)(@angular/core@21.0.2)(@angular/platform-browser@21.0.2)(rxjs@7.8.2)
+  '@ngrx/operators':
+    specifier: ^20.1.0
+    version: 20.1.0(rxjs@7.8.2)
+  '@ngrx/signals':
+    specifier: ^20.1.0
+    version: 20.1.0(@angular/core@21.0.2)(rxjs@7.8.2)
   '@trivago/prettier-plugin-sort-imports':
     specifier: ^6.0.0
     version: 6.0.0(prettier@3.7.3)
@@ -1846,6 +1852,29 @@ packages:
       '@tybys/wasm-util': 0.10.1
     dev: true
     optional: true
+
+  /@ngrx/operators@20.1.0(rxjs@7.8.2):
+    resolution: {integrity: sha512-soNrLfWaAjV3BJnZ2gYOQ2jLniGMQB444Jeiu5Vs1RCHQ9KEB40OrznJkynUOMUIie4I19cHXb/O/FVaDIPIRQ==}
+    peerDependencies:
+      rxjs: ^6.5.3 || ^7.4.0
+    dependencies:
+      rxjs: 7.8.2
+      tslib: 2.8.1
+    dev: false
+
+  /@ngrx/signals@20.1.0(@angular/core@21.0.2)(rxjs@7.8.2):
+    resolution: {integrity: sha512-ARAHp5yA131Sw6FEtY8XtYcdGcwW5lgpZaJoDIRxc6i12VO3ZDZYp3M/FQhpIDMDXkXHR+pDqoitrqvzI69aQA==}
+    peerDependencies:
+      '@angular/core': ^20.0.0
+      rxjs: ^6.5.3 || ^7.4.0
+    peerDependenciesMeta:
+      rxjs:
+        optional: true
+    dependencies:
+      '@angular/core': 21.0.2(@angular/compiler@21.0.2)(rxjs@7.8.2)
+      rxjs: 7.8.2
+      tslib: 2.8.1
+    dev: false
 
   /@npmcli/agent@4.0.0:
     resolution: {integrity: sha512-kAQTcEN9E8ERLVg5AsGwLNoFb+oEG6engbqAU2P43gD4JEIkNGMHdVQ096FsOAAYpZPB0RSt0zgInKIAS1l5QA==}
