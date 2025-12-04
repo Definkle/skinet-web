@@ -1,4 +1,4 @@
-import { IBasePaginationParams } from '../../interfaces/http-helper.interface';
+import { IBasePaginationParams } from '../../../shared/interfaces/http-helper.interface';
 
 export interface IProduct {
   id: number;
@@ -13,5 +13,7 @@ export interface IProduct {
 
 export interface IGetProductsParams extends IBasePaginationParams {
   types?: string[];
+  brands?: string[];
   search?: string;
+  sort?: string;
 }

@@ -14,7 +14,7 @@ export class RepositoryHelper {
       if (isParamValid) {
         return {
           ...params,
-          [key]: Array.isArray(param) ? param.join(',') : param,
+          [key]: Array.isArray(param) ? param?.join(',') : param,
         };
       }
       return params;
