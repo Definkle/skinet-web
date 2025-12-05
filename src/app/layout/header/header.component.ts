@@ -19,6 +19,6 @@ export class Header {
   protected readonly navLinks = [
     { link: '/', label: 'Home' },
     { link: '/shop', label: 'Shop' },
-    { link: '/test-error', label: 'Contact' },
+    { link: '/contact', label: 'Contact' },
   ];
 }

@@ -20,12 +20,6 @@ export const routes: Routes = [
     title: 'Product Detail',
   },
   {
-    path: 'test-error',
-    loadComponent: () =>
-      import('./features/test-error/test-error.component').then((m) => m.TestError),
-    title: 'Skinet Web',
-  },
-  {
     path: 'not-found',
     loadComponent: () =>
       import('./shared/components/not-found/not-found.component').then((m) => m.NotFound),
