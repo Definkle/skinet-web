@@ -1,3 +1,28 @@
 import { Routes } from '@angular/router';
 
-export const routes: Routes = [];
+export const routes: Routes = [
+  {
+    path: '',
+    loadComponent: () => import('./features/home/home.component').then((m) => m.Home),
+    title: 'Skinet Web',
+  },
+  {
+    path: 'shop',
+    loadComponent: () => import('./features/shop/shop.component').then((m) => m.Shop),
+    title: 'Skinet Web',
+  },
+  {
+    path: 'shop/:id',
+    loadComponent: () =>
+      import('./features/shop/product-detail/product-detail.component').then(
+        (m) => m.ProductDetail,
+      ),
+    title: 'Product Detail',
+  },
+  {
+    path: 'login',
+    loadComponent: () => import('./features/login/login.component').then((m) => m.Login),
+    title: 'Skinet Web',
+  },
+  { path: '**', redirectTo: '', pathMatch: 'full' },
+];

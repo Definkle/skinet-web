@@ -1,3 +1,5 @@
+@use '@angular/material' as mat;
+
 .custom-badge {
   .mat-badge-content {
     width: 24px;
@@ -11,4 +13,14 @@
     width: 32px;
     height: 32px;
   }
+}
+
+a {
+  &.active {
+    color: #5f00c0;
+  }
+}
+
+.app-logo {
+  cursor: pointer;
 }

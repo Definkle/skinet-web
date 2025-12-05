@@ -34,6 +34,7 @@ const productsInitialState: TProductsState = {
 };
 
 export const ProductsStore = signalStore(
+  { providedIn: 'root' },
   productComputed(withState(productsInitialState)),
   productMethods(),
 );

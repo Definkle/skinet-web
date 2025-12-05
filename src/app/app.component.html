@@ -1,5 +1,12 @@
 <app-header></app-header>
+@if (GlobalStore.isLoading$()) {
+}
+@if (errorMessage()) {
+  <div class="error-banner">
+    {{ errorMessage() }}
+    <button (click)="retryNavigation()">Retry</button>
+  </div>
+}
 <div class="container py-6">
-  <app-shop></app-shop>
+  <router-outlet />
 </div>
-<router-outlet />

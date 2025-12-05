@@ -26,6 +26,10 @@ export class ProductsRepository extends RepositoryHelper {
     });
   }
 
+  getProduct$(id: number) {
+    return this._http.get<IProduct>(this._baseUrl + `products/${id}`);
+  }
+
   getBrands$() {
     return this._http.get<string[]>(this._baseUrl + 'products/brands');
   }
