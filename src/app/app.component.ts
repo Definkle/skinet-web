@@ -7,7 +7,6 @@ import { map } from 'rxjs';
 
 @Component({
   selector: 'app-root',
-  providers: [GlobalStore],
   imports: [RouterOutlet, Header],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
