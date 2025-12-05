@@ -1,7 +1,7 @@
 import { IProduct } from '../../../../../core/api/products/product.interface';
-import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
+import { patchState, signalStore, withComputed, withMethods, withState } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { inject } from '@angular/core';
+import { computed, inject } from '@angular/core';
 import { ProductsRepository } from '../../../../../core/api/products/products.repository';
 import { pipe, switchMap, tap } from 'rxjs';
 import { tapResponse } from '@ngrx/operators';
@@ -19,6 +19,9 @@ export const productDetailInitialState: IProductDetailState = {
 export const ProductDetailStore = signalStore(
   { providedIn: 'root' },
   withState(productDetailInitialState),
+  withComputed(({ isLoading }) => ({
+    isLoading$: computed(() => isLoading()),
+  })),
   withMethods((store, productsRepo = inject(ProductsRepository)) => ({
     initProductDetails: rxMethod<number>(
       pipe(

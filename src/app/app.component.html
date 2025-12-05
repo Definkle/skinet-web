@@ -1,6 +1,5 @@
 <app-header></app-header>
-@if (GlobalStore.isLoading$()) {
-}
+
 @if (errorMessage()) {
   <div class="error-banner">
     {{ errorMessage() }}

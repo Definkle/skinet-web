@@ -20,9 +20,27 @@ export const routes: Routes = [
     title: 'Product Detail',
   },
   {
+    path: 'test-error',
+    loadComponent: () =>
+      import('./features/test-error/test-error.component').then((m) => m.TestError),
+    title: 'Skinet Web',
+  },
+  {
+    path: 'not-found',
+    loadComponent: () =>
+      import('./shared/components/not-found/not-found.component').then((m) => m.NotFound),
+    title: 'Not Found',
+  },
+  {
+    path: 'server-error',
+    loadComponent: () =>
+      import('./shared/components/server-error/server-error.component').then((m) => m.ServerError),
+    title: 'Server Error',
+  },
+  {
     path: 'login',
     loadComponent: () => import('./features/login/login.component').then((m) => m.Login),
     title: 'Skinet Web',
   },
-  { path: '**', redirectTo: '', pathMatch: 'full' },
+  { path: '**', redirectTo: 'not-found', pathMatch: 'full' },
 ];

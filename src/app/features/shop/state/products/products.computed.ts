@@ -15,14 +15,13 @@ export const productComputed = (
 ) => {
   return signalStoreFeature(
     initialState,
-    withComputed(({ isLoading, brands, filter, types }) => ({
+    withComputed(({ brands, filter, types }) => ({
       filterData$: computed(() => ({
         brands: brands(),
         types: types(),
         selectedBrands: filter.brands(),
         selectedTypes: filter.types(),
       })),
-      isLoading$: computed(() => isLoading()),
     })),
   );
 };
