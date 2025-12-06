@@ -1,11 +1,5 @@
 <app-header></app-header>
 
-@if (errorMessage()) {
-  <div class="error-banner">
-    {{ errorMessage() }}
-    <button (click)="retryNavigation()">Retry</button>
-  </div>
-}
 <div class="container mt-24 mb-6">
   <router-outlet />
 </div>

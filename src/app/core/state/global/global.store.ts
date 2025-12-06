@@ -1,36 +1,11 @@
-import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
-
-export interface IGlobalState {
-  isLoading: boolean;
-  ongoingRequestsCount: number;
-}
-
-const initialState: IGlobalState = {
-  isLoading: false,
-  ongoingRequestsCount: 0,
-};
+import { signalStore, withState } from '@ngrx/signals';
+import { globalMethods } from './global.methods';
+import { INITIAL_GLOBAL_STATE } from './global.constants';
 
 export const GlobalStore = signalStore(
   { providedIn: 'root' },
-  withState(initialState),
-  withMethods((store) => ({
-    incrementOngoingRequestsCount(): void {
-      patchState(store, (state: IGlobalState) => {
-        return {
-          ...state,
-          ongoingRequestsCount: state.ongoingRequestsCount + 1,
-          isLoading: true,
-        };
-      });
-    },
-    decrementOngoingRequestsCount(): void {
-      patchState(store, (state: IGlobalState) => {
-        const updatedOngoingRequestsCount = state.ongoingRequestsCount - 1;
-        if (updatedOngoingRequestsCount <= 0) {
-          return { ...state, ongoingRequestsCount: 0, isLoading: false };
-        }
-        return { ...state, ongoingRequestsCount: updatedOngoingRequestsCount };
-      });
-    },
-  })),
+  withState(INITIAL_GLOBAL_STATE),
+  globalMethods(),
 );
+
+export type { IGlobalState } from './global.types';

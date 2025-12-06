@@ -1,0 +1,6 @@
+/**
+ * Public API for the products store module
+ */
+export { ProductsStore } from './products.store';
+export type { IBrandTypeFilter, IFilter, TProductsState } from './products.types';
+export { DEFAULT_FILTER } from './products.constants';

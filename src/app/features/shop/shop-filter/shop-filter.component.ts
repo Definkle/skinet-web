@@ -1,10 +1,17 @@
-import { ChangeDetectionStrategy, Component, inject, signal, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DestroyRef,
+  inject,
+  signal,
+  ViewChild,
+} from '@angular/core';
 import { MatButton, MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { MatListOption, MatSelectionList, MatSelectionListChange } from '@angular/material/list';
 import { MatMenu, MatMenuTrigger } from '@angular/material/menu';
 import { MatDialog } from '@angular/material/dialog';
-import { ProductsStore } from '../state/products/products.store';
+import { ProductsStore } from '../state/products';
 import {
   DEFAULT_PAGE_INDEX,
   DEFAULT_PAGE_SIZE,
@@ -17,6 +24,8 @@ import { IGetProductsParams } from '../../../core/api/products/product.interface
 import { Field, form } from '@angular/forms/signals';
 import { MatFormField, MatInput, MatSuffix } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { SORT_OPTIONS } from '../../../shared/constants/sort-options.constant';
 
 interface ISearchModel {
   search: string;
@@ -55,20 +64,9 @@ export class ShopFilter {
   protected readonly searchForm = form(
     signal<ISearchModel>({ search: this.ProductsStore.filter().search }),
   );
-  protected readonly sortOptions = [
-    {
-      value: '',
-      viewValue: 'Name: A to Z',
-    },
-    {
-      value: 'priceAsc',
-      viewValue: 'Price: Low to High',
-    },
-    {
-      value: 'priceDesc',
-      viewValue: 'Price: High to Low',
-    },
-  ];
+  protected readonly sortOptions = SORT_OPTIONS;
+
+  private destroyRef = inject(DestroyRef);
 
   onSelectSortOption(event: MatSelectionListChange) {
     this._resetPagination();
@@ -98,6 +96,7 @@ export class ShopFilter {
       .pipe(
         filter((value) => value),
         tap((value) => this.ProductsStore.updateFilters(value)),
+        takeUntilDestroyed(this.destroyRef),
       )
       .subscribe({
         next: () => {
@@ -112,7 +111,7 @@ export class ShopFilter {
 
   onPageChange($event: PageEvent) {
     this.ProductsStore.updatePagination({
-      pageIndex: $event.pageIndex + 1,
+      pageIndex: this._toBackendPageIndex($event.pageIndex),
       pageSize: $event.pageSize,
     });
     this._initializeProducts(this.ProductsStore.filter());
@@ -126,5 +125,9 @@ export class ShopFilter {
     if (this.paginator) {
       this.paginator.firstPage();
     }
+  }
+
+  private _toBackendPageIndex(materialPageIndex: number): number {
+    return materialPageIndex + 1;
   }
 }

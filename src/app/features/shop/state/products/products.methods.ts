@@ -2,23 +2,45 @@ import { patchState, signalStoreFeature, withMethods } from '@ngrx/signals';
 import { inject } from '@angular/core';
 import { ProductsRepository } from '../../../../core/api/products/products.repository';
 import { IGetProductsParams } from '../../../../core/api/products/product.interface';
+import { rxMethod } from '@ngrx/signals/rxjs-interop';
+import { IBasePaginationParams } from '../../../../shared/interfaces/http-helper.interface';
+import { IBrandTypeFilter, TProductsState } from './products.types';
 import { distinctUntilChanged, pipe, switchMap, tap } from 'rxjs';
 import { tapResponse } from '@ngrx/operators';
-import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { IBrandTypeFilter, TProductsState } from './products.store';
-import { IBasePaginationParams } from '../../../../shared/interfaces/http-helper.interface';
+
+function handleProductError(error: unknown): void {
+  console.error('[ProductsStore] Error:', error);
+  // TODO: Implement proper error notification service
+}
+
+type ProductMethodsReturn = {
+  updateSearch(search: string): void;
+  updateSort(sort: string): void;
+  updateFilters(filters: IBrandTypeFilter): void;
+  updatePagination(pagination: IBasePaginationParams): void;
+  initProducts: ReturnType<typeof rxMethod<IGetProductsParams>>;
+  initBrands: ReturnType<typeof rxMethod<void>>;
+  initTypes: ReturnType<typeof rxMethod<void>>;
+  resetFilters(): void;
+};
 
 export const productMethods = () => {
   return signalStoreFeature(
-    withMethods((store, productsRepo = inject(ProductsRepository)) => ({
+    withMethods((store, productsRepo = inject(ProductsRepository)): ProductMethodsReturn => ({
       updateSearch(search: string): void {
-        patchState(store, (state: TProductsState) => ({ filter: { ...state.filter, search } }));
+        patchState(store, (state: TProductsState) => ({
+          filter: { ...state.filter, search },
+        }));
       },
       updateSort(sort: string): void {
-        patchState(store, (state: TProductsState) => ({ filter: { ...state.filter, sort } }));
+        patchState(store, (state: TProductsState) => ({
+          filter: { ...state.filter, sort },
+        }));
       },
       updateFilters(filters: IBrandTypeFilter): void {
-        patchState(store, (state: TProductsState) => ({ filter: { ...state.filter, ...filters } }));
+        patchState(store, (state: TProductsState) => ({
+          filter: { ...state.filter, ...filters },
+        }));
       },
       updatePagination(pagination: IBasePaginationParams): void {
         patchState(store, (state: TProductsState) => ({
@@ -29,16 +51,16 @@ export const productMethods = () => {
         pipe(
           distinctUntilChanged(),
           tap(() => patchState(store, { isLoading: true })),
-          switchMap((params) => {
-            return productsRepo.getProducts$(params).pipe(
+          switchMap((params) =>
+            productsRepo.getProducts$(params).pipe(
               tapResponse({
                 next: ({ data, totalCount }) =>
                   patchState(store, { products: data, productsCount: totalCount }),
-                error: console.error,
+                error: handleProductError,
                 finalize: () => patchState(store, { isLoading: false }),
               }),
-            );
-          }),
+            ),
+          ),
         ),
       ),
       initBrands: rxMethod<void>(
@@ -49,7 +71,7 @@ export const productMethods = () => {
             productsRepo.getBrands$().pipe(
               tapResponse({
                 next: (data) => patchState(store, { brands: data }),
-                error: console.error,
+                error: handleProductError,
                 finalize: () => patchState(store, { isLoading: false }),
               }),
             ),
@@ -64,17 +86,18 @@ export const productMethods = () => {
             productsRepo.getTypes$().pipe(
               tapResponse({
                 next: (data) => patchState(store, { types: data }),
-                error: console.error,
+                error: handleProductError,
                 finalize: () => patchState(store, { isLoading: false }),
               }),
             ),
           ),
         ),
       ),
-      resetFilters: () =>
+      resetFilters(): void {
         patchState(store, (state: TProductsState) => ({
           filter: { ...state.filter, brands: [], types: [] },
-        })),
+        }));
+      },
     })),
   );
 };

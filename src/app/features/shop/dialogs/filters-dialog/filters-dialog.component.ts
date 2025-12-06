@@ -4,7 +4,7 @@ import { MatButton } from '@angular/material/button';
 import { Field, form } from '@angular/forms/signals';
 import { FormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { IBrandTypeFilter } from '../../state/products/products.store';
+import { IBrandTypeFilter } from '../../state/products';
 
 export interface IFiltersDialogData extends IBrandTypeFilter {
   selectedBrands?: string[];

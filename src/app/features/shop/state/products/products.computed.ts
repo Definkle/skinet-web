@@ -5,7 +5,7 @@ import {
   withComputed,
 } from '@ngrx/signals';
 import { computed } from '@angular/core';
-import { TProductsState } from './products.store';
+import { TProductsState } from './products.types';
 
 export const productComputed = (
   initialState: SignalStoreFeature<

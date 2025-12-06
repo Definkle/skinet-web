@@ -3,8 +3,9 @@ import { MatIcon } from '@angular/material/icon';
 import { MatButton } from '@angular/material/button';
 import { MatBadge } from '@angular/material/badge';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { GlobalStore } from '../../core/state/global/global.store';
+import { GlobalStore } from '../../core/state/global';
 import { MatProgressBar } from '@angular/material/progress-bar';
+import { CartStore } from '../../core/state/cart';
 
 @Component({
   selector: 'app-header',
@@ -14,6 +15,7 @@ import { MatProgressBar } from '@angular/material/progress-bar';
   styleUrl: './header.component.scss',
 })
 export class Header {
+  protected CartStore = inject(CartStore);
   protected GlobalStore = inject(GlobalStore);
 
   protected readonly navLinks = [

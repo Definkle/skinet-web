@@ -3,6 +3,7 @@ import { RepositoryHelper } from '../repository.helper';
 import { IPaginatedResponseConfig } from '../../../shared/interfaces/http-helper.interface';
 import { IGetProductsParams, IProduct } from './product.interface';
 import { HttpParams } from '@angular/common/http';
+import { shareReplay } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class ProductsRepository extends RepositoryHelper {
@@ -31,10 +32,10 @@ export class ProductsRepository extends RepositoryHelper {
   }
 
   getBrands$() {
-    return this._http.get<string[]>(this._baseUrl + 'products/brands');
+    return this._http.get<string[]>(this._baseUrl + 'products/brands').pipe(shareReplay(1));
   }
 
   getTypes$() {
-    return this._http.get<string[]>(this._baseUrl + 'products/types');
+    return this._http.get<string[]>(this._baseUrl + 'products/types').pipe(shareReplay(1));
   }
 }

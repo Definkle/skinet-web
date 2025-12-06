@@ -1,28 +1,8 @@
 import { signalStore, withState } from '@ngrx/signals';
-import { IProduct } from '../../../../core/api/products/product.interface';
 import { productMethods } from './products.methods';
 import { productComputed } from './products.computed';
-
-export interface IBrandTypeFilter {
-  brands: string[];
-  types: string[];
-}
-
-interface IFilter extends IBrandTypeFilter {
-  pageIndex: number;
-  pageSize: number;
-  search: string;
-  sort: string;
-}
-
-export type TProductsState = {
-  products: IProduct[];
-  productsCount: number;
-  brands: string[];
-  types: string[];
-  isLoading: boolean;
-  filter: IFilter;
-};
+import { TProductsState } from './products.types';
+import { DEFAULT_FILTER } from './products.constants';
 
 const productsInitialState: TProductsState = {
   products: [],
@@ -30,7 +10,7 @@ const productsInitialState: TProductsState = {
   brands: [],
   types: [],
   isLoading: false,
-  filter: { pageIndex: 1, pageSize: 10, brands: [], types: [], search: '', sort: '' },
+  filter: DEFAULT_FILTER,
 };
 
 export const ProductsStore = signalStore(

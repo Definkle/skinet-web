@@ -1,26 +1,59 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { ProductDetailStore } from './state/product-detail/product-detail.store';
-import { ActivatedRoute } from '@angular/router';
 import { CurrencyPipe } from '@angular/common';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
 import { MatDivider } from '@angular/material/list';
+import { CartStore } from '../../../core/state/cart';
+import { IProduct } from '../../../core/api/products/product.interface';
+import { Field, form, min, required } from '@angular/forms/signals';
+import { FormsModule } from '@angular/forms';
+
+interface IFormModel {
+  quantity: number;
+}
 
 @Component({
   selector: 'app-product-detail',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CurrencyPipe, MatButton, MatIcon, MatFormField, MatLabel, MatInput, MatDivider],
-  providers: [ProductDetailStore],
+  imports: [
+    CurrencyPipe,
+    MatButton,
+    MatIcon,
+    MatFormField,
+    MatLabel,
+    MatInput,
+    MatDivider,
+    FormsModule,
+    Field,
+  ],
   templateUrl: './product-detail.component.html',
   styleUrl: './product-detail.component.scss',
 })
-export class ProductDetail implements OnInit {
+export class ProductDetail {
+  protected readonly CartStore = inject(CartStore);
   protected readonly ProductDetailStore = inject(ProductDetailStore);
-  private readonly _ActivatedRoute = inject(ActivatedRoute);
 
-  ngOnInit() {
-    const productId = +this._ActivatedRoute.snapshot.paramMap.get('id')!;
-    this.ProductDetailStore.initProductDetails(productId);
+  private readonly _formModel = signal<IFormModel>({
+    quantity: this.ProductDetailStore.quantityInCart(),
+  });
+  protected form = form(this._formModel, (form) => {
+    required(form.quantity);
+    min(form.quantity, 1);
+  });
+  protected isFormDisabled = computed(
+    () =>
+      this.CartStore.isLoading() ||
+      this.form().invalid() ||
+      this.form.quantity().value() <= this.ProductDetailStore.quantityInCart(),
+  );
+
+  onClickAddToCart(product: IProduct) {
+    const formValue = this.form().value;
+    this.CartStore.addProduct({
+      ...product,
+      quantity: formValue().quantity - this.ProductDetailStore.quantityInCart(),
+    });
   }
 }

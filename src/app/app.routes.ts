@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { productDetailResolver } from './core/resolvers/product-detail/product-detail.resolver';
 
 export const routes: Routes = [
   {
@@ -18,6 +19,19 @@ export const routes: Routes = [
         (m) => m.ProductDetail,
       ),
     title: 'Product Detail',
+    resolve: {
+      product: productDetailResolver,
+    },
+  },
+  {
+    path: 'cart',
+    loadComponent: () => import('./features/cart/cart.component').then((m) => m.Cart),
+    title: 'Skinet Web',
+  },
+  {
+    path: 'checkout',
+    loadComponent: () => import('./features/checkout/checkout.component').then((m) => m.Checkout),
+    title: 'Skinet Web',
   },
   {
     path: 'not-found',
