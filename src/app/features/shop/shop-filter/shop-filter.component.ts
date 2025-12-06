@@ -57,7 +57,7 @@ export class ShopFilterComponent implements OnDestroy {
   @ViewChild(MatPaginator) paginator?: MatPaginator;
 
   protected readonly ProductsStore = inject(ProductsStore);
-  private _DestroyRef = inject(DestroyRef);
+  private readonly _DestroyRef = inject(DestroyRef);
   private readonly _DialogService = inject(MatDialog);
 
   protected readonly DEFAULT_PAGE_SIZE = DEFAULT_PAGE_SIZE;
