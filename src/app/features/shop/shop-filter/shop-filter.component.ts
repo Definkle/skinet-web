@@ -54,20 +54,19 @@ interface ISearchModel {
   styleUrl: './shop-filter.component.scss',
 })
 export class ShopFilterComponent implements OnDestroy {
+  @ViewChild(MatPaginator) paginator?: MatPaginator;
+
   protected readonly ProductsStore = inject(ProductsStore);
+  private _DestroyRef = inject(DestroyRef);
   private readonly _DialogService = inject(MatDialog);
 
   protected readonly DEFAULT_PAGE_SIZE = DEFAULT_PAGE_SIZE;
   protected readonly DEFAULT_PAGE_SIZE_OPTIONS = DEFAULT_PAGE_SIZE_OPTIONS;
 
-  @ViewChild(MatPaginator) paginator?: MatPaginator;
-
   protected readonly searchForm = form(
     signal<ISearchModel>({ search: this.ProductsStore.filter().search }),
   );
   protected readonly sortOptions = SORT_OPTIONS;
-
-  private destroyRef = inject(DestroyRef);
 
   ngOnDestroy(): void {
     this.ProductsStore.resetFilters();
@@ -95,13 +94,13 @@ export class ShopFilterComponent implements OnDestroy {
     this._DialogService
       .open(FiltersDialogComponent, {
         minWidth: '500px',
-        data: this.ProductsStore.filterData$(),
+        data: this.ProductsStore.filterData(),
       })
       .afterClosed()
       .pipe(
         filter((value) => value),
         tap((value) => this.ProductsStore.updateFilters(value)),
-        takeUntilDestroyed(this.destroyRef),
+        takeUntilDestroyed(this._DestroyRef),
       )
       .subscribe({
         next: () => {

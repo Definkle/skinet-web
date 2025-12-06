@@ -43,3 +43,5 @@ __screenshots__/
 Thumbs.db
 !/.claude/
 !/ssl/
+!/ssl/localhost.pem
+!/ssl/localhost-key.pem

@@ -16,7 +16,7 @@ export const productComputed = (
   return signalStoreFeature(
     initialState,
     withComputed(({ brands, filter, types }) => ({
-      filterData$: computed(() => ({
+      filterData: computed(() => ({
         brands: brands(),
         types: types(),
         selectedBrands: filter.brands(),
