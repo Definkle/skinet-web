@@ -16,7 +16,7 @@ export const cartComputed = (
 ) => {
   return signalStoreFeature(
     initialState,
-    withComputed(({ deliveryFee, discount, items }) => ({
+    withComputed(({ deliveryFee, discount, items, vouchers }) => ({
       itemsInCartCount: computed(() => calculateTotalItemsCount(items())),
       isEmpty: computed(() => !items().length),
       orderSummary: computed(() => ({
@@ -24,6 +24,7 @@ export const cartComputed = (
         deliveryFee: deliveryFee(),
         discount: discount(),
         totalPrice: calculateSubtotal(items()) - discount() + deliveryFee(),
+        vouchers: vouchers(),
       })),
     })),
   );
