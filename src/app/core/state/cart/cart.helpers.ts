@@ -1,4 +1,4 @@
-import { ICartItem } from '../../api/cart/cart.interface';
+import { ICartItem, IVoucher } from '../../api/cart/cart.interface';
 import { IProductInCart } from './cart.types';
 import { Cart } from '../../../shared/models/cart';
 import { CART_ID_STORAGE_KEY } from '../../../shared/constants/storage-keys.constant';
@@ -42,6 +42,10 @@ export function consolidateCartItems(cartItems: ICartItem[]): ICartItem[] {
   });
 
   return Array.from(consolidatedMap.values());
+}
+
+export function calculateTotalDiscount(vouchers: IVoucher[]) {
+  return vouchers.reduce((sum, voucher) => sum + voucher.discount, 0);
 }
 
 export function calculateTotalItemsCount(cartItems: ICartItem[]): number {
