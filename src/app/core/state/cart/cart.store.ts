@@ -10,6 +10,7 @@ const cartInitialState: ICartState = {
   isLoading: false,
   deliveryFee: 0,
   discount: 0,
+  vouchers: [],
 };
 
 export const CartStore = signalStore(

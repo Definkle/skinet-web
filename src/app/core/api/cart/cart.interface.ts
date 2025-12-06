@@ -8,11 +8,17 @@ export interface ICartItem {
   type: string;
 }
 
+export interface IVoucher {
+  code: string;
+  discount: number;
+}
+
 export interface ICart {
   id: string;
   items: ICartItem[];
   discount: number;
   deliveryFee: number;
+  vouchers: IVoucher[];
 }
 
 export interface ICartResponse {
