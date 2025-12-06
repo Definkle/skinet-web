@@ -1,5 +1,5 @@
 import { ICartItem, IVoucher } from '../../api/cart/cart.interface';
-import { IProductInCart } from './cart.types';
+import { IOrderSummaryParams, IProductInCart, TOrderSummary } from './cart.types';
 import { Cart } from '../../../shared/models/cart';
 import { CART_ID_STORAGE_KEY } from '../../../shared/constants/storage-keys.constant';
 
@@ -54,6 +54,24 @@ export function calculateTotalItemsCount(cartItems: ICartItem[]): number {
 
 export function calculateSubtotal(cartItems: ICartItem[]): number {
   return cartItems.reduce((sum, item) => sum + item.productPrice * item.quantity, 0);
+}
+
+export function buildOrderSummary({
+  items,
+  vouchers,
+  deliveryFee,
+}: IOrderSummaryParams): TOrderSummary {
+  const subtotal = calculateSubtotal(items);
+  const discount = calculateTotalDiscount(vouchers);
+  const totalPrice = subtotal + deliveryFee - discount;
+
+  return {
+    totalPrice: totalPrice <= 0 ? 0 : totalPrice,
+    deliveryFee,
+    discount,
+    subtotal,
+    vouchers,
+  };
 }
 
 export function mapProductToCartItem(product: IProductInCart): ICartItem {

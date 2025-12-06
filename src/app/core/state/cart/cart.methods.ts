@@ -15,7 +15,7 @@ import {
 import { CART_ID_STORAGE_KEY } from '../../../shared/constants/storage-keys.constant';
 import { ErrorHandler } from '../../services/error-handler/error-handler.service';
 
-type CartMethods = {
+type TCartMethods = {
   addProduct(product: IProductInCart): void;
   removeProduct(productId: number): void;
   updateProductQuantity(params: IUpdateCartQuantityParams): void;
@@ -30,7 +30,7 @@ export const cartMethods = () => {
         store,
         cartRepo = inject(CartRepository),
         errorHandler = inject(ErrorHandler),
-      ): CartMethods => {
+      ): TCartMethods => {
         const snapshot = getStoreSnapshot(store);
         const handleCartError = (error: unknown): void =>
           errorHandler.handleError('CartStore', error);
