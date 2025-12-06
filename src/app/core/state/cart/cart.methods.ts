@@ -7,17 +7,14 @@ import { CartRepository } from '../../api/cart/cart.repository';
 import { IUpdateCartParams } from '../../api/cart/cart.interface';
 import { IProductInCart, IUpdateCartQuantityParams } from './cart.types';
 import {
+  CartStoreSnapshot,
   consolidateCartItems,
   getStoreSnapshot,
   initializeCartId,
   mapProductToCartItem,
 } from './cart.helpers';
 import { CART_ID_STORAGE_KEY } from '../../../shared/constants/storage-keys.constant';
-
-function handleCartError(error: unknown): void {
-  console.error('[CartStore] Error:', error);
-  // TODO: Implement proper error notification service
-}
+import { ErrorHandler } from '../../services/error-handler/error-handler.service';
 
 type CartMethods = {
   addProduct(product: IProductInCart): void;
@@ -29,8 +26,9 @@ type CartMethods = {
 
 export const cartMethods = () => {
   return signalStoreFeature(
-    withMethods((store, cartRepo = inject(CartRepository)): CartMethods => {
+    withMethods((store: CartStoreSnapshot, cartRepo = inject(CartRepository), errorHandler = inject(ErrorHandler)): CartMethods => {
       const snapshot = getStoreSnapshot(store);
+      const handleCartError = (error: unknown): void => errorHandler.handleError('CartStore', error);
 
       const updateCart = rxMethod<IUpdateCartParams>(
         pipe(

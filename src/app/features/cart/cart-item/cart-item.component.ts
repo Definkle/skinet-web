@@ -13,7 +13,7 @@ import { IUpdateCartQuantityParams } from '../../../core/state/cart/cart.types';
   styleUrl: './cart-item.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CartItem {
+export class CartItemComponent {
   item = input.required<ICartItem>();
   isLoading = input.required<boolean>();
   onUpdateQuantity = output<IUpdateCartQuantityParams>();

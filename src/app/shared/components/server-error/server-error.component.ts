@@ -15,7 +15,7 @@ interface IError {
   styleUrl: './server-error.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ServerError {
+export class ServerErrorComponent {
   private readonly _Router = inject(Router);
   error = signal<IError | null>(null);
 

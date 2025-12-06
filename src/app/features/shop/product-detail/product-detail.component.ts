@@ -31,7 +31,7 @@ interface IFormModel {
   templateUrl: './product-detail.component.html',
   styleUrl: './product-detail.component.scss',
 })
-export class ProductDetail {
+export class ProductDetailComponent {
   protected readonly CartStore = inject(CartStore);
   protected readonly ProductDetailStore = inject(ProductDetailStore);
 

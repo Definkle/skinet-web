@@ -3,13 +3,13 @@ import { IProductInCart } from './cart.types';
 import { Cart } from '../../../shared/models/cart';
 import { CART_ID_STORAGE_KEY } from '../../../shared/constants/storage-keys.constant';
 
-type CartStoreSnapshot = {
+export type CartStoreSnapshot = {
   id: () => string;
   items: () => ICartItem[];
 };
 
-export function getStoreSnapshot(store: unknown): CartStoreSnapshot {
-  return store as unknown as CartStoreSnapshot;
+export function getStoreSnapshot(store: CartStoreSnapshot): CartStoreSnapshot {
+  return store;
 }
 
 export function initializeCartId(): string {
@@ -20,8 +20,9 @@ export function initializeCartId(): string {
   }
 
   const newCart = new Cart();
-  localStorage.setItem(CART_ID_STORAGE_KEY, newCart.id);
-  return newCart.id;
+  const cartId: string = newCart.id;
+  localStorage.setItem(CART_ID_STORAGE_KEY, cartId);
+  return cartId;
 }
 
 export function consolidateCartItems(cartItems: ICartItem[]): ICartItem[] {
@@ -47,7 +48,7 @@ export function calculateTotalItemsCount(cartItems: ICartItem[]): number {
   return cartItems.reduce((total, item) => total + item.quantity, 0);
 }
 
-export function calculateSubtotal(cartItems: ICartItem[]) {
+export function calculateSubtotal(cartItems: ICartItem[]): number {
   return cartItems.reduce((sum, item) => sum + item.productPrice * item.quantity, 0);
 }
 

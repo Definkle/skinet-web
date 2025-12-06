@@ -14,7 +14,7 @@ import { CartStore } from '../../core/state/cart';
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
 })
-export class Header {
+export class HeaderComponent {
   protected CartStore = inject(CartStore);
   protected GlobalStore = inject(GlobalStore);
 

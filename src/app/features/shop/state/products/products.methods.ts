@@ -7,11 +7,7 @@ import { IBasePaginationParams } from '../../../../shared/interfaces/http-helper
 import { IBrandTypeFilter, TProductsState } from './products.types';
 import { distinctUntilChanged, pipe, switchMap, tap } from 'rxjs';
 import { tapResponse } from '@ngrx/operators';
-
-function handleProductError(error: unknown): void {
-  console.error('[ProductsStore] Error:', error);
-  // TODO: Implement proper error notification service
-}
+import { ErrorHandler } from '../../../../core/services/error-handler/error-handler.service';
 
 type ProductMethodsReturn = {
   updateSearch(search: string): void;
@@ -26,7 +22,10 @@ type ProductMethodsReturn = {
 
 export const productMethods = () => {
   return signalStoreFeature(
-    withMethods((store, productsRepo = inject(ProductsRepository)): ProductMethodsReturn => ({
+    withMethods((store, productsRepo = inject(ProductsRepository), errorHandler = inject(ErrorHandler)): ProductMethodsReturn => {
+      const handleProductError = (error: unknown): void => errorHandler.handleError('ProductsStore', error);
+
+      return {
       updateSearch(search: string): void {
         patchState(store, (state: TProductsState) => ({
           filter: { ...state.filter, search },
@@ -98,6 +97,7 @@ export const productMethods = () => {
           filter: { ...state.filter, brands: [], types: [] },
         }));
       },
-    })),
+    };
+    }),
   );
 };

@@ -18,9 +18,9 @@ export interface IFiltersDialogData extends IBrandTypeFilter {
   templateUrl: './filters-dialog.component.html',
   styleUrl: './filters-dialog.component.scss',
 })
-export class FiltersDialog {
+export class FiltersDialogComponent {
   protected readonly Data = inject<IFiltersDialogData>(MAT_DIALOG_DATA);
-  private readonly _DialogRef = inject(MatDialogRef<FiltersDialog>);
+  private readonly _DialogRef = inject(MatDialogRef<FiltersDialogComponent>);
 
   protected readonly filterForm = form(
     signal<IBrandTypeFilter>({

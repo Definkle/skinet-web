@@ -18,6 +18,6 @@ interface IOrderSummary {
   styleUrl: './order-summary.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class OrderSummary {
+export class OrderSummaryComponent {
   orderSummary = input.required<IOrderSummary>();
 }

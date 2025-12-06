@@ -10,4 +10,4 @@ import { MatButton } from '@angular/material/button';
   styleUrl: './not-found.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class NotFound {}
+export class NotFoundComponent {}

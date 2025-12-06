@@ -15,16 +15,12 @@ export interface ICart {
   deliveryFee: number;
 }
 
-export interface IGetCartResponse {
+export interface ICartResponse {
   id: string;
   items: ICartItem[];
 }
 
 export interface IUpdateCartParams {
-  id: string;
-  items: ICartItem[];
-}
-export interface IUpdateCartResponse {
   id: string;
   items: ICartItem[];
 }

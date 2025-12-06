@@ -17,7 +17,7 @@ import {
   DEFAULT_PAGE_SIZE,
   DEFAULT_PAGE_SIZE_OPTIONS,
 } from '../../../shared/constants/default-pagination-values.constant';
-import { FiltersDialog } from '../dialogs/filters-dialog/filters-dialog.component';
+import { FiltersDialogComponent } from '../dialogs/filters-dialog/filters-dialog.component';
 import { filter, tap } from 'rxjs';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { IGetProductsParams } from '../../../core/api/products/product.interface';
@@ -52,7 +52,7 @@ interface ISearchModel {
   templateUrl: './shop-filter.component.html',
   styleUrl: './shop-filter.component.scss',
 })
-export class ShopFilter {
+export class ShopFilterComponent {
   protected readonly ProductsStore = inject(ProductsStore);
   private readonly _DialogService = inject(MatDialog);
 
@@ -88,7 +88,7 @@ export class ShopFilter {
 
   onClickFiltersButton() {
     this._DialogService
-      .open(FiltersDialog, {
+      .open(FiltersDialogComponent, {
         minWidth: '500px',
         data: this.ProductsStore.filterData$(),
       })

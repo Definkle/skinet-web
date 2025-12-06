@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { RepositoryHelper } from '../repository.helper';
 import {
+  ICartResponse,
   IDeleteCartResponse,
-  IGetCartResponse,
   IUpdateCartParams,
-  IUpdateCartResponse,
 } from './cart.interface';
 
 @Injectable({
@@ -12,13 +11,13 @@ import {
 })
 export class CartRepository extends RepositoryHelper {
   getCart$(id: string) {
-    return this._http.get<IGetCartResponse>(this._baseUrl + 'cart', {
+    return this._http.get<ICartResponse>(this._baseUrl + 'cart', {
       params: { id },
     });
   }
 
   updateCart$(cart: IUpdateCartParams) {
-    return this._http.post<IUpdateCartResponse>(this._baseUrl + 'cart', cart);
+    return this._http.post<ICartResponse>(this._baseUrl + 'cart', cart);
   }
 
   deleteCart$(id: string) {

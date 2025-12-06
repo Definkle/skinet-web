@@ -14,7 +14,7 @@ import { CartStore } from '../../../core/state/cart';
   templateUrl: './product.component.html',
   styleUrl: './product.component.scss',
 })
-export class Product {
+export class ProductComponent {
   protected readonly CartStore = inject(CartStore);
   product = input<IProduct>();
 
