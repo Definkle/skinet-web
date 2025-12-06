@@ -100,7 +100,7 @@ export const productMethods = () => {
           ),
           resetFilters(): void {
             patchState(store, (state: TProductsState) => ({
-              filter: { ...state.filter, brands: [], types: [] },
+              filter: { ...state.filter, brands: [], types: [], search: '', sort: '' },
             }));
           },
         };

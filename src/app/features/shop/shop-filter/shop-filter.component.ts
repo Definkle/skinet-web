@@ -3,6 +3,7 @@ import {
   Component,
   DestroyRef,
   inject,
+  OnDestroy,
   signal,
   ViewChild,
 } from '@angular/core';
@@ -52,7 +53,7 @@ interface ISearchModel {
   templateUrl: './shop-filter.component.html',
   styleUrl: './shop-filter.component.scss',
 })
-export class ShopFilterComponent {
+export class ShopFilterComponent implements OnDestroy {
   protected readonly ProductsStore = inject(ProductsStore);
   private readonly _DialogService = inject(MatDialog);
 
@@ -67,6 +68,10 @@ export class ShopFilterComponent {
   protected readonly sortOptions = SORT_OPTIONS;
 
   private destroyRef = inject(DestroyRef);
+
+  ngOnDestroy(): void {
+    this.ProductsStore.resetFilters();
+  }
 
   onSelectSortOption(event: MatSelectionListChange) {
     this._resetPagination();
