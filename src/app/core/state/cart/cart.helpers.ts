@@ -8,8 +8,8 @@ export type CartStoreSnapshot = {
   items: () => ICartItem[];
 };
 
-export function getStoreSnapshot(store: CartStoreSnapshot): CartStoreSnapshot {
-  return store;
+export function getStoreSnapshot(store: unknown): CartStoreSnapshot {
+  return store as CartStoreSnapshot;
 }
 
 export function initializeCartId(): string {
