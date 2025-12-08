@@ -101,15 +101,12 @@ export const cartMethods = () => {
         initCart: rxMethod<void>(
           pipe(
             tap(() => patchState(store, { isLoading: true })),
-            switchMap(() =>
-              cartRepo.getCart$(snapshot.id()).pipe(
-                tapResponse({
-                  next: (cart) => patchState(store, cart),
-                  error: handleCartError,
-                  finalize: () => patchState(store, { isLoading: false }),
-                })
-              )
-            )
+            switchMap(() => cartRepo.getCart$(snapshot.id())),
+            tapResponse({
+              next: (cart) => patchState(store, cart),
+              error: handleCartError,
+              finalize: () => patchState(store, { isLoading: false }),
+            })
           )
         ),
         updateCart,

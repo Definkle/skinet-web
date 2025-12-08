@@ -1,9 +1,5 @@
 import type { CreateProductDto, Product as ProductDto } from '@api-models';
 
-// ===================================
-// Domain Models
-// ===================================
-
 export interface Product {
   id: number;
   name: string;
@@ -25,10 +21,6 @@ export interface CreateProduct {
   brand: string;
   quantityInStock: number;
 }
-
-// ===================================
-// Mappers
-// ===================================
 
 export function mapProductFromDto(dto: ProductDto): Product {
   if (!dto.id || !dto.name || dto.price === undefined) {

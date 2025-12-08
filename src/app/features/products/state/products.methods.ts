@@ -43,45 +43,36 @@ export const productMethods = () => {
           pipe(
             distinctUntilChanged(),
             tap(() => patchState(store, { isLoading: true })),
-            switchMap((params) =>
-              productsRepo.getProducts$(params).pipe(
-                tapResponse({
-                  next: ({ data, totalCount }) => patchState(store, { products: data, productsCount: totalCount }),
-                  error: handleProductError,
-                  finalize: () => patchState(store, { isLoading: false }),
-                })
-              )
-            )
+            switchMap((params) => productsRepo.getProducts$(params)),
+            tapResponse({
+              next: ({ data, totalCount }) => patchState(store, { products: data, productsCount: totalCount }),
+              error: handleProductError,
+              finalize: () => patchState(store, { isLoading: false }),
+            })
           )
         ),
         initBrands: rxMethod<void>(
           pipe(
             distinctUntilChanged(),
             tap(() => patchState(store, { isLoading: true })),
-            switchMap(() =>
-              productsRepo.getBrands$().pipe(
-                tapResponse({
-                  next: (data) => patchState(store, { brands: data }),
-                  error: handleProductError,
-                  finalize: () => patchState(store, { isLoading: false }),
-                })
-              )
-            )
+            switchMap(() => productsRepo.getBrands$()),
+            tapResponse({
+              next: (data) => patchState(store, { brands: data }),
+              error: handleProductError,
+              finalize: () => patchState(store, { isLoading: false }),
+            })
           )
         ),
         initTypes: rxMethod<void>(
           pipe(
             distinctUntilChanged(),
             tap(() => patchState(store, { isLoading: true })),
-            switchMap(() =>
-              productsRepo.getTypes$().pipe(
-                tapResponse({
-                  next: (data) => patchState(store, { types: data }),
-                  error: handleProductError,
-                  finalize: () => patchState(store, { isLoading: false }),
-                })
-              )
-            )
+            switchMap(() => productsRepo.getTypes$()),
+            tapResponse({
+              next: (data) => patchState(store, { types: data }),
+              error: handleProductError,
+              finalize: () => patchState(store, { isLoading: false }),
+            })
           )
         ),
         resetFilters(): void {

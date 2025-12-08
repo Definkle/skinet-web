@@ -1,3 +1,4 @@
+import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import { RepositoryHelperService } from '@core/services/repository.helper';
@@ -12,6 +13,8 @@ export class LoginApiService extends RepositoryHelperService {
   private readonly _baseUrl = this.baseUrl + 'login';
 
   login$(httpParams: ILoginParams) {
-    return this.http.post<ILoginResponse>(this._baseUrl, httpParams);
+    const params = new HttpParams().append('useCookies', 'true');
+
+    return this.http.post<ILoginResponse>(this._baseUrl, httpParams, { params, withCredentials: true });
   }
 }

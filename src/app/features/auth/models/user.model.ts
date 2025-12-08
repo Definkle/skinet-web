@@ -1,8 +1,8 @@
-export interface IUser {
-  id: string;
-  email: string;
+import { AddressDto } from '@api-models';
+
+export interface User {
   firstName: string;
-  lastName: string;
-  userName: string;
-  phoneNumber: string;
+  LastName: string;
+  email: string;
+  address?: AddressDto;
 }

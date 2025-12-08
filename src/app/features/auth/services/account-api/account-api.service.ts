@@ -1,6 +1,10 @@
 import { Injectable } from '@angular/core';
 
+import { AddressDto } from '@api-models';
+
 import { RepositoryHelperService } from '@core/services/repository.helper';
+
+import { User } from '@features/auth/models/user.model';
 
 import { IRegisterParams } from './account-api.params';
 
@@ -12,5 +16,17 @@ export class AccountApiService extends RepositoryHelperService {
 
   register$(httpParams: IRegisterParams) {
     return this.http.post<{}>(this._baseUrl + '/register', httpParams);
+  }
+
+  getUserInfo$() {
+    return this.http.get<User>(this._baseUrl + '/user-info', { withCredentials: true });
+  }
+
+  logout$() {
+    return this.http.post<{}>(this._baseUrl + '/logout', {}, { withCredentials: true });
+  }
+
+  updateAddress$(address: AddressDto) {
+    return this.http.post<{}>(this._baseUrl + '/address', address, { withCredentials: true });
   }
 }
