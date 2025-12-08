@@ -3,4 +3,4 @@
 
 pnpm test
 
-pnpm lint-fix
+pnpm format-lint-fix
