@@ -1,0 +1,23 @@
+<section>
+  <div class="mx-auto max-w-screen-xl">
+    <div class="flex w-full items-start gap-6 mt-32">
+      <div class="w-3/4">
+        @if (!CartStore.items().length) {
+          <h1 class="text-4xl font-bold text-gray-800 my-4">Your cart is empty!</h1>
+          <p class="font-light">Feel free to browse for your next ski whatever!</p>
+        }
+        @for (item of CartStore.items(); track item.productId) {
+          <app-cart-item
+            [item]="item"
+            [isLoading]="CartStore.isLoading()"
+            (updateQuantity)="CartStore.updateProductQuantity($event)"
+            (deleteItem)="CartStore.removeProduct($event)"
+          />
+        }
+      </div>
+      <div class="w-1/4">
+        <app-cart-summary [cartSummary]="CartStore.orderSummary()"></app-cart-summary>
+      </div>
+    </div>
+  </div>
+</section>

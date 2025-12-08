@@ -1,0 +1,9 @@
+@if (ProductsStore.products()) {
+  <app-product-filter />
+
+  <div class="grid grid-cols-5 gap-4">
+    @for (product of ProductsStore.products(); track product.id) {
+      <app-product-card [product]="product" />
+    }
+  </div>
+}

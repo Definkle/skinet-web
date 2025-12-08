@@ -1,0 +1,11 @@
+<app-auth-card>
+  <h1>Register</h1>
+
+  <form class="flex flex-col" (ngSubmit)="onClickRegister()">
+    @for (control of formRefs; track control.label) {
+      <app-form-field [control]="control"></app-form-field>
+    }
+
+    <button mat-flat-button type="submit" [disabled]="form().invalid() || AuthStore.isLoading()">Register</button>
+  </form>
+</app-auth-card>

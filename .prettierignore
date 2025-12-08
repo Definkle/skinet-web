@@ -1,0 +1,16 @@
+# Dependencies
+node_modules
+pnpm-lock.yaml
+
+# Build outputs
+.angular
+
+# SSL certificates
+ssl
+
+# Coverage
+coverage
+
+# Environment files
+.env
+.env.*

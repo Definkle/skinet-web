@@ -1,0 +1,65 @@
+@import 'tailwindcss' important;
+
+@theme {
+  --color-primary-50: #e6f2ff;
+  --color-primary-100: #b3d9ff;
+  --color-primary-200: #80c0ff;
+  --color-primary-300: #4da7ff;
+  --color-primary-400: #1a8eff;
+  --color-primary-500: #005cbb;
+  --color-primary-600: #004494;
+  --color-primary-700: #003366;
+  --color-primary-800: #002244;
+  --color-primary-900: #001122;
+  --color-primary: var(--color-primary-500);
+  --color-primary-light: #3d8ed7;
+  --color-primary-dark: #004494;
+
+  --container-center: true;
+  --container-padding: 1rem;
+  --container-screens-2xl: 1536px;
+
+  --spacing-128: 32rem;
+
+  --radius-card: 0.5rem;
+}
+
+@layer base {
+  button:not(disabled),
+  [role='button']:not(disabled) {
+    cursor: pointer;
+  }
+
+  h1 {
+    font-size: 2.25rem;
+    font-weight: 700;
+    line-height: 2.5rem;
+  }
+
+  h2 {
+    font-size: 1.875rem;
+    font-weight: 600;
+    line-height: 2.25rem;
+  }
+}
+
+@layer utilities {
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+@layer components {
+  .mat-mdc-button {
+    font-weight: 500;
+  }
+}

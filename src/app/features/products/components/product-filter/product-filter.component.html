@@ -1,0 +1,47 @@
+<div class="flex flex-col gap-3 mb-6">
+  <div class="flex justify-between items-center gap-3">
+    <mat-paginator
+      class="bg-transparent"
+      [length]="ProductsStore.productsCount()"
+      [pageSize]="DEFAULT_PAGE_SIZE"
+      [pageSizeOptions]="DEFAULT_PAGE_SIZE_OPTIONS"
+      [showFirstLastButtons]="true"
+      (page)="onPageChange($event)"
+      aria-label="Page navigation"
+    ></mat-paginator>
+
+    <form class="relative flex items-center w-full max-w-md mx-4 top-2.5" (ngSubmit)="onSubmitSearchForm()">
+      <mat-form-field appearance="outline" class="w-full">
+        <input matInput type="search" placeholder="Search" [field]="searchForm.search" />
+        @if (searchForm.search().controlValue().length) {
+          <button matSuffix matIconButton aria-label="Clear" (click)="searchForm.search().value.set('')">
+            <mat-icon>close</mat-icon>
+          </button>
+        } @else {
+          <button matSuffix mat-icon-button type="submit">
+            <mat-icon>search</mat-icon>
+          </button>
+        }
+      </mat-form-field>
+    </form>
+
+    <div class="flex gap-3">
+      <button class="match-input-height" mat-stroked-button (click)="onClickFiltersButton()">
+        <mat-icon>filter_list</mat-icon>
+        Filters
+      </button>
+      <button class="match-input-height" mat-stroked-button type="button" [matMenuTriggerFor]="sortMenu">
+        <mat-icon>swap_vert</mat-icon>
+        Sort
+      </button>
+    </div>
+  </div>
+</div>
+
+<mat-menu #sortMenu="matMenu">
+  <mat-selection-list [multiple]="false" (selectionChange)="onSelectSortOption($event)">
+    @for (sort of sortOptions; track sort.value) {
+      <mat-list-option [value]="sort.value" [selected]="ProductsStore.filter().sort === sort.value">{{ sort.viewValue }}</mat-list-option>
+    }
+  </mat-selection-list>
+</mat-menu>
