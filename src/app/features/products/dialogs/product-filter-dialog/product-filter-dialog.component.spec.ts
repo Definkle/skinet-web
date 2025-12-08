@@ -1,17 +1,25 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { beforeEach, describe, expect, it } from 'vitest';
 
-import { FiltersDialog } from './product-filter-dialog.component';
+import { ProductFilterDialogComponent } from './product-filter-dialog.component';
 
-describe('FiltersDialog', () => {
-  let component: FiltersDialog;
-  let fixture: ComponentFixture<FiltersDialog>;
+describe('ProductFilterDialogComponent', () => {
+  let component: ProductFilterDialogComponent;
+  let fixture: ComponentFixture<ProductFilterDialogComponent>;
+  const mockDialogData = {};
+  const mockDialogRef = { close: () => ({}) };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FiltersDialog],
+      imports: [ProductFilterDialogComponent],
+      providers: [
+        { provide: MAT_DIALOG_DATA, useValue: mockDialogData },
+        { provide: MatDialogRef, useValue: mockDialogRef },
+      ],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(FiltersDialog);
+    fixture = TestBed.createComponent(ProductFilterDialogComponent);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

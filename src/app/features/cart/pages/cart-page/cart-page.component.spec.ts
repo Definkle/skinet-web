@@ -1,17 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
+import { beforeEach, describe, expect, it } from 'vitest';
 
-import { Cart } from './cart-page.component';
+import { CartPageComponent } from './cart-page.component';
 
-describe('Cart', () => {
-  let component: Cart;
-  let fixture: ComponentFixture<Cart>;
+describe('CartPageComponent', () => {
+  let component: CartPageComponent;
+  let fixture: ComponentFixture<CartPageComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Cart],
+      imports: [CartPageComponent],
+      providers: [provideRouter([])],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(Cart);
+    fixture = TestBed.createComponent(CartPageComponent);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

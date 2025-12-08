@@ -10,7 +10,6 @@ const cartInitialState: ICartState = {
   items: [],
   isLoading: false,
   deliveryFee: 0,
-  discount: 0,
   vouchers: [],
 };
 

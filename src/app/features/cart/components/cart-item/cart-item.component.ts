@@ -4,9 +4,9 @@ import { MatButton, MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 
-import { IUpdateCartQuantityParams } from '@state/cart/cart.types';
+import { CartItem } from '@models/cart';
 
-import { ICartItem } from '@features/cart/models/cart-item.model';
+import { IUpdateCartQuantityParams } from '@state/cart/cart.types';
 
 @Component({
   selector: 'app-cart-item',
@@ -16,7 +16,7 @@ import { ICartItem } from '@features/cart/models/cart-item.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CartItemComponent {
-  item = input.required<ICartItem>();
+  item = input.required<CartItem>();
   isLoading = input.required<boolean>();
   updateQuantity = output<IUpdateCartQuantityParams>();
   deleteItem = output<number>();

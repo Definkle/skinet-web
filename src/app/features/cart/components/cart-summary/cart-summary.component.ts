@@ -4,9 +4,9 @@ import { MatButton } from '@angular/material/button';
 import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
 import { RouterLink } from '@angular/router';
 
-import { CardComponent } from '@app/shared';
+import { CardComponent } from '@components/card/card.component';
 
-interface ICartSummary {
+export interface ICartSummary {
   subtotal: number;
   deliveryFee: number;
   discount: number;

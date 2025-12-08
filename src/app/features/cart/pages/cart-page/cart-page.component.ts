@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 
-import { CartStore } from '@state/cart';
-
 import { CartItemComponent } from '@features/cart/components/cart-item/cart-item.component';
 import { CartSummaryComponent } from '@features/cart/components/cart-summary/cart-summary.component';
+
+import { CartStore } from '@state/cart';
 
 @Component({
   selector: 'app-cart',

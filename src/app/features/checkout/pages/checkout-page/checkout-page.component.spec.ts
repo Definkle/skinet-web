@@ -1,17 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { beforeEach, describe, expect, it } from 'vitest';
 
-import { Checkout } from './checkout-page.component';
+import { CheckoutPageComponent } from './checkout-page.component';
 
-describe('Checkout', () => {
-  let component: Checkout;
-  let fixture: ComponentFixture<Checkout>;
+describe('CheckoutPageComponent', () => {
+  let component: CheckoutPageComponent;
+  let fixture: ComponentFixture<CheckoutPageComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Checkout],
+      imports: [CheckoutPageComponent],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(Checkout);
+    fixture = TestBed.createComponent(CheckoutPageComponent);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

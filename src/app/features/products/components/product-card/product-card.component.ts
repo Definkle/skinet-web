@@ -5,9 +5,9 @@ import { MatCard, MatCardActions, MatCardContent } from '@angular/material/card'
 import { MatIcon } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 
-import { CartStore } from '@state/cart';
+import { Product } from '@models/product';
 
-import { IProduct } from '@features/products/models';
+import { CartStore } from '@state/cart';
 
 @Component({
   selector: 'app-product-card',
@@ -18,9 +18,9 @@ import { IProduct } from '@features/products/models';
 })
 export class ProductCardComponent {
   protected readonly CartStore = inject(CartStore);
-  product = input<IProduct>();
+  product = input<Product>();
 
-  onClickAddToCart(product: IProduct) {
+  onClickAddToCart(product: Product) {
     this.CartStore.addProduct({
       ...product,
       quantity: 1,

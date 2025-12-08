@@ -1,2 +1,2 @@
-export * as fromGlobalStore from './global.store';
-export * as fromGlobalTypes from './global.types';
+export { GlobalStore } from './global.store';
+export type { IGlobalState } from './global.types';

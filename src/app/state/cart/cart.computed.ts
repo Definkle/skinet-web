@@ -15,7 +15,7 @@ export const cartComputed = (initialState: SignalStoreFeature<EmptyFeatureResult
           buildOrderSummary({
             deliveryFee: deliveryFee(),
             items: items(),
-            vouchers: vouchers(),
+            vouchers: vouchers() ?? [],
           })
         ),
       };

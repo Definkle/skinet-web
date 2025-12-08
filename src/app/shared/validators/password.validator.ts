@@ -57,4 +57,4 @@ export const passwordValidator = (field: SchemaPath<string, 1, PathKind.Child>, 
   hasDigit(field);
   hasUppercase(field);
   minLength(field, minPasswordLength);
-}
+};

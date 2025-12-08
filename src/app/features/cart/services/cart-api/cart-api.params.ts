@@ -1,6 +1,6 @@
-import { ICartItem } from '@features/cart/models/cart-item.model';
+import { CartItem } from '@models/cart';
 
 export interface IUpdateCartParams {
   id: string;
-  items: ICartItem[];
+  items: CartItem[];
 }

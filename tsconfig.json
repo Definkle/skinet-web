@@ -19,10 +19,19 @@
     "paths": {
       "@app/*": ["src/app/*"],
       "@core/*": ["src/app/core/*"],
-      "@state/*": ["src/app/state/*"],
+      "@guards/*": ["src/app/core/guards/*"],
+      "@interceptors/*": ["src/app/core/interceptors/*"],
+      "@constants/*": ["src/app/core/constants/*"],
       "@features/*": ["src/app/features/*"],
-      "@shared/*": ["src/app/shared/*"],
+      "@models/cart": ["src/app/features/cart/models/cart.models.ts"],
+      "@models/product": ["src/app/features/products/models/product.model.ts"],
       "@layout/*": ["src/app/layout/*"],
+      "@shared/*": ["src/app/shared/*"],
+      "@models/*": ["src/app/shared/models/*"],
+      "@api-models": ["src/app/shared/models/generated/api-models.ts"],
+      "@components/*": ["src/app/shared/ui/components/*"],
+      "@validators": ["src/app/shared/validators"],
+      "@state/*": ["src/app/state/*"],
       "@env/*": ["src/environments/*"]
     }
   },

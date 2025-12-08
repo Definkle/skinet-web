@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
+import { map } from 'rxjs';
+
+import type { ShoppingCart as ShoppingCartDto } from '@api-models';
 
 import { RepositoryHelperService } from '@core/services/repository.helper';
 
-import { IUpdateCartParams } from './cart-api.params';
-import { ICartResponse } from './cart-api.types';
+import { mapCartFromDto, mapCartToDto, ShoppingCart } from '@features/cart/models/cart.models';
 
 @Injectable({
   providedIn: 'root',
@@ -12,13 +14,15 @@ export class CartApiService extends RepositoryHelperService {
   private readonly _baseUrl = this.baseUrl + 'cart';
 
   getCart$(id: string) {
-    return this.http.get<ICartResponse>(this._baseUrl, {
-      params: { id },
-    });
+    return this.http
+      .get<ShoppingCartDto>(this._baseUrl, {
+        params: { id },
+      })
+      .pipe(map(mapCartFromDto));
   }
 
-  updateCart$(cart: IUpdateCartParams) {
-    return this.http.post<ICartResponse>(this._baseUrl, cart);
+  updateCart$(cart: ShoppingCart) {
+    return this.http.post<ShoppingCartDto>(this._baseUrl, mapCartToDto(cart)).pipe(map(mapCartFromDto));
   }
 
   deleteCart$(id: string) {

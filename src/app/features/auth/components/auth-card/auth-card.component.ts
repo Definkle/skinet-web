@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
-import { CardComponent } from '@app/shared';
+import { CardComponent } from '@components/card/card.component';
 
 @Component({
   selector: 'app-auth-card',

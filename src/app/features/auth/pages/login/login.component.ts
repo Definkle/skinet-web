@@ -3,13 +3,13 @@ import { FormsModule } from '@angular/forms';
 import { email, form, required } from '@angular/forms/signals';
 import { MatButton } from '@angular/material/button';
 
-import { FormFieldComponent } from '@app/shared';
-
-import { AuthStore } from '@state/auth/auth.store';
+import { FormFieldComponent } from '@components/form-field/form-field.component';
 
 import { ILoginParams } from '@features/auth/services/login-api/login-api.params';
 
-import { IFieldModel } from '@shared/models/form-field.model';
+import { IFieldModel } from '@models/form-field.models';
+
+import { AuthStore } from '@state/auth/auth.store';
 
 import { AuthCardComponent } from '../../components/auth-card/auth-card.component';
 

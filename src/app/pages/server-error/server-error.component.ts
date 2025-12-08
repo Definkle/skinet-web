@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/cor
 import { MatCard } from '@angular/material/card';
 import { Router } from '@angular/router';
 
-import { ContainerComponent } from '@app/shared';
+import { ContainerComponent } from '@components/container/container.component';
 
 interface IError {
   statusCode: number;

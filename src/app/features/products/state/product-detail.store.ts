@@ -4,13 +4,13 @@ import { patchState, signalStore, withComputed, withMethods, withState } from '@
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { pipe, switchMap, tap } from 'rxjs';
 
-import { CartStore } from '@state/cart';
-
-import { IProduct } from '@features/products/models';
+import { Product } from '@features/products/models/product.model';
 import { ProductApiService } from '@features/products/services/product-api/product-api.service';
 
+import { CartStore } from '@state/cart';
+
 export interface IProductDetailState {
-  activeProduct: IProduct | null;
+  activeProduct: Product | null;
   isLoading: boolean;
 }
 

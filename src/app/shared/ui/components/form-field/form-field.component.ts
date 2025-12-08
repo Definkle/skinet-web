@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { Field } from '@angular/forms/signals';
 import { MatError, MatFormField, MatInput, MatLabel } from '@angular/material/input';
 
-import { IFieldModel } from '@shared/models/form-field.model';
+import { IFieldModel } from '@models/form-field.models';
 
 @Component({
   selector: 'app-form-field',

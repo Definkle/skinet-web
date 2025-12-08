@@ -7,9 +7,10 @@ import { MatIcon } from '@angular/material/icon';
 import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
 import { MatDivider } from '@angular/material/list';
 
+import { Product } from '@features/products/models/product.model';
+
 import { CartStore } from '@state/cart';
 
-import { IProduct } from '../../models';
 import { ProductDetailStore } from '../../state';
 
 interface IFormModel {
@@ -38,7 +39,7 @@ export class ProductDetailComponent {
     () => this.CartStore.isLoading() || this.form().invalid() || this.form.quantity().value() <= this.ProductDetailStore.quantityInCart()
   );
 
-  onClickAddToCart(product: IProduct) {
+  onClickAddToCart(product: Product) {
     const formValue = this.form().value;
     this.CartStore.addProduct({
       ...product,

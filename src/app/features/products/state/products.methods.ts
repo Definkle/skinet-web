@@ -9,7 +9,7 @@ import { ErrorHandlerService } from '@core/services/error-handler/error-handler.
 import { IGetProductsParams } from '@features/products/services/product-api/product-api.params';
 import { ProductApiService } from '@features/products/services/product-api/product-api.service';
 
-import { IBasePaginationParams } from '@shared/models/api-response.model';
+import { IBasePaginationParams } from '@models/api-response.models';
 
 import { IBrandTypeFilter, IProductsState } from './products.types';
 

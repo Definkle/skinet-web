@@ -1,4 +1,4 @@
-import { IProduct } from '../models';
+import { Product } from '@features/products/models/product.model';
 
 export interface IBrandTypeFilter {
   brands: string[];
@@ -13,7 +13,7 @@ export interface IFilter extends IBrandTypeFilter {
 }
 
 export interface IProductsState {
-  products: IProduct[];
+  products: Product[];
   productsCount: number;
   brands: string[];
   types: string[];

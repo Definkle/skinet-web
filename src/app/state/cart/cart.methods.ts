@@ -9,9 +9,10 @@ import { ErrorHandlerService } from '@core/services/error-handler/error-handler.
 
 import { IUpdateCartParams } from '@features/cart/services/cart-api/cart-api.params';
 import { CartApiService } from '@features/cart/services/cart-api/cart-api.service';
+import { Product } from '@features/products/models/product.model';
 
 import { consolidateCartItems, getStoreSnapshot, initializeCartId, mapProductToCartItem } from './cart.helpers';
-import { IProductInCart, IUpdateCartQuantityParams } from './cart.types';
+import { IUpdateCartQuantityParams } from './cart.types';
 
 export const cartMethods = () => {
   return signalStoreFeature(
@@ -41,19 +42,26 @@ export const cartMethods = () => {
               );
             }
 
-            return cartRepo.updateCart$({ ...params, id: snapshot.id() }).pipe(
-              tapResponse({
-                next: (cart) => patchState(store, cart),
-                error: handleCartError,
-                finalize: () => patchState(store, { isLoading: false }),
+            return cartRepo
+              .updateCart$({
+                id: snapshot.id(),
+                items: params.items,
+                deliveryFee: snapshot.deliveryFee(),
+                vouchers: snapshot.vouchers(),
               })
-            );
+              .pipe(
+                tapResponse({
+                  next: (cart) => patchState(store, cart),
+                  error: handleCartError,
+                  finalize: () => patchState(store, { isLoading: false }),
+                })
+              );
           })
         )
       );
 
       return {
-        addProduct(product: IProductInCart): void {
+        addProduct(product: Product): void {
           if (!snapshot.id()) {
             const newCartId = initializeCartId();
             patchState(store, { id: newCartId });

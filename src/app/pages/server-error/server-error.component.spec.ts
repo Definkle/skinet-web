@@ -1,17 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { beforeEach, describe, expect, it } from 'vitest';
 
-import { ServerError } from './server-error.component';
+import { ServerErrorComponent } from './server-error.component';
 
-describe('ServerError', () => {
-  let component: ServerError;
-  let fixture: ComponentFixture<ServerError>;
+describe('ServerErrorComponent', () => {
+  let component: ServerErrorComponent;
+  let fixture: ComponentFixture<ServerErrorComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ServerError],
+      imports: [ServerErrorComponent],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(ServerError);
+    fixture = TestBed.createComponent(ServerErrorComponent);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

@@ -1,3 +1,15 @@
+const importOrder = [
+  '<BUILTIN_MODULES>',
+  '',
+  '<THIRD_PARTY_MODULES>',
+  '',
+  '^(@api-models|@app|@components|@constants|@core|@env|@features|@guards|@interceptors|@layout|@models|@shared|@state|@validators)(/.*)$',
+  '',
+  '^[.][.]/(.*)$',
+  '',
+  '^[.]/(.*)$',
+];
+
 module.exports = {
   singleQuote: true,
   printWidth: 140,
@@ -10,28 +22,7 @@ module.exports = {
   semi: true,
   htmlWhitespaceSensitivity: 'ignore',
   plugins: ['@ianvs/prettier-plugin-sort-imports'],
-  importOrder: [
-    '<BUILTIN_MODULES>',
-    '',
-    '<THIRD_PARTY_MODULES>',
-    '',
-    '^@app/(.*)$',
-    '',
-    '^@core/(.*)$',
-    '',
-    '^@state/(.*)$',
-    '',
-    '^@features/(.*)$',
-    '',
-    '^@shared/(.*)$',
-    '',
-    '^@layout/(.*)$',
-    '',
-    '^@env/(.*)$',
-    '',
-    '^[.]/(.*)$',
-    '^[.][.]/(.*)$',
-  ],
+  importOrder,
   importOrderParserPlugins: ['typescript', 'decorators-legacy'],
   overrides: [
     {

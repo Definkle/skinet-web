@@ -5,9 +5,9 @@ import { MatIcon } from '@angular/material/icon';
 import { MatProgressBar } from '@angular/material/progress-bar';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 
-import { AuthStore } from '@state/auth/auth.store';
+import { AuthStore } from '@state/auth';
 import { CartStore } from '@state/cart';
-import { GlobalStore } from '@state/global/global.store';
+import { GlobalStore } from '@state/global';
 
 @Component({
   selector: 'app-header',

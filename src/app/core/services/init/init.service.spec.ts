@@ -1,13 +1,14 @@
 import { TestBed } from '@angular/core/testing';
+import { beforeEach, describe, expect, it } from 'vitest';
 
-import { Init } from './init.service';
+import { InitService } from '@core/services/init/init.service';
 
-describe('Init', () => {
-  let service: Init;
+describe('InitService', () => {
+  let service: InitService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(Init);
+    service = TestBed.inject(InitService);
   });
 
   it('should be created', () => {

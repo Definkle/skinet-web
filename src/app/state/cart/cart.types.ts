@@ -1,13 +1,12 @@
-import { ICartItem } from '@features/cart/models/cart-item.model';
-import { ICart } from '@features/cart/models/cart.model';
+import { CartItem, ShoppingCart } from '@features/cart/models/cart.models';
 import { IVoucher } from '@features/cart/models/voucher.model';
-import { IProduct } from '@features/products/models';
+import { Product } from '@features/products/models/product.model';
 
-export interface IProductInCart extends IProduct {
+export interface IProductInCart extends Product {
   quantity: number;
 }
 
-export interface ICartState extends ICart {
+export interface ICartState extends ShoppingCart {
   isLoading: boolean;
 }
 
@@ -17,7 +16,7 @@ export interface IUpdateCartQuantityParams {
 }
 
 export interface IOrderSummaryParams {
-  items: ICartItem[];
+  items: CartItem[];
   vouchers: IVoucher[];
   deliveryFee: number;
 }

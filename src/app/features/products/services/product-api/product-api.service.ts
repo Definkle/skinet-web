@@ -1,13 +1,16 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { shareReplay } from 'rxjs';
+import { map, shareReplay } from 'rxjs';
+
+import type { Product as ProductDto } from '@api-models';
 
 import { RepositoryHelperService } from '@core/services/repository.helper';
 
-import { IPaginatedResponseConfig } from '@shared/models/api-response.model';
+import { mapProductFromDto } from '@features/products/models/product.model';
+
+import { IPaginatedResponseConfig } from '@models/api-response.models';
 
 import { IGetProductsParams } from './product-api.params';
-import { IProduct } from '../../models';
 
 @Injectable({ providedIn: 'root' })
 export class ProductApiService extends RepositoryHelperService {
@@ -28,13 +31,15 @@ export class ProductApiService extends RepositoryHelperService {
       params = params.append('brands', httpParams.brands.join(','));
     }
 
-    return this.http.get<IPaginatedResponseConfig<IProduct>>(this._baseUrl, {
-      params,
-    });
+    return this.http
+      .get<IPaginatedResponseConfig<ProductDto>>(this._baseUrl, {
+        params,
+      })
+      .pipe(map((response) => ({ ...response, data: response.data.map(mapProductFromDto) })));
   }
 
   getProduct$(id: number) {
-    return this.http.get<IProduct>(this._baseUrl + `/${id}`);
+    return this.http.get<ProductDto>(this._baseUrl + `/${id}`).pipe(map(mapProductFromDto));
   }
 
   getBrands$() {

@@ -4,6 +4,78 @@ const { defineConfig } = require('eslint/config');
 const tseslint = require('typescript-eslint');
 const angular = require('angular-eslint');
 const importPlugin = require('eslint-plugin-import');
+const pathGroups = [
+  {
+    pattern: '@api-models',
+    group: 'internal',
+    position: 'after',
+  },
+  {
+    pattern: '@app/**',
+    group: 'internal',
+    position: 'after',
+  },
+  {
+    pattern: '@components/**',
+    group: 'internal',
+    position: 'after',
+  },
+  {
+    pattern: '@constants/**',
+    group: 'internal',
+    position: 'after',
+  },
+  {
+    pattern: '@core/**',
+    group: 'internal',
+    position: 'after',
+  },
+  {
+    pattern: '@env/**',
+    group: 'internal',
+    position: 'after',
+  },
+  {
+    pattern: '@features/**',
+    group: 'internal',
+    position: 'after',
+  },
+  {
+    pattern: '@guards/**',
+    group: 'internal',
+    position: 'after',
+  },
+  {
+    pattern: '@interceptors/**',
+    group: 'internal',
+    position: 'after',
+  },
+  {
+    pattern: '@layout/**',
+    group: 'internal',
+    position: 'after',
+  },
+  {
+    pattern: '@models/**',
+    group: 'internal',
+    position: 'after',
+  },
+  {
+    pattern: '@shared/**',
+    group: 'internal',
+    position: 'after',
+  },
+  {
+    pattern: '@state/**',
+    group: 'internal',
+    position: 'after',
+  },
+  {
+    pattern: '@validators/**',
+    group: 'internal',
+    position: 'after',
+  },
+];
 
 module.exports = defineConfig([
   {
@@ -47,43 +119,7 @@ module.exports = defineConfig([
         'error',
         {
           groups: ['builtin', 'external', 'internal', ['parent', 'sibling'], 'index'],
-          pathGroups: [
-            {
-              pattern: '@app/**',
-              group: 'internal',
-              position: 'after',
-            },
-            {
-              pattern: '@core/**',
-              group: 'internal',
-              position: 'after',
-            },
-            {
-              pattern: '@state/**',
-              group: 'internal',
-              position: 'after',
-            },
-            {
-              pattern: '@features/**',
-              group: 'internal',
-              position: 'after',
-            },
-            {
-              pattern: '@shared/**',
-              group: 'internal',
-              position: 'after',
-            },
-            {
-              pattern: '@layout/**',
-              group: 'internal',
-              position: 'after',
-            },
-            {
-              pattern: '@env/**',
-              group: 'internal',
-              position: 'after',
-            },
-          ],
+          pathGroups,
           pathGroupsExcludedImportTypes: ['builtin'],
           'newlines-between': 'always',
           alphabetize: {

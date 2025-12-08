@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
-import { ContainerComponent } from '@app/shared';
-
-import { CartStore } from '@state/cart';
+import { ContainerComponent } from '@components/container/container.component';
 
 import { HeaderComponent } from '@layout/header/header.component';
+
+import { CartStore } from '@state/cart';
 
 @Component({
   selector: 'app-root',

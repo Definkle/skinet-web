@@ -1,1 +1,2 @@
-export * from './cart.store';
+export { CartStore } from './cart.store';
+export type { ICartState, IUpdateCartQuantityParams } from './cart.types';

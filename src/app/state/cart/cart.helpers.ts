@@ -1,14 +1,16 @@
 import { CART_ID_STORAGE_KEY } from '@core/constants/storage-keys.constant';
 
-import { ICartItem } from '@features/cart/models/cart-item.model';
-import { Cart } from '@features/cart/models/cart.model';
+import { Cart, CartItem } from '@features/cart/models/cart.models';
 import { IVoucher } from '@features/cart/models/voucher.model';
+import { Product } from '@features/products/models/product.model';
 
-import { IOrderSummary, IOrderSummaryParams, IProductInCart } from './cart.types';
+import { IOrderSummary, IOrderSummaryParams } from './cart.types';
 
 export interface ICartStoreSnapshot {
   id: () => string;
-  items: () => ICartItem[];
+  items: () => CartItem[];
+  vouchers: () => IVoucher[];
+  deliveryFee: () => number;
 }
 
 export function getStoreSnapshot(store: unknown): ICartStoreSnapshot {
@@ -28,8 +30,8 @@ export function initializeCartId(): string {
   return cartId;
 }
 
-export function consolidateCartItems(cartItems: ICartItem[]): ICartItem[] {
-  const consolidatedMap = new Map<number, ICartItem>();
+export function consolidateCartItems(cartItems: CartItem[]): CartItem[] {
+  const consolidatedMap = new Map<number, CartItem>();
 
   cartItems.forEach((item) => {
     const existingItem = consolidatedMap.get(item.productId);
@@ -51,11 +53,11 @@ export function calculateTotalDiscount(vouchers: IVoucher[]) {
   return vouchers.reduce((sum, voucher) => sum + voucher.discount, 0);
 }
 
-export function calculateTotalItemsCount(cartItems: ICartItem[]): number {
+export function calculateTotalItemsCount(cartItems: CartItem[]): number {
   return cartItems.reduce((total, item) => total + item.quantity, 0);
 }
 
-export function calculateSubtotal(cartItems: ICartItem[]): number {
+export function calculateSubtotal(cartItems: CartItem[]): number {
   return cartItems.reduce((sum, item) => sum + item.productPrice * item.quantity, 0);
 }
 
@@ -73,13 +75,13 @@ export function buildOrderSummary({ items, vouchers, deliveryFee }: IOrderSummar
   };
 }
 
-export function mapProductToCartItem(product: IProductInCart): ICartItem {
+export function mapProductToCartItem(product: Product): CartItem {
   return {
     productId: product.id,
     productName: product.name,
     productPrice: product.price,
     brand: product.brand,
-    quantity: product.quantity,
+    quantity: product.quantity ?? 0,
     type: product.type,
     pictureUrl: product.pictureUrl,
   };

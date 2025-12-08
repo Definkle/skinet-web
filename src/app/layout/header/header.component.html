@@ -12,8 +12,7 @@
       </a>
       @if (AuthStore.isLoggedIn()) {
         <button mat-stroked-button routerLink="/account">My account</button>
-      }
-      @else {
+      } @else {
         <button mat-stroked-button routerLink="/login">Login</button>
         <button mat-stroked-button routerLink="/register">Register</button>
       }

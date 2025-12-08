@@ -1,4 +1,4 @@
-import { IBasePaginationParams } from '@shared/models/api-response.model';
+import { IBasePaginationParams } from '@models/api-response.models';
 
 export interface IGetProductsParams extends IBasePaginationParams {
   types?: string[];
