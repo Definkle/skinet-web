@@ -6,6 +6,7 @@ import { ContainerComponent } from '@components/container/container.component';
 import { HeaderComponent } from '@layout/header/header.component';
 
 import { CartStore } from '@state/cart';
+import { GlobalStore } from '@state/global';
 
 @Component({
   selector: 'app-root',
@@ -17,4 +18,5 @@ import { CartStore } from '@state/cart';
 export class AppComponent {
   protected readonly title = signal('Skinet Web');
   protected readonly CartStore = inject(CartStore);
+  protected readonly GlobalStore = inject(GlobalStore);
 }

@@ -1,4 +1,9 @@
-import { signalStore, withState } from '@ngrx/signals';
+import { inject } from '@angular/core';
+import { signalStore, withProps, withState } from '@ngrx/signals';
+
+import { ErrorHandlerService } from '@core/services/error-handler/error-handler.service';
+
+import { CartApiService } from '@features/cart/services/cart-api/cart-api.service';
 
 import { cartComputed } from './cart.computed';
 import { initializeCartId } from './cart.helpers';
@@ -13,6 +18,14 @@ const cartInitialState: ICartState = {
   vouchers: [],
 };
 
-export const CartStore = signalStore({ providedIn: 'root' }, cartComputed(withState(cartInitialState)), cartMethods());
+export const CartStore = signalStore(
+  { providedIn: 'root' },
+  cartComputed(withState(cartInitialState)),
+  withProps(() => ({
+    cartRepo: inject(CartApiService),
+    errorHandler: inject(ErrorHandlerService),
+  })),
+  cartMethods()
+);
 
 export type { IProductInCart, ICartState } from './cart.types';

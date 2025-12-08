@@ -1,7 +1,12 @@
 import { FieldTree } from '@angular/forms/signals';
 
-export interface IFieldModel<T = string> {
+type TFieldTypes = 'text' | 'email' | 'password' | 'number';
+
+export interface IFieldModelUI {
   label: string;
+}
+
+export interface IFieldModel<T = string> extends IFieldModelUI {
   field: FieldTree<T, string>;
-  type: 'text' | 'email' | 'password' | 'number';
+  type: TFieldTypes;
 }

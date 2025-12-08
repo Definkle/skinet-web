@@ -19,14 +19,14 @@ export class AccountApiService extends RepositoryHelperService {
   }
 
   getUserInfo$() {
-    return this.http.get<User>(this._baseUrl + '/user-info', { withCredentials: true });
+    return this.http.get<User>(this._baseUrl + '/user-info');
   }
 
   logout$() {
-    return this.http.post<{}>(this._baseUrl + '/logout', {}, { withCredentials: true });
+    return this.http.post<{}>(this._baseUrl + '/logout', {});
   }
 
   updateAddress$(address: AddressDto) {
-    return this.http.post<{}>(this._baseUrl + '/address', address, { withCredentials: true });
+    return this.http.post<{}>(this._baseUrl + '/address', address);
   }
 }

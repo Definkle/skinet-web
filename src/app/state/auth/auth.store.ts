@@ -1,7 +1,8 @@
 import { signalStore, withState } from '@ngrx/signals';
 
-import { authComputed } from './auth.computed';
-import { authMethods } from './auth.methods';
+import { authComputed } from '@state/auth/auth.computed';
+import { authMethods } from '@state/auth/auth.methods';
+
 import { IAuthState } from './auth.types';
 
 const authInitialState: IAuthState = {

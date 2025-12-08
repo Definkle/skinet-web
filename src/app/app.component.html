@@ -1,5 +1,7 @@
-<app-header></app-header>
+@if (GlobalStore.isInitialized()) {
+  <app-header></app-header>
 
-<app-container>
-  <div class="mt-24 mb-6"><router-outlet /></div>
-</app-container>
+  <app-container>
+    <div class="mt-24 mb-6"><router-outlet /></div>
+  </app-container>
+}

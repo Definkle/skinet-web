@@ -2,6 +2,8 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MatBadge } from '@angular/material/badge';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
+import { MatDivider, MatSelectionList } from '@angular/material/list';
+import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
 import { MatProgressBar } from '@angular/material/progress-bar';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 
@@ -12,7 +14,19 @@ import { GlobalStore } from '@state/global';
 @Component({
   selector: 'app-header',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [MatBadge, MatButton, MatIcon, RouterLink, RouterLinkActive, MatProgressBar],
+  imports: [
+    MatBadge,
+    MatButton,
+    MatIcon,
+    RouterLink,
+    RouterLinkActive,
+    MatProgressBar,
+    MatMenuTrigger,
+    MatMenu,
+    MatSelectionList,
+    MatMenuItem,
+    MatDivider,
+  ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
 })
