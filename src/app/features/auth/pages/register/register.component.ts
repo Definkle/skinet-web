@@ -4,9 +4,13 @@ import { email, form, required } from '@angular/forms/signals';
 import { MatButton } from '@angular/material/button';
 
 import { FormFieldComponent } from '@components/form-field/form-field.component';
+
 import { IRegisterParams } from '@features/auth/services/account-api/account-api.params';
+
 import { IFieldModel } from '@models/form-field.models';
+
 import { passwordValidator } from '@shared/validators/password.validator';
+
 import { AuthStore } from '@state/auth/auth.store';
 
 import { AuthCardComponent } from '../../components/auth-card/auth-card.component';
