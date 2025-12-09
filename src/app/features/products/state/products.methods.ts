@@ -2,7 +2,7 @@ import { inject } from '@angular/core';
 import { tapResponse } from '@ngrx/operators';
 import { patchState, signalStoreFeature, withMethods } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { distinctUntilChanged, pipe, switchMap, tap } from 'rxjs';
+import { distinctUntilChanged, pipe, shareReplay, switchMap, tap } from 'rxjs';
 
 import { DEFAULT_PAGE_INDEX } from '@constants/default-pagination-values.constant';
 
@@ -25,10 +25,10 @@ export const productMethods = () => {
       const handleProductError = createStoreErrorHandler('ProductsStore', errorHandler);
 
       return {
-        initProductList: rxMethod<IGetProductsParams>(
+        initProducts: rxMethod<IGetProductsParams>(
           pipe(
             distinctUntilChanged(),
-            tap(() => patchState(store, { isLoading: true })),
+            tap(() => patchState(store, { isLoading: true, products: [] })),
             switchMap((params) =>
               productsRepo.getProducts$(params).pipe(
                 tapResponse({
@@ -40,19 +40,26 @@ export const productMethods = () => {
             )
           )
         ),
-        initProducts: rxMethod<IGetProductsParams>(
+        loadMoreProducts: rxMethod<void>(
           pipe(
-            distinctUntilChanged(),
-            tap(() => patchState(store, { isLoading: true })),
-            switchMap((params) =>
-              productsRepo.getProducts$(params).pipe(
+            tap(() => patchState(store, { isLoadingMore: true })),
+            switchMap(() => {
+              const currentFilter = snapshot.filter();
+              const nextPageParams = { ...currentFilter, pageIndex: currentFilter.pageIndex + 1 };
+
+              return productsRepo.getProducts$(nextPageParams).pipe(
                 tapResponse({
-                  next: ({ data, totalCount }) => patchState(store, { products: data, productsCount: totalCount }),
+                  next: ({ data, totalCount }) =>
+                    patchState(store, (state: IProductsState) => ({
+                      products: [...state.products, ...data],
+                      productsCount: totalCount,
+                      filter: nextPageParams,
+                    })),
                   error: handleProductError,
-                  finalize: () => patchState(store, { isLoading: false }),
+                  finalize: () => patchState(store, { isLoadingMore: false }),
                 })
-              )
-            )
+              );
+            })
           )
         ),
         initBrands: rxMethod<void>(
@@ -61,6 +68,7 @@ export const productMethods = () => {
             tap(() => patchState(store, { isLoading: true })),
             switchMap(() =>
               productsRepo.getBrands$().pipe(
+                shareReplay({ bufferSize: 1, refCount: true }),
                 tapResponse({
                   next: (data) => patchState(store, { brands: data }),
                   error: handleProductError,
@@ -76,6 +84,7 @@ export const productMethods = () => {
             tap(() => patchState(store, { isLoading: true })),
             switchMap(() =>
               productsRepo.getTypes$().pipe(
+                shareReplay({ bufferSize: 1, refCount: true }),
                 tapResponse({
                   next: (data) => patchState(store, { types: data }),
                   error: handleProductError,
@@ -129,6 +138,13 @@ export const productMethods = () => {
           patchState(store, (state: IProductsState) => ({
             filter: { ...state.filter, brands: [], types: [], search: '', sort: '' },
           }));
+        },
+        toggleInfiniteScroll(): void {
+          patchState(store, (state: IProductsState) => ({
+            useInfiniteScroll: !state.useInfiniteScroll,
+            filter: { ...state.filter, pageIndex: DEFAULT_PAGE_INDEX },
+          }));
+          this.initProducts(snapshot.filter());
         },
       };
     })

@@ -11,6 +11,8 @@ const productsInitialState: IProductsState = {
   brands: [],
   types: [],
   isLoading: false,
+  isLoadingMore: false,
+  useInfiniteScroll: false,
   filter: DEFAULT_FILTER,
   activeProduct: null,
 };

@@ -10,7 +10,7 @@ export const productComputed = (
 ) => {
   return signalStoreFeature(
     initialState,
-    withComputed(({ brands, filter, types, activeProduct }, cartStore = inject(CartStore)) => ({
+    withComputed(({ brands, filter, types, activeProduct, products, productsCount }, cartStore = inject(CartStore)) => ({
       activeProductQuantityInCart: computed(() => {
         const activeProductRef = activeProduct();
         if (!activeProductRef) return 0;
@@ -22,6 +22,7 @@ export const productComputed = (
         selectedBrands: filter.brands(),
         selectedTypes: filter.types(),
       })),
+      hasMoreProducts: computed(() => products().length < productsCount()),
     }))
   );
 };

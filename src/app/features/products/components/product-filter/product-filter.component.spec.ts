@@ -19,6 +19,10 @@ interface MockProductsStore {
   updatePagination: Mock;
   initProducts: Mock;
   resetFilters: Mock;
+  useInfiniteScroll: Mock;
+  toggleInfiniteScroll: Mock;
+  hasMoreProducts: Mock;
+  isLoadingMore: Mock;
 }
 
 interface MockMatDialog {
@@ -52,6 +56,10 @@ describe('ProductFilterComponent', () => {
       updatePagination: vi.fn(),
       initProducts: vi.fn(),
       resetFilters: vi.fn(),
+      useInfiniteScroll: vi.fn().mockReturnValue(false),
+      toggleInfiniteScroll: vi.fn(),
+      hasMoreProducts: vi.fn().mockReturnValue(true),
+      isLoadingMore: vi.fn().mockReturnValue(false),
     };
 
     mockDialog = {

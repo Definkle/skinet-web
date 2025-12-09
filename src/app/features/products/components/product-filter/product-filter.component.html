@@ -1,15 +1,22 @@
 <div class="mb-6 flex flex-col gap-3">
   <div class="flex items-center justify-between gap-3">
-    <mat-paginator
-      class="bg-transparent"
-      aria-label="Page navigation"
-      [length]="ProductsStore.productsCount()"
-      [pageSize]="ProductsStore.filter().pageSize"
-      [pageSizeOptions]="DEFAULT_PAGE_SIZE_OPTIONS"
-      [showFirstLastButtons]="true"
-      [pageIndex]="ProductsStore.filter().pageIndex - 1"
-      (page)="onPageChange($event)"
-    ></mat-paginator>
+    @if (!ProductsStore.useInfiniteScroll()) {
+      <mat-paginator
+        class="bg-transparent"
+        aria-label="Page navigation"
+        [length]="ProductsStore.productsCount()"
+        [pageSize]="ProductsStore.filter().pageSize"
+        [pageSizeOptions]="DEFAULT_PAGE_SIZE_OPTIONS"
+        [showFirstLastButtons]="true"
+        [pageIndex]="ProductsStore.filter().pageIndex - 1"
+        (page)="onPageChange($event)"
+      ></mat-paginator>
+    } @else {
+      <div class="flex items-center gap-2 text-sm text-gray-600">
+        <mat-icon class="text-base">infinity</mat-icon>
+        <span>Infinite Scroll Active</span>
+      </div>
+    }
 
     <form class="relative top-2.5 mx-4 flex w-full max-w-md items-center" (ngSubmit)="onSubmitSearchForm()">
       <mat-form-field appearance="outline" class="w-full">
@@ -27,6 +34,10 @@
     </form>
 
     <div class="flex gap-3">
+      <button class="match-input-height" mat-stroked-button (click)="ProductsStore.toggleInfiniteScroll()">
+        <mat-icon>{{ ProductsStore.useInfiniteScroll() ? 'view_agenda' : 'expand_more' }}</mat-icon>
+        {{ ProductsStore.useInfiniteScroll() ? 'Pages' : 'Scroll' }}
+      </button>
       <button class="match-input-height" mat-stroked-button (click)="onClickFiltersButton()">
         <mat-icon>filter_list</mat-icon>
         Filters

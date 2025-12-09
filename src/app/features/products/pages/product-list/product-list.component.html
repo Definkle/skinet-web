@@ -6,4 +6,18 @@
       <app-product-card [product]="product" />
     }
   </div>
+
+  @if (ProductsStore.useInfiniteScroll()) {
+    @if (ProductsStore.hasMoreProducts()) {
+      <div #loadMoreTrigger class="py-8 text-center">
+        @if (ProductsStore.isLoadingMore()) {
+          <p class="text-gray-500">Loading more products...</p>
+        }
+      </div>
+    } @else {
+      <div class="py-8 text-center">
+        <p class="text-gray-500">All products loaded</p>
+      </div>
+    }
+  }
 }

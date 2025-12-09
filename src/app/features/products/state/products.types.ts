@@ -18,6 +18,8 @@ export interface IProductsState {
   brands: string[];
   types: string[];
   isLoading: boolean;
+  isLoadingMore: boolean;
+  useInfiniteScroll: boolean;
   filter: IFilter;
   activeProduct: Product | null;
 }

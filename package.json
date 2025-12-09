@@ -2,7 +2,6 @@
   "name": "skinet-web",
   "version": "0.0.0",
   "scripts": {
-    "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
@@ -15,7 +14,6 @@
     "format-lint-fix": "pnpm run format && pnpm run lint-fix",
     "nswag": "nswag run nswag.json",
     "nswag-format": "pnpm run nswag && pnpm run format-lint-fix",
-    "generate-api": "nswag run nswag.json",
     "prepare": "husky install",
     "build:stats": "ng build --stats-json",
     "analyze": "esbuild-visualizer --metadata dist/skinet-web/stats.json --open",
