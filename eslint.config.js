@@ -133,6 +133,21 @@ module.exports = defineConfig([
   {
     files: ['**/*.html'],
     extends: [angular.configs.templateRecommended, angular.configs.templateAccessibility],
-    rules: {},
+    rules: {
+      '@angular-eslint/template/attributes-order': [
+        'error',
+        {
+          alphabetical: false,
+          order: [
+            'STRUCTURAL_DIRECTIVE', // *ngIf, *ngFor, *ngSwitch
+            'TEMPLATE_REFERENCE', // #templateRef
+            'ATTRIBUTE_BINDING', // [attr.role]="..."
+            'INPUT_BINDING', // [input]="..."
+            'TWO_WAY_BINDING', // [(ngModel)]="..."
+            'OUTPUT_BINDING', // (output)="..."
+          ],
+        },
+      ],
+    },
   },
 ]);

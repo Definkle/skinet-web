@@ -21,7 +21,7 @@ module.exports = {
   bracketSameLine: false,
   semi: true,
   htmlWhitespaceSensitivity: 'ignore',
-  plugins: ['@ianvs/prettier-plugin-sort-imports'],
+  plugins: ['@ianvs/prettier-plugin-sort-imports', 'prettier-plugin-tailwindcss'],
   importOrder,
   importOrderParserPlugins: ['typescript', 'decorators-legacy'],
   overrides: [

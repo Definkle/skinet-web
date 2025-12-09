@@ -1,17 +1,17 @@
-<div class="flex flex-col gap-3 mb-6">
-  <div class="flex justify-between items-center gap-3">
+<div class="mb-6 flex flex-col gap-3">
+  <div class="flex items-center justify-between gap-3">
     <mat-paginator
       class="bg-transparent"
+      aria-label="Page navigation"
       [length]="ProductsStore.productsCount()"
       [pageSize]="ProductsStore.filter().pageSize"
       [pageSizeOptions]="DEFAULT_PAGE_SIZE_OPTIONS"
       [showFirstLastButtons]="true"
-      (page)="onPageChange($event)"
       [pageIndex]="ProductsStore.filter().pageIndex - 1"
-      aria-label="Page navigation"
+      (page)="onPageChange($event)"
     ></mat-paginator>
 
-    <form class="relative flex items-center w-full max-w-md mx-4 top-2.5" (ngSubmit)="onSubmitSearchForm()">
+    <form class="relative top-2.5 mx-4 flex w-full max-w-md items-center" (ngSubmit)="onSubmitSearchForm()">
       <mat-form-field appearance="outline" class="w-full">
         <input matInput type="search" placeholder="Search" [field]="searchForm.search" />
         @if (searchForm.search().controlValue().length) {
