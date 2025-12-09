@@ -1,7 +1,7 @@
 @let field = control().field;
 <mat-form-field appearance="outline" class="w-full">
   <mat-label>{{ control().label }}</mat-label>
-  <input matInput type="{{ control().type }}" [field]="field" />
+  <input matInput [type]="control().type" [field]="field" />
   @if (field().touched() && field().invalid()) {
     @for (error of field().errors(); track error.message) {
       <mat-error class="text-xs">{{ error.message }}</mat-error>

@@ -5,6 +5,7 @@ import { type AddressDto } from '@api-models';
 import { RepositoryHelperService } from '@core/services/repository.helper';
 
 import { type User } from '@features/auth/models/user.model';
+import type { IGetAuthStateResponse } from '@features/auth/services/account-api/account-api.types';
 
 import { type IRegisterParams } from './account-api.params';
 
@@ -24,6 +25,9 @@ export class AccountApiService extends RepositoryHelperService {
 
   logout$() {
     return this.http.post<{}>(this._baseUrl + '/logout', {});
+  }
+  getAuthState$() {
+    return this.http.get<IGetAuthStateResponse>(this._baseUrl + '/auth-status');
   }
 
   updateAddress$(address: AddressDto) {

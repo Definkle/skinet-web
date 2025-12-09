@@ -1,5 +1,5 @@
 import { inject } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { tapResponse } from '@ngrx/operators';
 import { patchState, signalStoreFeature, withMethods } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
@@ -23,6 +23,7 @@ export const authMethods = () => {
         accountRepo = inject(AccountApiService),
         loginRepo = inject(LoginApiService),
         errorHandler = inject(ErrorHandlerService),
+        activatedRoute = inject(ActivatedRoute),
         router = inject(Router),
         snackbar = inject(SnackbarService)
       ) => {
@@ -81,7 +82,8 @@ export const authMethods = () => {
                   tapResponse({
                     next: (user) => {
                       patchState(store, { user });
-                      void router.navigateByUrl('/shop');
+                      const returnUrl: string = activatedRoute.snapshot.queryParams['returnUrl'];
+                      void router.navigateByUrl(returnUrl?.length ? returnUrl : '/shop');
                     },
                     error: handleAuthError,
                     finalize: () => {
