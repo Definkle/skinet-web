@@ -1,5 +1,5 @@
-import { CurrencyPipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { CurrencyPipe, Location } from '@angular/common';
+import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
 import { RouterLink } from '@angular/router';
@@ -22,4 +22,5 @@ export interface ICartSummary {
 })
 export class CartSummaryComponent {
   cartSummary = input.required<ICartSummary>();
+  location = inject(Location);
 }

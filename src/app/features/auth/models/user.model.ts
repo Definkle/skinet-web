@@ -2,7 +2,7 @@ import { type AddressDto } from '@api-models';
 
 export interface User {
   firstName: string;
-  LastName: string;
+  lastName: string;
   email: string;
   address?: AddressDto;
 }

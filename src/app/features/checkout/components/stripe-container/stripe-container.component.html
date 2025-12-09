@@ -1,0 +1,7 @@
+<div>
+  @if (error()) {
+    <mat-error>{{ error() }}</mat-error>
+  }
+
+  <div id="addressElement" [class.hidden]="!StripeStore.hasAddressElement()"></div>
+</div>

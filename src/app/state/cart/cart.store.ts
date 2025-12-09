@@ -1,7 +1,4 @@
 import { signalStore, withState } from '@ngrx/signals';
-import { withEntities } from '@ngrx/signals/entities';
-
-import { type CartItem } from '@models/cart';
 
 import { cartComputed } from './cart.computed';
 import { initializeCartId } from './cart.helpers';
@@ -14,14 +11,11 @@ const cartInitialState: ICartState = {
   isLoading: false,
   deliveryFee: 0,
   vouchers: [],
+  deliveryMethodId: null,
+  clientSecret: null,
+  paymentIntentId: null,
 };
 
-export const CartStore = signalStore(
-  { providedIn: 'root' },
-
-  withEntities<CartItem>(),
-  cartComputed(withState(cartInitialState)),
-  cartMethods()
-);
+export const CartStore = signalStore({ providedIn: 'root' }, cartComputed(withState(cartInitialState)), cartMethods());
 
 export type { IProductInCart, ICartState } from './cart.types';

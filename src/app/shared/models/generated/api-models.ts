@@ -116,6 +116,9 @@ export interface CreateProductDto {
 export interface ShoppingCart {
   id?: string;
   items?: CartItem[];
+  deliveryMethodId?: number | null;
+  clientSecret?: string | null;
+  paymentIntentId?: string | null;
 }
 
 export interface CartItem {
@@ -130,6 +133,13 @@ export interface CartItem {
 
 export interface BaseEntity {
   id?: number;
+}
+
+export interface DeliveryMethod extends BaseEntity {
+  shortName?: string;
+  deliveryTime?: string;
+  description?: string;
+  price?: number;
 }
 
 export interface Product extends BaseEntity {

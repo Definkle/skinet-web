@@ -4,6 +4,8 @@ import { patchState, signalStoreFeature, withMethods } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { debounceTime, distinctUntilChanged, pipe, switchMap, tap } from 'rxjs';
 
+import type { ShoppingCart } from '@api-models';
+
 import { CART_ID_STORAGE_KEY } from '@core/constants/storage-keys.constant';
 import { ErrorHandlerService } from '@core/services/error-handler/error-handler.service';
 
@@ -51,6 +53,9 @@ export const cartMethods = () => {
                 items: params.items,
                 deliveryFee: snapshot.deliveryFee(),
                 vouchers: snapshot.vouchers(),
+                clientSecret: snapshot.clientSecret(),
+                deliveryMethodId: snapshot.deliveryMethodId(),
+                paymentIntentId: snapshot.paymentIntentId(),
               })
               .pipe(
                 tapResponse({
@@ -64,6 +69,7 @@ export const cartMethods = () => {
       );
 
       return {
+        updateCartState: rxMethod<ShoppingCart>(pipe(tap((shoppingCart) => patchState(store, shoppingCart)))),
         addProduct(product: Product): void {
           if (!snapshot.id()) {
             const newCartId = initializeCartId();

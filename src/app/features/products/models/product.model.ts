@@ -1,14 +1,8 @@
 import type { CreateProductDto, Product as ProductDto } from '@api-models';
 
-export interface Product {
-  id: number;
-  name: string;
-  description: string;
-  price: number;
-  pictureUrl: string;
-  type: string;
-  brand: string;
-  quantityInStock: number;
+import type { TRequired } from '@shared/types/generics.type';
+
+export interface Product extends TRequired<ProductDto> {
   quantity?: number;
 }
 
@@ -33,8 +27,8 @@ export function mapProductFromDto(dto: ProductDto): Product {
     description: dto.description ?? '',
     price: dto.price,
     pictureUrl: dto.pictureUrl ?? '',
-    type: dto.type ?? 'Unknown',
-    brand: dto.brand ?? 'Unknown',
+    type: dto.type ?? '',
+    brand: dto.brand ?? '',
     quantityInStock: dto.quantityInStock ?? 0,
   };
 }

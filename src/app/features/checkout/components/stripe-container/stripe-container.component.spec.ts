@@ -1,20 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
-import { beforeEach, describe, expect, it } from 'vitest';
 
-import { CheckoutPageComponent } from './checkout-page.component';
+import { StripeContainerComponent } from './stripe-container.component';
 
-describe('CheckoutPageComponent', () => {
-  let component: CheckoutPageComponent;
-  let fixture: ComponentFixture<CheckoutPageComponent>;
+describe('StripeContainerComponent', () => {
+  let component: StripeContainerComponent;
+  let fixture: ComponentFixture<StripeContainerComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CheckoutPageComponent],
+      imports: [StripeContainerComponent],
       providers: [provideRouter([])],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(CheckoutPageComponent);
+    fixture = TestBed.createComponent(StripeContainerComponent);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

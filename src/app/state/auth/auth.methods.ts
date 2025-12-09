@@ -5,6 +5,8 @@ import { patchState, signalStoreFeature, withMethods } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { distinctUntilChanged, pipe, switchMap, tap } from 'rxjs';
 
+import type { AddressDto } from '@api-models';
+
 import { ErrorHandlerService } from '@core/services/error-handler/error-handler.service';
 import { SnackbarService } from '@core/services/snackbar/snackbar.service';
 
@@ -14,6 +16,9 @@ import { type ILoginParams } from '@features/auth/services/login-api/login-api.p
 import { LoginApiService } from '@features/auth/services/login-api/login-api.service';
 
 import { createStoreErrorHandler } from '@shared/utils/store-error.util';
+import { getStoreSnapshot } from '@shared/utils/store-snapshot.util';
+
+import type { IAuthState } from '@state/auth/auth.types';
 
 export const authMethods = () => {
   return signalStoreFeature(
@@ -27,6 +32,7 @@ export const authMethods = () => {
         router = inject(Router),
         snackbar = inject(SnackbarService)
       ) => {
+        const snapshot = getStoreSnapshot<IAuthState>(store);
         const handleAuthError = createStoreErrorHandler('AuthStore', errorHandler);
 
         return {
@@ -105,6 +111,22 @@ export const authMethods = () => {
                     finalize: () => {
                       patchState(store, { isLoading: false });
                       void router.navigateByUrl('/login');
+                    },
+                  })
+                )
+              )
+            )
+          ),
+          updateAddress: rxMethod<AddressDto>(
+            pipe(
+              tap(() => patchState(store, { isLoading: true })),
+              switchMap((address) =>
+                accountRepo.updateAddress$(address).pipe(
+                  tapResponse({
+                    next: () => patchState(store, (state) => ({ ...state, user: { ...snapshot.user(), address: address } })),
+                    error: handleAuthError,
+                    finalize: () => {
+                      patchState(store, { isLoading: false });
                     },
                   })
                 )

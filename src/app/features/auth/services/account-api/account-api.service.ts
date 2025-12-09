@@ -26,6 +26,7 @@ export class AccountApiService extends RepositoryHelperService {
   logout$() {
     return this.http.post<{}>(this._baseUrl + '/logout', {});
   }
+
   getAuthState$() {
     return this.http.get<IGetAuthStateResponse>(this._baseUrl + '/auth-status');
   }

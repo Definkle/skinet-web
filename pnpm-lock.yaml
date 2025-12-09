@@ -35,6 +35,9 @@ dependencies:
   '@ngrx/signals':
     specifier: ^20.1.0
     version: 20.1.0(@angular/core@21.0.2)(rxjs@7.8.2)
+  '@stripe/stripe-js':
+    specifier: ^8.5.3
+    version: 8.5.3
   rxjs:
     specifier: ~7.8.2
     version: 7.8.2
@@ -2840,6 +2843,11 @@ packages:
 
   /@standard-schema/spec@1.0.0:
     resolution: {integrity: sha512-m2bOd0f2RT9k8QJx1JN85cZYyH1RqFBdlwtkSlf4tBDYLCiiZnv1fIIwacK6cqwXavOydf0NPToMQgpKq+dVlA==}
+
+  /@stripe/stripe-js@8.5.3:
+    resolution: {integrity: sha512-UM0GHAxlTN7v0lCK2P6t0VOlvBIdApIQxhnM3yZ2kupQ4PpSrLsK/n/NyYKtw2NJGMaNRRD1IicWS7fSL2sFtA==}
+    engines: {node: '>=12.16'}
+    dev: false
 
   /@tailwindcss/node@4.1.17:
     resolution: {integrity: sha512-csIkHIgLb3JisEFQ0vxr2Y57GUNYh447C8xzwj89U/8fdW8LhProdxvnVH6U8M2Y73QKiTIH+LWbK3V2BBZsAg==}

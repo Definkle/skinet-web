@@ -111,7 +111,7 @@ module.exports = defineConfig([
         },
       ],
       // TypeScript rules
-      '@typescript-eslint/no-empty-object-type': ['error', { allowObjectTypes: 'always' }],
+      '@typescript-eslint/no-empty-object-type': ['error', { allowObjectTypes: 'always', allowInterfaces: 'with-single-extends' }],
       // Import rules - allow relative imports within same feature/domain
       'import/no-useless-path-segments': ['error', { noUselessIndex: true }],
       'import/no-relative-packages': 'off', // Allow relative imports for packages
