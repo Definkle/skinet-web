@@ -1,7 +1,7 @@
 import { computed } from '@angular/core';
 import { signalStoreFeature, withComputed, type EmptyFeatureResult, type SignalStoreFeature } from '@ngrx/signals';
 
-import type { IStripeState } from '@state/stripe/stripe.types';
+import type { IStripeState } from '@features/checkout/state/stripe/stripe.types';
 
 export const stripeComputed = (initialState: SignalStoreFeature<EmptyFeatureResult, { state: IStripeState; props: {}; methods: {} }>) => {
   return signalStoreFeature(

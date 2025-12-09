@@ -11,10 +11,10 @@ import { SnackbarService } from '@core/services/snackbar/snackbar.service';
 
 import { CartSummaryComponent } from '@features/cart/components/cart-summary/cart-summary.component';
 import { StripeContainerComponent } from '@features/checkout/components/stripe-container/stripe-container.component';
+import { StripeStore } from '@features/checkout/state/stripe';
 
 import { AuthStore } from '@state/auth';
 import { CartStore } from '@state/cart';
-import { StripeStore } from '@state/stripe';
 
 @Component({
   selector: 'app-checkout',

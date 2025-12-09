@@ -1,8 +1,9 @@
 import { Component, inject, type OnInit } from '@angular/core';
 import { MatError } from '@angular/material/input';
 
+import { StripeStore } from '@features/checkout/state/stripe';
+
 import { CartStore } from '@state/cart';
-import { StripeStore } from '@state/stripe';
 
 @Component({
   selector: 'app-stripe-container',
