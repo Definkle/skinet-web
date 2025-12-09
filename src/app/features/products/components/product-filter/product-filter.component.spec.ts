@@ -5,9 +5,9 @@ import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { of } from 'rxjs';
 import { beforeEach, describe, expect, it, vi, type Mock } from 'vitest';
 
+import { ProductFilterComponent } from './product-filter.component';
 import { ProductsStore } from '../../state';
 
-import { ProductFilterComponent } from './product-filter.component';
 
 interface MockProductsStore {
   filter: Mock;
