@@ -10,7 +10,9 @@ import type { AddressDto } from '@api-models';
 import { SnackbarService } from '@core/services/snackbar/snackbar.service';
 
 import { CartSummaryComponent } from '@features/cart/components/cart-summary/cart-summary.component';
-import { StripeContainerComponent } from '@features/checkout/components/stripe-container/stripe-container.component';
+import { CheckoutAddressComponent } from '@features/checkout/components/checkout-address/checkout-address.component';
+import { CheckoutDeliveryComponent } from '@features/checkout/components/checkout-delivery/checkout-delivery.component';
+import { CheckoutPaymentComponent } from '@features/checkout/components/checkout-payment/checkout-payment.component';
 import { StripeStore } from '@features/checkout/state/stripe';
 
 import { AuthStore } from '@state/auth';
@@ -28,9 +30,11 @@ import { CartStore } from '@state/cart';
     MatButton,
     MatStepperPrevious,
     RouterLink,
-    StripeContainerComponent,
     MatCheckbox,
     Field,
+    CheckoutAddressComponent,
+    CheckoutDeliveryComponent,
+    CheckoutPaymentComponent,
   ],
   templateUrl: './checkout-page.component.html',
   styleUrl: './checkout-page.component.scss',

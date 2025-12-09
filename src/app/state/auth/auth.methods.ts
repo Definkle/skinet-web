@@ -43,7 +43,7 @@ export const authMethods = () => {
               switchMap(() =>
                 accountRepo.getUserInfo$().pipe(
                   tapResponse({
-                    next: (user) => patchState(store, { user }),
+                    next: (user) => patchState(store, { user, isLoggedIn: !!user }),
                     error: handleAuthError,
                     finalize: () => patchState(store, { isLoading: false }),
                   })
@@ -87,7 +87,7 @@ export const authMethods = () => {
                 accountRepo.getUserInfo$().pipe(
                   tapResponse({
                     next: (user) => {
-                      patchState(store, { user });
+                      patchState(store, { user, isLoggedIn: true });
                       const returnUrl: string = activatedRoute.snapshot.queryParams['returnUrl'];
                       void router.navigateByUrl(returnUrl?.length ? returnUrl : '/shop');
                     },
@@ -106,7 +106,7 @@ export const authMethods = () => {
               switchMap(() =>
                 accountRepo.logout$().pipe(
                   tapResponse({
-                    next: () => patchState(store, { user: null }),
+                    next: () => patchState(store, { user: null, isLoggedIn: false }),
                     error: handleAuthError,
                     finalize: () => {
                       patchState(store, { isLoading: false });

@@ -18,7 +18,8 @@
     "generate-api": "nswag run nswag.json",
     "prepare": "husky install",
     "build:stats": "ng build --stats-json",
-    "analyze": "webpack-bundle-analyzer dist/skinet-web/browser/stats.json"
+    "analyze": "esbuild-visualizer --metadata dist/skinet-web/stats.json --open",
+    "build-analyze": "pnpm run build:stats && pnpm run analyze"
   },
   "private": true,
   "packageManager": "pnpm@8.15.5",
@@ -50,6 +51,7 @@
     "@vitest/browser-playwright": "^4.0.15",
     "@vitest/coverage-v8": "^4.0.15",
     "angular-eslint": "21.0.1",
+    "esbuild-visualizer": "^0.7.0",
     "eslint": "^9.39.1",
     "eslint-import-resolver-typescript": "^4.4.4",
     "eslint-plugin-import": "^2.32.0",
@@ -60,7 +62,6 @@
     "tailwindcss": "^4.1.17",
     "typescript": "~5.9.3",
     "typescript-eslint": "8.46.4",
-    "vitest": "^4.0.14",
-    "webpack-bundle-analyzer": "^5.0.1"
+    "vitest": "^4.0.14"
   }
 }

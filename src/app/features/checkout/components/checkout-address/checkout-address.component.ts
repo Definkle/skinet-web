@@ -1,4 +1,4 @@
-import { Component, inject, type OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, type OnInit } from '@angular/core';
 import { MatError } from '@angular/material/input';
 
 import { StripeStore } from '@features/checkout/state/stripe';
@@ -6,12 +6,13 @@ import { StripeStore } from '@features/checkout/state/stripe';
 import { CartStore } from '@state/cart';
 
 @Component({
-  selector: 'app-stripe-container',
+  selector: 'app-checkout-address',
   imports: [MatError],
-  templateUrl: './stripe-container.component.html',
-  styleUrl: './stripe-container.component.scss',
+  templateUrl: './checkout-address.component.html',
+  styleUrl: './checkout-address.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class StripeContainerComponent implements OnInit {
+export class CheckoutAddressComponent implements OnInit {
   protected readonly CartStore = inject(CartStore);
   protected readonly StripeStore = inject(StripeStore);
 

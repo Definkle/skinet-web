@@ -4,7 +4,7 @@
       <mat-step label="Address">
         <ng-template matStepLabel>Address</ng-template>
         <ng-template matStepContent>
-          <app-stripe-container></app-stripe-container>
+          <app-checkout-address></app-checkout-address>
 
           <mat-checkbox class="flex justify-self-end mt-2" [field]="checkbox.field">Save as default address</mat-checkbox>
 
@@ -17,7 +17,7 @@
       <mat-step label="Delivery">
         <ng-template matStepLabel>Delivery</ng-template>
         <ng-template matStepContent>
-          <p>This content was rendered lazily</p>
+          <app-checkout-delivery></app-checkout-delivery>
           <div class="flex justify-between mt-6">
             <button mat-flat-button matStepperPrevious>Back</button>
             <button mat-flat-button matStepperNext>Next</button>
@@ -27,7 +27,7 @@
       <mat-step label="Payment">
         <ng-template matStepLabel>Payment</ng-template>
         <ng-template matStepContent>
-          <p>This content was rendered lazily</p>
+          <app-checkout-payment></app-checkout-payment>
           <div class="flex justify-between mt-6">
             <button mat-flat-button matStepperPrevious>Back</button>
             <button mat-flat-button matStepperNext>Next</button>

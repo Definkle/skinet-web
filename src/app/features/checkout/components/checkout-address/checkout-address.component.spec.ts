@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 
-import { StripeContainerComponent } from './stripe-container.component';
+import { CheckoutAddressComponent } from './checkout-address.component';
 
-describe('StripeContainerComponent', () => {
-  let component: StripeContainerComponent;
-  let fixture: ComponentFixture<StripeContainerComponent>;
+describe('CheckoutAddressComponent', () => {
+  let component: CheckoutAddressComponent;
+  let fixture: ComponentFixture<CheckoutAddressComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [StripeContainerComponent],
+      imports: [CheckoutAddressComponent],
       providers: [provideRouter([])],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(StripeContainerComponent);
+    fixture = TestBed.createComponent(CheckoutAddressComponent);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

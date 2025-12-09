@@ -8,6 +8,7 @@ import { type IAuthState } from './auth.types';
 const authInitialState: IAuthState = {
   user: null,
   isLoading: false,
+  isLoggedIn: false,
 };
 
 export const AuthStore = signalStore(
