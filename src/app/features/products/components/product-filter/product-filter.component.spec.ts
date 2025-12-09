@@ -3,11 +3,11 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSelectionListChange } from '@angular/material/list';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { of } from 'rxjs';
-import { beforeEach, describe, expect, it, Mock, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi, type Mock } from 'vitest';
 
-import { ProductFilterComponent } from './product-filter.component';
 import { ProductsStore } from '../../state';
 
+import { ProductFilterComponent } from './product-filter.component';
 
 interface MockProductsStore {
   filter: Mock;
@@ -77,13 +77,6 @@ describe('ProductFilterComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('ngOnDestroy', () => {
-    it('should reset filters on destroy', () => {
-      component.ngOnDestroy();
-      expect(mockProductsStore.resetFilters).toHaveBeenCalled();
-    });
-  });
-
   describe('onSelectSortOption', () => {
     it('should update sort and initialize products', () => {
       const mockEvent = {
@@ -98,7 +91,6 @@ describe('ProductFilterComponent', () => {
       component.onSelectSortOption(mockEvent);
 
       expect(mockProductsStore.updateSort).toHaveBeenCalledWith('priceAsc');
-      expect(mockProductsStore.initProducts).toHaveBeenCalled();
       expect(component.paginator?.firstPage).toHaveBeenCalled();
     });
   });
@@ -111,7 +103,6 @@ describe('ProductFilterComponent', () => {
       component.onSubmitSearchForm();
 
       expect(mockProductsStore.updateSearch).toHaveBeenCalledWith('test search');
-      expect(mockProductsStore.initProducts).toHaveBeenCalled();
       expect(component.paginator?.firstPage).toHaveBeenCalled();
     });
   });
@@ -142,7 +133,6 @@ describe('ProductFilterComponent', () => {
         data: mockProductsStore.filterData(),
       });
       expect(mockProductsStore.updateFilters).toHaveBeenCalledWith(filterData);
-      expect(mockProductsStore.initProducts).toHaveBeenCalled();
       expect(component.paginator?.firstPage).toHaveBeenCalled();
     });
   });
@@ -161,7 +151,6 @@ describe('ProductFilterComponent', () => {
         pageIndex: 3,
         pageSize: 20,
       });
-      expect(mockProductsStore.initProducts).toHaveBeenCalled();
     });
   });
 
@@ -169,7 +158,7 @@ describe('ProductFilterComponent', () => {
     it('should not reset pagination if paginator is undefined', () => {
       component.paginator = undefined;
       component.onSubmitSearchForm();
-      expect(mockProductsStore.initProducts).toHaveBeenCalled();
+      expect(mockProductsStore.updateSearch).toHaveBeenCalled();
     });
 
     it('should reset pagination if paginator exists', () => {

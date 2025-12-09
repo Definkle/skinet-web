@@ -1,6 +1,6 @@
-import { EmptyFeatureResult, signalStoreFeature, SignalStoreFeature, withComputed } from '@ngrx/signals';
+import { signalStoreFeature, withComputed, type EmptyFeatureResult, type SignalStoreFeature } from '@ngrx/signals';
 
-import { IGlobalState } from './global.types';
+import { type IGlobalState } from './global.types';
 
 export const globalComputed = (initialState: SignalStoreFeature<EmptyFeatureResult, { state: IGlobalState; props: {}; methods: {} }>) => {
   return signalStoreFeature(

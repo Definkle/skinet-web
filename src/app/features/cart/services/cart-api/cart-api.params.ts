@@ -1,4 +1,4 @@
-import { CartItem } from '@models/cart';
+import { type CartItem } from '@models/cart';
 
 export interface IUpdateCartParams {
   id: string;

@@ -1,4 +1,4 @@
-import { HttpInterceptorFn } from '@angular/common/http';
+import { type HttpInterceptorFn } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 
 import { errorInterceptor } from './error.interceptor';

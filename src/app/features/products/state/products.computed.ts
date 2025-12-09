@@ -1,14 +1,21 @@
-import { computed } from '@angular/core';
-import { EmptyFeatureResult, SignalStoreFeature, signalStoreFeature, withComputed } from '@ngrx/signals';
+import { computed, inject } from '@angular/core';
+import { signalStoreFeature, withComputed, type EmptyFeatureResult, type SignalStoreFeature } from '@ngrx/signals';
 
-import { IProductsState } from './products.types';
+import { CartStore } from '@state/cart';
+
+import { type IProductsState } from './products.types';
 
 export const productComputed = (
   initialState: SignalStoreFeature<EmptyFeatureResult, { state: IProductsState; props: {}; methods: {} }>
 ) => {
   return signalStoreFeature(
     initialState,
-    withComputed(({ brands, filter, types }) => ({
+    withComputed(({ brands, filter, types, activeProduct }, cartStore = inject(CartStore)) => ({
+      activeProductQuantityInCart: computed(() => {
+        const activeProductRef = activeProduct();
+        if (!activeProductRef) return 0;
+        return cartStore.items().find((item) => item.productId === activeProductRef.id)?.quantity ?? 0;
+      }),
       filterData: computed(() => ({
         brands: brands(),
         types: types(),

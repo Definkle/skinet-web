@@ -5,9 +5,9 @@ import { MatButton } from '@angular/material/button';
 
 import { FormFieldComponent } from '@components/form-field/form-field.component';
 
-import { ILoginParams } from '@features/auth/services/login-api/login-api.params';
+import { type ILoginParams } from '@features/auth/services/login-api/login-api.params';
 
-import { IFieldModel } from '@models/form-field.models';
+import { type IFieldModel } from '@models/form-field.models';
 
 import { AuthStore } from '@state/auth/auth.store';
 

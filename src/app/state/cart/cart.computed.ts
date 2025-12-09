@@ -1,8 +1,8 @@
 import { computed } from '@angular/core';
-import { EmptyFeatureResult, SignalStoreFeature, signalStoreFeature, withComputed } from '@ngrx/signals';
+import { signalStoreFeature, withComputed, type EmptyFeatureResult, type SignalStoreFeature } from '@ngrx/signals';
 
 import { buildOrderSummary, calculateTotalItemsCount } from './cart.helpers';
-import { ICartState } from './cart.types';
+import { type ICartState } from './cart.types';
 
 export const cartComputed = (initialState: SignalStoreFeature<EmptyFeatureResult, { state: ICartState; props: {}; methods: {} }>) => {
   return signalStoreFeature(

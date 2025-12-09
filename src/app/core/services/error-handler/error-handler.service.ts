@@ -13,7 +13,6 @@ export class ErrorHandlerService {
 
   handleError(context: string, error: unknown, showNotification = true): void {
     this._logger.error(context, error);
-    console.log(context);
     if (showNotification) {
       const message = this.getErrorMessage(error);
       this._snackbar.error(message);

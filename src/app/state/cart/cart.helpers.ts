@@ -1,21 +1,10 @@
 import { CART_ID_STORAGE_KEY } from '@core/constants/storage-keys.constant';
 
-import { Cart, CartItem } from '@features/cart/models/cart.models';
-import { IVoucher } from '@features/cart/models/voucher.model';
-import { Product } from '@features/products/models/product.model';
+import { Cart, type CartItem } from '@features/cart/models/cart.models';
+import { type IVoucher } from '@features/cart/models/voucher.model';
+import { type Product } from '@features/products/models/product.model';
 
-import { IOrderSummary, IOrderSummaryParams } from './cart.types';
-
-export interface ICartStoreSnapshot {
-  id: () => string;
-  items: () => CartItem[];
-  vouchers: () => IVoucher[];
-  deliveryFee: () => number;
-}
-
-export function getStoreSnapshot(store: unknown): ICartStoreSnapshot {
-  return store as ICartStoreSnapshot;
-}
+import { type IOrderSummary, type IOrderSummaryParams } from './cart.types';
 
 export function initializeCartId(): string {
   const existingCartId = localStorage.getItem(CART_ID_STORAGE_KEY);

@@ -1,4 +1,4 @@
-import { Product } from '@features/products/models/product.model';
+import { type Product } from '@features/products/models/product.model';
 
 export interface IBrandTypeFilter {
   brands: string[];
@@ -19,4 +19,5 @@ export interface IProductsState {
   types: string[];
   isLoading: boolean;
   filter: IFilter;
+  activeProduct: Product | null;
 }

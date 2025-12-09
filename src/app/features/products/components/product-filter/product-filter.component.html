@@ -3,10 +3,11 @@
     <mat-paginator
       class="bg-transparent"
       [length]="ProductsStore.productsCount()"
-      [pageSize]="DEFAULT_PAGE_SIZE"
+      [pageSize]="ProductsStore.filter().pageSize"
       [pageSizeOptions]="DEFAULT_PAGE_SIZE_OPTIONS"
       [showFirstLastButtons]="true"
       (page)="onPageChange($event)"
+      [pageIndex]="ProductsStore.filter().pageIndex - 1"
       aria-label="Page navigation"
     ></mat-paginator>
 
@@ -14,7 +15,7 @@
       <mat-form-field appearance="outline" class="w-full">
         <input matInput type="search" placeholder="Search" [field]="searchForm.search" />
         @if (searchForm.search().controlValue().length) {
-          <button matSuffix matIconButton aria-label="Clear" (click)="searchForm.search().value.set('')">
+          <button matSuffix matIconButton aria-label="Clear" type="button" (click)="searchForm.search().value.set('')">
             <mat-icon>close</mat-icon>
           </button>
         } @else {

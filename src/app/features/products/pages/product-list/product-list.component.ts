@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, type OnInit } from '@angular/core';
 
 import { DEFAULT_PAGINATION_VALUES } from '@core/constants/default-pagination-values.constant';
 

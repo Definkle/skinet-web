@@ -1,6 +1,6 @@
-import { HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
+import { HttpErrorResponse, type HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
-import { NavigationExtras, Router } from '@angular/router';
+import { Router, type NavigationExtras } from '@angular/router';
 import { catchError } from 'rxjs';
 
 import { SnackbarService } from '@core/services/snackbar/snackbar.service';

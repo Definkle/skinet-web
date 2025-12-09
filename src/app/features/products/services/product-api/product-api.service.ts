@@ -8,9 +8,9 @@ import { RepositoryHelperService } from '@core/services/repository.helper';
 
 import { mapProductFromDto } from '@features/products/models/product.model';
 
-import { IPaginatedResponseConfig } from '@models/api-response.models';
+import { type IPaginatedResponseConfig } from '@models/api-response.models';
 
-import { IGetProductsParams } from './product-api.params';
+import { type IGetProductsParams } from './product-api.params';
 
 @Injectable({ providedIn: 'root' })
 export class ProductApiService extends RepositoryHelperService {
@@ -43,10 +43,10 @@ export class ProductApiService extends RepositoryHelperService {
   }
 
   getBrands$() {
-    return this.http.get<string[]>(this._baseUrl + '/brands').pipe(shareReplay(1));
+    return this.http.get<string[]>(this._baseUrl + '/brands').pipe(shareReplay({ bufferSize: 1, refCount: true }));
   }
 
   getTypes$() {
-    return this.http.get<string[]>(this._baseUrl + '/types').pipe(shareReplay(1));
+    return this.http.get<string[]>(this._baseUrl + '/types').pipe(shareReplay({ bufferSize: 1, refCount: true }));
   }
 }

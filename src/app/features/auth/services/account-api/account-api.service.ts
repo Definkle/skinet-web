@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 
-import { AddressDto } from '@api-models';
+import { type AddressDto } from '@api-models';
 
 import { RepositoryHelperService } from '@core/services/repository.helper';
 
-import { User } from '@features/auth/models/user.model';
+import { type User } from '@features/auth/models/user.model';
 
-import { IRegisterParams } from './account-api.params';
+import { type IRegisterParams } from './account-api.params';
 
 @Injectable({
   providedIn: 'root',

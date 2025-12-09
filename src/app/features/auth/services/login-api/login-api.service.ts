@@ -3,8 +3,8 @@ import { Injectable } from '@angular/core';
 
 import { RepositoryHelperService } from '@core/services/repository.helper';
 
-import { ILoginParams } from './login-api.params';
-import { ILoginResponse } from './login-api.types';
+import { type ILoginParams } from './login-api.params';
+import { type ILoginResponse } from './login-api.types';
 
 @Injectable({
   providedIn: 'root',

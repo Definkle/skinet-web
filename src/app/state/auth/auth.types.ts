@@ -1,4 +1,4 @@
-import { User } from '@features/auth/models/user.model';
+import { type User } from '@features/auth/models/user.model';
 
 export interface IAuthState {
   user: User | null;

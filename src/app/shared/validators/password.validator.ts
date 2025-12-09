@@ -1,4 +1,4 @@
-import { PathKind, SchemaPath, validate } from '@angular/forms/signals';
+import { validate, type PathKind, type SchemaPath } from '@angular/forms/signals';
 
 export const hasNonAlphanumeric = (field: SchemaPath<string, 1, PathKind.Child>, options?: { message?: string }) => {
   return validate(field, ({ value }) => {

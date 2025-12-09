@@ -1,6 +1,6 @@
-import { CartItem, ShoppingCart } from '@features/cart/models/cart.models';
-import { IVoucher } from '@features/cart/models/voucher.model';
-import { Product } from '@features/products/models/product.model';
+import { type CartItem, type ShoppingCart } from '@features/cart/models/cart.models';
+import { type IVoucher } from '@features/cart/models/voucher.model';
+import { type Product } from '@features/products/models/product.model';
 
 export interface IProductInCart extends Product {
   quantity: number;

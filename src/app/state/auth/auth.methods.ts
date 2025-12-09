@@ -8,10 +8,12 @@ import { distinctUntilChanged, pipe, switchMap, tap } from 'rxjs';
 import { ErrorHandlerService } from '@core/services/error-handler/error-handler.service';
 import { SnackbarService } from '@core/services/snackbar/snackbar.service';
 
-import { IRegisterParams } from '@features/auth/services/account-api/account-api.params';
+import { type IRegisterParams } from '@features/auth/services/account-api/account-api.params';
 import { AccountApiService } from '@features/auth/services/account-api/account-api.service';
-import { ILoginParams } from '@features/auth/services/login-api/login-api.params';
+import { type ILoginParams } from '@features/auth/services/login-api/login-api.params';
 import { LoginApiService } from '@features/auth/services/login-api/login-api.service';
+
+import { createStoreErrorHandler } from '@shared/utils/store-error.util';
 
 export const authMethods = () => {
   return signalStoreFeature(
@@ -24,7 +26,7 @@ export const authMethods = () => {
         router = inject(Router),
         snackbar = inject(SnackbarService)
       ) => {
-        const handleAuthError = (error: unknown): void => errorHandler.handleError('AuthStore', error);
+        const handleAuthError = createStoreErrorHandler('AuthStore', errorHandler);
 
         return {
           initAuth: rxMethod<void>(

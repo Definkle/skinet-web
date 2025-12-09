@@ -5,7 +5,7 @@ import { MatCard, MatCardActions, MatCardContent } from '@angular/material/card'
 import { MatIcon } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 
-import { Product } from '@models/product';
+import { type Product } from '@models/product';
 
 import { CartStore } from '@state/cart';
 

@@ -1,4 +1,4 @@
-import { IGlobalState } from './global.types';
+import { type IGlobalState } from './global.types';
 
 export const INITIAL_GLOBAL_STATE: IGlobalState = {
   isLoading: false,

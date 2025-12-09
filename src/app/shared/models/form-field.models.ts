@@ -1,4 +1,4 @@
-import { FieldTree } from '@angular/forms/signals';
+import { type FieldTree } from '@angular/forms/signals';
 
 type TFieldTypes = 'text' | 'email' | 'password' | 'number';
 

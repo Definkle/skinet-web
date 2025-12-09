@@ -1,14 +1,12 @@
-import { inject } from '@angular/core';
-import { signalStore, withProps, withState } from '@ngrx/signals';
+import { signalStore, withState } from '@ngrx/signals';
+import { withEntities } from '@ngrx/signals/entities';
 
-import { ErrorHandlerService } from '@core/services/error-handler/error-handler.service';
-
-import { CartApiService } from '@features/cart/services/cart-api/cart-api.service';
+import { type CartItem } from '@models/cart';
 
 import { cartComputed } from './cart.computed';
 import { initializeCartId } from './cart.helpers';
 import { cartMethods } from './cart.methods';
-import { ICartState } from './cart.types';
+import { type ICartState } from './cart.types';
 
 const cartInitialState: ICartState = {
   id: initializeCartId(),
@@ -20,11 +18,9 @@ const cartInitialState: ICartState = {
 
 export const CartStore = signalStore(
   { providedIn: 'root' },
+
+  withEntities<CartItem>(),
   cartComputed(withState(cartInitialState)),
-  withProps(() => ({
-    cartRepo: inject(CartApiService),
-    errorHandler: inject(ErrorHandlerService),
-  })),
   cartMethods()
 );
 

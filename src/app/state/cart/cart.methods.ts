@@ -7,18 +7,21 @@ import { debounceTime, distinctUntilChanged, pipe, switchMap, tap } from 'rxjs';
 import { CART_ID_STORAGE_KEY } from '@core/constants/storage-keys.constant';
 import { ErrorHandlerService } from '@core/services/error-handler/error-handler.service';
 
-import { IUpdateCartParams } from '@features/cart/services/cart-api/cart-api.params';
+import { type IUpdateCartParams } from '@features/cart/services/cart-api/cart-api.params';
 import { CartApiService } from '@features/cart/services/cart-api/cart-api.service';
-import { Product } from '@features/products/models/product.model';
+import { type Product } from '@features/products/models/product.model';
 
-import { consolidateCartItems, getStoreSnapshot, initializeCartId, mapProductToCartItem } from './cart.helpers';
-import { IUpdateCartQuantityParams } from './cart.types';
+import { createStoreErrorHandler } from '@shared/utils/store-error.util';
+import { getStoreSnapshot } from '@shared/utils/store-snapshot.util';
+
+import { consolidateCartItems, initializeCartId, mapProductToCartItem } from './cart.helpers';
+import { type ICartState, type IUpdateCartQuantityParams } from './cart.types';
 
 export const cartMethods = () => {
   return signalStoreFeature(
     withMethods((store, cartRepo = inject(CartApiService), errorHandler = inject(ErrorHandlerService)) => {
-      const snapshot = getStoreSnapshot(store);
-      const handleCartError = (error: unknown): void => errorHandler.handleError('CartStore', error);
+      const snapshot = getStoreSnapshot<ICartState>(store);
+      const handleCartError = createStoreErrorHandler('CartStore', errorHandler);
 
       const updateCart = rxMethod<IUpdateCartParams>(
         pipe(
@@ -93,6 +96,7 @@ export const cartMethods = () => {
 
           const items = snapshot.items();
           const updatedItems = items.map((item) => (item.productId === productId ? { ...item, quantity } : item));
+
           updateCart({
             id: snapshot.id(),
             items: updatedItems,
@@ -101,12 +105,15 @@ export const cartMethods = () => {
         initCart: rxMethod<void>(
           pipe(
             tap(() => patchState(store, { isLoading: true })),
-            switchMap(() => cartRepo.getCart$(snapshot.id())),
-            tapResponse({
-              next: (cart) => patchState(store, cart),
-              error: handleCartError,
-              finalize: () => patchState(store, { isLoading: false }),
-            })
+            switchMap(() =>
+              cartRepo.getCart$(snapshot.id()).pipe(
+                tapResponse({
+                  next: (cart) => patchState(store, cart),
+                  error: handleCartError,
+                  finalize: () => patchState(store, { isLoading: false }),
+                })
+              )
+            )
           )
         ),
         updateCart,

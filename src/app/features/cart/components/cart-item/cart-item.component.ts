@@ -4,9 +4,9 @@ import { MatButton, MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 
-import { CartItem } from '@models/cart';
+import { type CartItem } from '@models/cart';
 
-import { IUpdateCartQuantityParams } from '@state/cart/cart.types';
+import { type IUpdateCartQuantityParams } from '@state/cart/cart.types';
 
 @Component({
   selector: 'app-cart-item',

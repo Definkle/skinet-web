@@ -5,7 +5,7 @@ import type { ShoppingCart as ShoppingCartDto } from '@api-models';
 
 import { RepositoryHelperService } from '@core/services/repository.helper';
 
-import { mapCartFromDto, mapCartToDto, ShoppingCart } from '@features/cart/models/cart.models';
+import { mapCartFromDto, mapCartToDto, type ShoppingCart } from '@features/cart/models/cart.models';
 
 @Injectable({
   providedIn: 'root',

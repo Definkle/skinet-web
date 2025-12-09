@@ -1,8 +1,6 @@
-import { nanoid } from 'nanoid';
-
 import type { CartItem as CartItemDto, ShoppingCart as ShoppingCartDto } from '@api-models';
 
-import { IVoucher } from './voucher.model';
+import { type IVoucher } from './voucher.model';
 
 export interface CartItem {
   productId: number;
@@ -72,6 +70,6 @@ export function mapCartToDto(cart: ShoppingCart): ShoppingCartDto {
 export class Cart implements ShoppingCart {
   deliveryFee = 0;
   vouchers = [];
-  id = nanoid();
+  id = crypto.randomUUID();
   items = [];
 }

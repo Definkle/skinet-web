@@ -7,11 +7,11 @@ import { MatIcon } from '@angular/material/icon';
 import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
 import { MatDivider } from '@angular/material/list';
 
-import { Product } from '@features/products/models/product.model';
+import { type Product } from '@features/products/models/product.model';
 
 import { CartStore } from '@state/cart';
 
-import { ProductDetailStore } from '../../state';
+import { ProductsStore } from '../../state';
 
 interface IFormModel {
   quantity: number;
@@ -26,24 +26,25 @@ interface IFormModel {
 })
 export class ProductDetailComponent {
   protected readonly CartStore = inject(CartStore);
-  protected readonly ProductDetailStore = inject(ProductDetailStore);
+  protected readonly ProductStore = inject(ProductsStore);
 
   private readonly _formModel = signal<IFormModel>({
-    quantity: this.ProductDetailStore.quantityInCart(),
+    quantity: this.ProductStore.activeProductQuantityInCart(),
   });
   protected form = form(this._formModel, (form) => {
     required(form.quantity);
     min(form.quantity, 1);
   });
   protected isFormDisabled = computed(
-    () => this.CartStore.isLoading() || this.form().invalid() || this.form.quantity().value() <= this.ProductDetailStore.quantityInCart()
+    () =>
+      this.CartStore.isLoading() || this.form().invalid() || this.form.quantity().value() <= this.ProductStore.activeProductQuantityInCart()
   );
 
   onClickAddToCart(product: Product) {
     const formValue = this.form().value;
     this.CartStore.addProduct({
       ...product,
-      quantity: formValue().quantity - this.ProductDetailStore.quantityInCart(),
+      quantity: formValue().quantity - this.ProductStore.activeProductQuantityInCart(),
     });
   }
 }

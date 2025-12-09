@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { beforeEach, describe, expect, it } from 'vitest';
 
-import { CartSummaryComponent, ICartSummary } from './cart-summary.component';
+import { CartSummaryComponent, type ICartSummary } from './cart-summary.component';
 
 describe('CartSummaryComponent', () => {
   let component: CartSummaryComponent;

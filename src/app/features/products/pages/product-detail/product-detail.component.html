@@ -1,6 +1,6 @@
-@if (ProductDetailStore.activeProduct(); as productDetail) {
+@if (ProductStore.activeProduct(); as productDetail) {
   <section class="py-8">
-    <div class="max-w-screen-2xl px-4 mx-auto">
+    <div class="max-w-screens-2xl px-4 mx-auto">
       <div class="grid grid-cols-2 gap-8">
         <div class="max-w-xl mx-auto">
           <img class="w-full" src="{{ productDetail.pictureUrl }}" alt="{{ productDetail.name }} image" />
@@ -8,7 +8,7 @@
 
         <div>
           <h1 class="text-2xl font-semibold text-gray-900">{{ productDetail.name }}</h1>
-          <p>You have {{ ProductDetailStore.quantityInCart() }} of this item in your cart</p>
+          <p>You have {{ ProductStore.activeProductQuantityInCart() }} of this item in your cart</p>
           <div class="mt-4 items-center gap-4 flex">
             <p class="text-3xl font-extrabold text-gray-900">
               {{ productDetail.price | currency }}

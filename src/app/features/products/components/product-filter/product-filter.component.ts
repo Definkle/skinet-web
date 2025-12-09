@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, DestroyRef, inject, OnDestroy, signal, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, signal, ViewChild } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { Field, form } from '@angular/forms/signals';
@@ -9,12 +9,10 @@ import { MatFormField, MatInput, MatSuffix } from '@angular/material/input';
 import { MatListOption, MatSelectionList, MatSelectionListChange } from '@angular/material/list';
 import { MatMenu, MatMenuTrigger } from '@angular/material/menu';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { filter, tap } from 'rxjs';
+import { distinctUntilChanged, filter, tap } from 'rxjs';
 
-import { DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE, DEFAULT_PAGE_SIZE_OPTIONS } from '@core/constants/default-pagination-values.constant';
+import { DEFAULT_PAGE_SIZE_OPTIONS } from '@core/constants/default-pagination-values.constant';
 import { SORT_OPTIONS } from '@core/constants/sort-options.constant';
-
-import { IGetProductsParams } from '@features/products/services/product-api/product-api.params';
 
 import { ProductFilterDialogComponent } from '../../dialogs/product-filter-dialog/product-filter-dialog.component';
 import { ProductsStore } from '../../state';
@@ -44,39 +42,26 @@ interface ISearchModel {
   styleUrl: './product-filter.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProductFilterComponent implements OnDestroy {
+export class ProductFilterComponent {
   @ViewChild(MatPaginator) paginator?: MatPaginator;
 
   protected readonly ProductsStore = inject(ProductsStore);
-  private readonly _DestroyRef = inject(DestroyRef);
   private readonly _DialogService = inject(MatDialog);
+  private readonly _destroyRef = inject(DestroyRef);
 
-  protected readonly DEFAULT_PAGE_SIZE = DEFAULT_PAGE_SIZE;
   protected readonly DEFAULT_PAGE_SIZE_OPTIONS = DEFAULT_PAGE_SIZE_OPTIONS;
 
   protected readonly searchForm = form(signal<ISearchModel>({ search: this.ProductsStore.filter().search }));
   protected readonly sortOptions = SORT_OPTIONS;
 
-  ngOnDestroy(): void {
-    this.ProductsStore.resetFilters();
-  }
-
   onSelectSortOption(event: MatSelectionListChange) {
     this._resetPagination();
     this.ProductsStore.updateSort(event.source.selectedOptions.selected[0].value);
-    this._initializeProducts({
-      ...this.ProductsStore.filter(),
-      pageIndex: DEFAULT_PAGE_INDEX,
-    });
   }
 
   onSubmitSearchForm() {
-    this.ProductsStore.updateSearch(this.searchForm().value().search);
     this._resetPagination();
-    this._initializeProducts({
-      ...this.ProductsStore.filter(),
-      pageIndex: DEFAULT_PAGE_INDEX,
-    });
+    this.ProductsStore.updateSearch(this.searchForm().value().search);
   }
 
   onClickFiltersButton() {
@@ -88,18 +73,14 @@ export class ProductFilterComponent implements OnDestroy {
       .afterClosed()
       .pipe(
         filter((value) => value),
-        tap((value) => this.ProductsStore.updateFilters(value)),
-        takeUntilDestroyed(this._DestroyRef)
-      )
-      .subscribe({
-        next: () => {
+        distinctUntilChanged(),
+        tap((value) => {
           this._resetPagination();
-          this._initializeProducts({
-            ...this.ProductsStore.filter(),
-            pageIndex: DEFAULT_PAGE_INDEX,
-          });
-        },
-      });
+          this.ProductsStore.updateFilters(value);
+        }),
+        takeUntilDestroyed(this._destroyRef)
+      )
+      .subscribe();
   }
 
   onPageChange($event: PageEvent) {
@@ -107,11 +88,6 @@ export class ProductFilterComponent implements OnDestroy {
       pageIndex: this._toBackendPageIndex($event.pageIndex),
       pageSize: $event.pageSize,
     });
-    this._initializeProducts(this.ProductsStore.filter());
-  }
-
-  private _initializeProducts(params: IGetProductsParams) {
-    this.ProductsStore.initProducts(params);
   }
 
   private _resetPagination() {

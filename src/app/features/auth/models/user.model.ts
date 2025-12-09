@@ -1,4 +1,4 @@
-import { AddressDto } from '@api-models';
+import { type AddressDto } from '@api-models';
 
 export interface User {
   firstName: string;

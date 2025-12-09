@@ -2,26 +2,37 @@ import { inject } from '@angular/core';
 import { tapResponse } from '@ngrx/operators';
 import { patchState, signalStoreFeature, withMethods } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { delay, forkJoin, of, pipe, switchMap, tap } from 'rxjs';
+import { defer, delay, forkJoin, of, pipe, switchMap, tap } from 'rxjs';
 
 import { ErrorHandlerService } from '@core/services/error-handler/error-handler.service';
+
+import { createStoreErrorHandler } from '@shared/utils/store-error.util';
 
 import { AuthStore } from '@state/auth';
 import { CartStore } from '@state/cart';
 
-import { IGlobalState } from './global.types';
+import { type IGlobalState } from './global.types';
 
 export const globalMethods = () => {
   return signalStoreFeature(
     withMethods((store, authStore = inject(AuthStore), cartStore = inject(CartStore), errorHandler = inject(ErrorHandlerService)) => {
-      const handleGlobalError = (error: unknown): void => errorHandler.handleError('GlobalStore', error);
+      const handleGlobalError = createStoreErrorHandler('GlobalStore', errorHandler);
 
       return {
         initApp: rxMethod<void>(
           pipe(
             tap(() => patchState(store, { isLoading: true })),
             switchMap(() =>
-              forkJoin([of(authStore.initAuth()), of(cartStore.initCart())]).pipe(
+              forkJoin([
+                defer(() => {
+                  authStore.initAuth();
+                  return of(undefined);
+                }),
+                defer(() => {
+                  cartStore.initCart();
+                  return of(undefined);
+                }),
+              ]).pipe(
                 delay(500),
                 tapResponse({
                   next: () => {

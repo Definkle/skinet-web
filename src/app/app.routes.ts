@@ -1,4 +1,4 @@
-import { Routes } from '@angular/router';
+import { type Routes } from '@angular/router';
 
 import { authRoutes } from '@features/auth/auth.routes';
 import { cartRoutes } from '@features/cart/cart.routes';
