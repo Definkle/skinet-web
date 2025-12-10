@@ -7,17 +7,24 @@ import { type ICartState } from './cart.types';
 export const cartComputed = (initialState: SignalStoreFeature<EmptyFeatureResult, { state: ICartState; props: {}; methods: {} }>) => {
   return signalStoreFeature(
     initialState,
-    withComputed(({ deliveryFee, items, vouchers }) => {
+    withComputed(({ id, deliveryMethod, items, vouchers, deliveryMethodId, clientSecret, paymentIntentId }) => {
       return {
         itemsInCartCount: computed(() => calculateTotalItemsCount(items())),
         isEmpty: computed(() => !items().length),
         orderSummary: computed(() =>
           buildOrderSummary({
-            deliveryFee: deliveryFee(),
             items: items(),
             vouchers: vouchers() ?? [],
+            deliveryFee: deliveryMethodId() ? deliveryMethod()?.price : 0,
           })
         ),
+        cartAsPayload: computed(() => ({
+          id: id(),
+          items: items(),
+          clientSecret: clientSecret(),
+          deliveryMethodId: deliveryMethodId(),
+          paymentIntentId: paymentIntentId(),
+        })),
       };
     })
   );

@@ -1,27 +1,32 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
-import { beforeEach, describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { CartSummaryComponent, type ICartSummary } from './cart-summary.component';
+import { CartStore } from '@state/cart';
+
+import { CartSummaryComponent } from './cart-summary.component';
 
 describe('CartSummaryComponent', () => {
   let component: CartSummaryComponent;
   let fixture: ComponentFixture<CartSummaryComponent>;
-  const mockCartSummaryData: ICartSummary = {
-    subtotal: 100,
-    deliveryFee: 10,
-    discount: 0,
-    totalPrice: 110,
+
+  const mockCartStore = {
+    orderSummary: vi.fn(() => ({
+      subtotal: 100,
+      discount: 0,
+      deliveryFee: 10,
+      totalPrice: 110,
+      vouchers: [],
+    })),
   };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [CartSummaryComponent],
-      providers: [provideRouter([])],
+      providers: [provideRouter([]), { provide: CartStore, useValue: mockCartStore }],
     }).compileComponents();
 
     fixture = TestBed.createComponent(CartSummaryComponent);
-    fixture.componentRef.setInput('cartSummary', mockCartSummaryData);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

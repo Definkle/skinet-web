@@ -11,10 +11,10 @@ export const routes: Routes = [
     loadComponent: () => import('./features/home/home.component').then((m) => m.HomeComponent),
     title: 'Skinet Web',
   },
+  ...authRoutes,
   ...productsRoutes,
   ...cartRoutes,
   ...checkoutRoutes,
-  ...authRoutes,
   {
     path: 'not-found',
     loadComponent: () => import('@app/pages/not-found/not-found.component').then((m) => m.NotFoundComponent),

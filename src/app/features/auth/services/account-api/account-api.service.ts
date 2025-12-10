@@ -1,13 +1,11 @@
 import { Injectable } from '@angular/core';
 
-import { type AddressDto } from '@api-models';
+import { type AddressDto, type RegisterDto } from '@api-models';
 
 import { RepositoryHelperService } from '@core/services/repository.helper';
 
 import { type User } from '@features/auth/models/user.model';
 import type { IGetAuthStateResponse } from '@features/auth/services/account-api/account-api.types';
-
-import { type IRegisterParams } from './account-api.params';
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +13,7 @@ import { type IRegisterParams } from './account-api.params';
 export class AccountApiService extends RepositoryHelperService {
   private readonly _baseUrl = this.baseUrl + 'account';
 
-  register$(httpParams: IRegisterParams) {
+  register$(httpParams: RegisterDto) {
     return this.http.post<{}>(this._baseUrl + '/register', httpParams);
   }
 
@@ -32,6 +30,6 @@ export class AccountApiService extends RepositoryHelperService {
   }
 
   updateAddress$(address: AddressDto) {
-    return this.http.post<{}>(this._baseUrl + '/address', address);
+    return this.http.post<AddressDto>(this._baseUrl + '/address', address);
   }
 }

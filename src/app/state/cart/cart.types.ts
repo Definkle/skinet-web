@@ -1,5 +1,6 @@
 import { type CartItem, type ShoppingCart } from '@features/cart/models/cart.models';
 import { type IVoucher } from '@features/cart/models/voucher.model';
+import type { DeliveryMethod } from '@features/checkout/models/delivery-method.models';
 import { type Product } from '@features/products/models/product.model';
 
 export interface IProductInCart extends Product {
@@ -7,6 +8,8 @@ export interface IProductInCart extends Product {
 }
 
 export interface ICartState extends ShoppingCart {
+  vouchers: IVoucher[];
+  deliveryMethod: null | DeliveryMethod;
   isLoading: boolean;
 }
 
@@ -18,7 +21,7 @@ export interface IUpdateCartQuantityParams {
 export interface IOrderSummaryParams {
   items: CartItem[];
   vouchers: IVoucher[];
-  deliveryFee: number;
+  deliveryFee?: number;
 }
 
 export interface IOrderSummary {

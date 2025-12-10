@@ -1,6 +1,6 @@
 import { type Routes } from '@angular/router';
 
-import { preventLoginAccess } from '@guards/auth/auth.guard';
+import { preventLoginAccess } from '@core/route-access/guards/auth/auth.guard';
 
 export const authRoutes: Routes = [
   {

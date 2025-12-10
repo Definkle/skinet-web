@@ -9,11 +9,11 @@ const cartInitialState: ICartState = {
   id: initializeCartId(),
   items: [],
   isLoading: false,
-  deliveryFee: 0,
   vouchers: [],
   deliveryMethodId: null,
   clientSecret: null,
   paymentIntentId: null,
+  deliveryMethod: null,
 };
 
 export const CartStore = signalStore({ providedIn: 'root' }, cartComputed(withState(cartInitialState)), cartMethods());

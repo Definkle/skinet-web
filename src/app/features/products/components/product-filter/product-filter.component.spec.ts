@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSelectionListChange } from '@angular/material/list';
-import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { PageEvent } from '@angular/material/paginator';
 import { of } from 'rxjs';
 import { beforeEach, describe, expect, it, vi, type Mock } from 'vitest';
 
@@ -23,6 +23,7 @@ interface MockProductsStore {
   toggleInfiniteScroll: Mock;
   hasMoreProducts: Mock;
   isLoadingMore: Mock;
+  handleFilterDialogResult: Mock;
 }
 
 interface MockMatDialog {
@@ -60,6 +61,7 @@ describe('ProductFilterComponent', () => {
       toggleInfiniteScroll: vi.fn(),
       hasMoreProducts: vi.fn().mockReturnValue(true),
       isLoadingMore: vi.fn().mockReturnValue(false),
+      handleFilterDialogResult: vi.fn(),
     };
 
     mockDialog = {
@@ -86,7 +88,7 @@ describe('ProductFilterComponent', () => {
   });
 
   describe('onSelectSortOption', () => {
-    it('should update sort and initialize products', () => {
+    it('should update sort', () => {
       const mockEvent = {
         source: {
           selectedOptions: {
@@ -95,23 +97,19 @@ describe('ProductFilterComponent', () => {
         },
       } as MatSelectionListChange;
 
-      component.paginator = { firstPage: vi.fn() } as unknown as MatPaginator;
       component.onSelectSortOption(mockEvent);
 
       expect(mockProductsStore.updateSort).toHaveBeenCalledWith('priceAsc');
-      expect(component.paginator?.firstPage).toHaveBeenCalled();
     });
   });
 
   describe('onSubmitSearchForm', () => {
-    it('should update search and initialize products', () => {
+    it('should update search', () => {
       component['searchForm'].search().value.set('test search');
-      component.paginator = { firstPage: vi.fn() } as unknown as MatPaginator;
 
       component.onSubmitSearchForm();
 
       expect(mockProductsStore.updateSearch).toHaveBeenCalledWith('test search');
-      expect(component.paginator?.firstPage).toHaveBeenCalled();
     });
   });
 
@@ -132,7 +130,6 @@ describe('ProductFilterComponent', () => {
       mockDialog.open.mockReturnValue({
         afterClosed: vi.fn().mockReturnValue(of(filterData)),
       });
-      component.paginator = { firstPage: vi.fn() } as unknown as MatPaginator;
 
       component.onClickFiltersButton();
 
@@ -140,8 +137,7 @@ describe('ProductFilterComponent', () => {
         minWidth: '500px',
         data: mockProductsStore.filterData(),
       });
-      expect(mockProductsStore.updateFilters).toHaveBeenCalledWith(filterData);
-      expect(component.paginator?.firstPage).toHaveBeenCalled();
+      expect(mockProductsStore.handleFilterDialogResult).toHaveBeenCalledWith(filterData);
     });
   });
 
@@ -159,23 +155,6 @@ describe('ProductFilterComponent', () => {
         pageIndex: 3,
         pageSize: 20,
       });
-    });
-  });
-
-  describe('private methods', () => {
-    it('should not reset pagination if paginator is undefined', () => {
-      component.paginator = undefined;
-      component.onSubmitSearchForm();
-      expect(mockProductsStore.updateSearch).toHaveBeenCalled();
-    });
-
-    it('should reset pagination if paginator exists', () => {
-      const mockPaginator = { firstPage: vi.fn() } as unknown as MatPaginator;
-      component.paginator = mockPaginator;
-
-      component.onSubmitSearchForm();
-
-      expect(mockPaginator.firstPage).toHaveBeenCalled();
     });
   });
 });

@@ -3,7 +3,7 @@ import { tapResponse } from '@ngrx/operators';
 import { patchState, signalStoreFeature, withMethods } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { loadStripe, type StripeAddressElementOptions } from '@stripe/stripe-js';
-import { from, pipe, switchMap, tap } from 'rxjs';
+import { EMPTY, from, pipe, switchMap, tap } from 'rxjs';
 
 import { ErrorHandlerService } from '@core/services/error-handler/error-handler.service';
 
@@ -64,15 +64,21 @@ export const stripeMethods = () => {
         const initializeElements = rxMethod<string>(
           pipe(
             tap(() => patchState(store, { isLoading: true })),
-            switchMap((cartId) =>
-              paymentsApi.createOrUpdatePaymentIntent$(cartId).pipe(
+            switchMap((cartId) => {
+              const stripeInstance = snapshot.instance();
+              if (!stripeInstance) {
+                const error = new Error('Stripe instance not initialized');
+                handleStripeError(error);
+                patchState(store, {
+                  isLoading: false,
+                  error: error.message ?? 'Failed to initialize elements',
+                });
+                return EMPTY;
+              }
+
+              return paymentsApi.createOrUpdatePaymentIntent$(cartId).pipe(
                 tapResponse({
                   next: (cart) => {
-                    const stripeInstance = snapshot.instance();
-                    if (!stripeInstance) {
-                      throw new Error('Stripe instance not initialized');
-                    }
-
                     cartStore.updateCartState(cart);
 
                     const elements = stripeInstance.elements({
@@ -97,8 +103,8 @@ export const stripeMethods = () => {
                     });
                   },
                 })
-              )
-            )
+              );
+            })
           )
         );
 
@@ -107,7 +113,10 @@ export const stripeMethods = () => {
             tap(() => {
               const elements = snapshot.elements();
               if (!elements) {
-                throw new Error('Stripe elements not initialized');
+                const error = new Error('Stripe elements not initialized');
+                handleStripeError(error);
+                patchState(store, { error: error.message ?? 'Stripe elements not initialized' });
+                return;
               }
 
               const addressElement = elements.create('address', buildAddressElementOptions(authStore.user()));
@@ -126,10 +135,12 @@ export const stripeMethods = () => {
             tap(() => {
               const addressElement = snapshot.addressElement();
               if (!addressElement) {
-                throw new Error('Stripe address element not initialized');
+                const error = new Error('Stripe address element not initialized');
+                handleStripeError(error);
+                patchState(store, { error: error.message ?? 'Stripe address element not initialized' });
+                return;
               }
 
-              // Listen to address changes and update store
               addressElement.on('change', (event) => {
                 if (event.complete) {
                   patchState(store, {
@@ -156,39 +167,60 @@ export const stripeMethods = () => {
           )
         );
 
+        const updatePaymentIntent = rxMethod<string>(
+          pipe(
+            tap(() => patchState(store, { isLoading: true })),
+            switchMap((cartId) =>
+              paymentsApi.createOrUpdatePaymentIntent$(cartId).pipe(
+                tapResponse({
+                  next: (cart) => cartStore.updateCartState(cart),
+                  error: handleStripeError,
+                  finalize: () => patchState(store, { isLoading: false }),
+                })
+              )
+            )
+          )
+        );
+
         return {
           initializeStripe,
           initializeElements,
           createAddressElement,
           mountAddressElement,
-          resetElements(): void {
-            patchState(store, {
-              elements: null,
-              addressElement: null,
-              addressValue: null,
-              isAddressComplete: false,
-              clientSecret: null,
-              error: null,
-            });
-          },
+          updatePaymentIntent,
+          resetElements: rxMethod<void>(
+            pipe(
+              tap(() =>
+                patchState(store, {
+                  elements: null,
+                  addressElement: null,
+                  addressValue: null,
+                  isAddressComplete: false,
+                  clientSecret: null,
+                  error: null,
+                })
+              )
+            )
+          ),
+          resetStore: rxMethod<void>(
+            pipe(
+              tap(() =>
+                patchState(store, {
+                  instance: null,
+                  elements: null,
+                  addressElement: null,
+                  addressValue: null,
+                  isAddressComplete: false,
+                  clientSecret: null,
+                  isLoading: false,
+                  isInitialized: false,
+                  error: null,
+                })
+              )
+            )
+          ),
 
-          resetStore(): void {
-            patchState(store, {
-              instance: null,
-              elements: null,
-              addressElement: null,
-              addressValue: null,
-              isAddressComplete: false,
-              clientSecret: null,
-              isLoading: false,
-              isInitialized: false,
-              error: null,
-            });
-          },
-
-          clearError(): void {
-            patchState(store, { error: null });
-          },
+          clearError: rxMethod<void>(pipe(tap(() => patchState(store, { error: null })))),
         };
       }
     )

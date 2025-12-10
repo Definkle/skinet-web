@@ -1,17 +1,12 @@
 import { CurrencyPipe, Location } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
 import { RouterLink } from '@angular/router';
 
 import { CardComponent } from '@components/card/card.component';
 
-export interface ICartSummary {
-  subtotal: number;
-  deliveryFee: number;
-  discount: number;
-  totalPrice: number;
-}
+import { CartStore } from '@state/cart';
 
 @Component({
   selector: 'app-cart-summary',
@@ -21,6 +16,7 @@ export interface ICartSummary {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CartSummaryComponent {
-  cartSummary = input.required<ICartSummary>();
+  protected readonly CartStore = inject(CartStore);
+
   location = inject(Location);
 }

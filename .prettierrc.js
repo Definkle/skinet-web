@@ -3,7 +3,7 @@ const importOrder = [
   '',
   '<THIRD_PARTY_MODULES>',
   '',
-  '^(@api-models|@app|@components|@constants|@core|@env|@features|@guards|@interceptors|@layout|@models|@shared|@state|@validators)(/.*)$',
+  '^(@api-models|@app|@components|@constants|@core|@env|@features|@guards|@resolvers|@interceptors|@layout|@models|@shared|@state|@validators)(/.*)$',
   '',
   '^[.][.]/(.*)$',
   '',

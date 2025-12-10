@@ -1,14 +1,19 @@
-import { signalStore, withMethods, withState } from '@ngrx/signals';
+import { signalStore, withState } from '@ngrx/signals';
 
-const checkoutInitialState = {
-  currentStep: 1,
-  steps: [1, 2, 3, 4],
+import { checkoutComputed } from './checkout.computed';
+import { checkoutMethods } from './checkout.methods';
+import type { ICheckoutState } from './checkout.types';
+
+const initialState: ICheckoutState = {
+  deliveryMethods: [],
+  isLoading: false,
+  selectedDeliveryMethod: null,
 };
 
 export const CheckoutStore = signalStore(
   {
     providedIn: 'root',
   },
-  withState(checkoutInitialState),
-  withMethods(() => ({}))
+  checkoutComputed(withState(initialState)),
+  checkoutMethods()
 );

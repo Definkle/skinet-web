@@ -48,21 +48,29 @@ export const globalMethods = () => {
             )
           )
         ),
-        incrementOngoingRequestsCount(): void {
-          patchState(store, (state: IGlobalState) => ({
-            ongoingRequestsCount: state.ongoingRequestsCount + 1,
-            isLoading: true,
-          }));
-        },
-        decrementOngoingRequestsCount(): void {
-          patchState(store, (state: IGlobalState) => {
-            const updatedOngoingRequestsCount = state.ongoingRequestsCount - 1;
-            if (updatedOngoingRequestsCount <= 0) {
-              return { ongoingRequestsCount: 0, isLoading: false };
-            }
-            return { ongoingRequestsCount: updatedOngoingRequestsCount };
-          });
-        },
+        incrementOngoingRequestsCount: rxMethod<void>(
+          pipe(
+            tap(() =>
+              patchState(store, (state: IGlobalState) => ({
+                ongoingRequestsCount: state.ongoingRequestsCount + 1,
+                isLoading: true,
+              }))
+            )
+          )
+        ),
+        decrementOngoingRequestsCount: rxMethod<void>(
+          pipe(
+            tap(() =>
+              patchState(store, (state: IGlobalState) => {
+                const updatedOngoingRequestsCount = state.ongoingRequestsCount - 1;
+                if (updatedOngoingRequestsCount <= 0) {
+                  return { ongoingRequestsCount: 0, isLoading: false };
+                }
+                return { ongoingRequestsCount: updatedOngoingRequestsCount };
+              })
+            )
+          )
+        ),
       };
     })
   );

@@ -50,7 +50,7 @@ export function calculateSubtotal(cartItems: CartItem[]): number {
   return cartItems.reduce((sum, item) => sum + item.productPrice * item.quantity, 0);
 }
 
-export function buildOrderSummary({ items, vouchers, deliveryFee }: IOrderSummaryParams): IOrderSummary {
+export function buildOrderSummary({ items, vouchers, deliveryFee = 0 }: IOrderSummaryParams): IOrderSummary {
   const subtotal = calculateSubtotal(items);
   const discount = calculateTotalDiscount(vouchers);
   const totalPrice = subtotal + deliveryFee - discount;

@@ -56,6 +56,10 @@
   .text-balance {
     text-wrap: balance;
   }
+
+  .hidden {
+    display: none;
+  }
 }
 
 @layer components {

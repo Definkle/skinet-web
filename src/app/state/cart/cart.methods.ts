@@ -4,14 +4,14 @@ import { patchState, signalStoreFeature, withMethods } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { debounceTime, distinctUntilChanged, pipe, switchMap, tap } from 'rxjs';
 
-import type { ShoppingCart } from '@api-models';
-
 import { CART_ID_STORAGE_KEY } from '@core/constants/storage-keys.constant';
 import { ErrorHandlerService } from '@core/services/error-handler/error-handler.service';
 
-import { type IUpdateCartParams } from '@features/cart/services/cart-api/cart-api.params';
 import { CartApiService } from '@features/cart/services/cart-api/cart-api.service';
+import type { DeliveryMethod } from '@features/checkout/models/delivery-method.models';
 import { type Product } from '@features/products/models/product.model';
+
+import type { CartItem, ShoppingCart } from '@models/cart';
 
 import { createStoreErrorHandler } from '@shared/utils/store-error.util';
 import { getStoreSnapshot } from '@shared/utils/store-snapshot.util';
@@ -23,15 +23,16 @@ export const cartMethods = () => {
   return signalStoreFeature(
     withMethods((store, cartRepo = inject(CartApiService), errorHandler = inject(ErrorHandlerService)) => {
       const snapshot = getStoreSnapshot<ICartState>(store);
+
       const handleCartError = createStoreErrorHandler('CartStore', errorHandler);
 
-      const updateCart = rxMethod<IUpdateCartParams>(
+      const updateCartItems = rxMethod<CartItem[]>(
         pipe(
           tap(() => patchState(store, { isLoading: true })),
           debounceTime(300),
           distinctUntilChanged(),
-          switchMap((params) => {
-            if (!params.items.length) {
+          switchMap((items) => {
+            if (!items.length) {
               return cartRepo.deleteCart$(snapshot.id()).pipe(
                 tapResponse({
                   next: () => {
@@ -46,16 +47,13 @@ export const cartMethods = () => {
                 })
               );
             }
-
             return cartRepo
               .updateCart$({
                 id: snapshot.id(),
-                items: params.items,
-                deliveryFee: snapshot.deliveryFee(),
-                vouchers: snapshot.vouchers(),
                 clientSecret: snapshot.clientSecret(),
                 deliveryMethodId: snapshot.deliveryMethodId(),
                 paymentIntentId: snapshot.paymentIntentId(),
+                items,
               })
               .pipe(
                 tapResponse({
@@ -68,46 +66,60 @@ export const cartMethods = () => {
         )
       );
 
+      const updateCart = rxMethod<ShoppingCart>(
+        pipe(
+          tap(() => patchState(store, { isLoading: true })),
+          switchMap((params) => cartRepo.updateCart$(params))
+        )
+      );
+
       return {
-        updateCartState: rxMethod<ShoppingCart>(pipe(tap((shoppingCart) => patchState(store, shoppingCart)))),
-        addProduct(product: Product): void {
-          if (!snapshot.id()) {
-            const newCartId = initializeCartId();
-            patchState(store, { id: newCartId });
-          }
+        updateCartState: rxMethod<ShoppingCart>(pipe(tap((shoppingCart) => patchState(store, { ...shoppingCart })))),
+        updateDeliveryMethodState: rxMethod<DeliveryMethod>(pipe(tap((deliveryMethod) => patchState(store, { deliveryMethod })))),
+        addProduct: rxMethod<Product>(
+          pipe(
+            tap((product) => {
+              if (!snapshot.id()) {
+                const newCartId = initializeCartId();
+                patchState(store, { id: newCartId });
+              }
 
-          const cartItem = mapProductToCartItem(product);
-          const items = snapshot.items();
-          const consolidatedItems = consolidateCartItems([...items, cartItem]);
+              const cartItem = mapProductToCartItem(product);
+              const items = snapshot.items();
+              const consolidatedItems = consolidateCartItems([...items, cartItem]);
 
-          updateCart({
-            id: snapshot.id(),
-            items: consolidatedItems,
-          });
-        },
-        removeProduct(productId: number): void {
-          const items = snapshot.items();
-          const filteredItems = items.filter((item) => item.productId !== productId);
+              updateCartItems(consolidatedItems);
+            })
+          )
+        ),
+        removeProduct: rxMethod<number>(
+          pipe(
+            tap((productId) => {
+              const items = snapshot.items();
+              const filteredItems = items.filter((item) => item.productId !== productId);
 
-          updateCart({
-            id: snapshot.id(),
-            items: filteredItems,
-          });
-        },
-        updateProductQuantity({ productId, quantity }: IUpdateCartQuantityParams): void {
-          if (quantity <= 0) {
-            this.removeProduct(productId);
-            return;
-          }
+              updateCartItems(filteredItems);
+            })
+          )
+        ),
+        updateProductQuantity: rxMethod<IUpdateCartQuantityParams>(
+          pipe(
+            tap(({ productId, quantity }) => {
+              if (quantity <= 0) {
+                const items = snapshot.items();
+                const filteredItems = items.filter((item) => item.productId !== productId);
 
-          const items = snapshot.items();
-          const updatedItems = items.map((item) => (item.productId === productId ? { ...item, quantity } : item));
+                updateCartItems(filteredItems);
+                return;
+              }
 
-          updateCart({
-            id: snapshot.id(),
-            items: updatedItems,
-          });
-        },
+              const items = snapshot.items();
+              const updatedItems = items.map((item) => (item.productId === productId ? { ...item, quantity } : item));
+
+              updateCartItems(updatedItems);
+            })
+          )
+        ),
         initCart: rxMethod<void>(
           pipe(
             tap(() => patchState(store, { isLoading: true })),
@@ -123,6 +135,7 @@ export const cartMethods = () => {
           )
         ),
         updateCart,
+        updateCartItems,
       };
     })
   );

@@ -24,22 +24,23 @@ export const productMethods = () => {
       const snapshot = getStoreSnapshot<IProductsState>(store);
       const handleProductError = createStoreErrorHandler('ProductsStore', errorHandler);
 
-      return {
-        initProducts: rxMethod<IGetProductsParams>(
-          pipe(
-            distinctUntilChanged(),
-            tap(() => patchState(store, { isLoading: true, products: [] })),
-            switchMap((params) =>
-              productsRepo.getProducts$(params).pipe(
-                tapResponse({
-                  next: ({ data, totalCount }) => patchState(store, { products: data, productsCount: totalCount }),
-                  error: handleProductError,
-                  finalize: () => patchState(store, { isLoading: false }),
-                })
-              )
+      const initProducts = rxMethod<IGetProductsParams>(
+        pipe(
+          distinctUntilChanged(),
+          tap(() => patchState(store, { isLoading: true, products: [] })),
+          switchMap((params) =>
+            productsRepo.getProducts$(params).pipe(
+              tapResponse({
+                next: ({ data, totalCount }) => patchState(store, { products: data, productsCount: totalCount }),
+                error: handleProductError,
+                finalize: () => patchState(store, { isLoading: false }),
+              })
             )
           )
-        ),
+        )
+      );
+      return {
+        initProducts,
         loadMoreProducts: rxMethod<void>(
           pipe(
             tap(() => patchState(store, { isLoadingMore: true })),
@@ -109,43 +110,79 @@ export const productMethods = () => {
             )
           )
         ),
-        updateSearch(search: string): void {
-          patchState(store, (state: IProductsState) => ({
-            filter: { ...state.filter, search, pageIndex: DEFAULT_PAGE_INDEX },
-          }));
-          this.initProducts(snapshot.filter());
-        },
-        updateSort(sort: string): void {
-          patchState(store, (state: IProductsState) => ({
-            filter: { ...state.filter, sort, pageIndex: DEFAULT_PAGE_INDEX },
-          }));
-          this.initProducts(snapshot.filter());
-        },
-        updateFilters(filters: IBrandTypeFilter): void {
-          patchState(store, (state: IProductsState) => ({
-            filter: { ...state.filter, ...filters, pageIndex: DEFAULT_PAGE_INDEX },
-          }));
-          this.initProducts(snapshot.filter());
-        },
-        updatePagination(pagination: IBasePaginationParams): void {
-          patchState(store, (state: IProductsState) => ({
-            filter: { ...state.filter, ...pagination },
-          }));
-          this.initProducts(snapshot.filter());
-        },
-
-        resetFilters(): void {
-          patchState(store, (state: IProductsState) => ({
-            filter: { ...state.filter, brands: [], types: [], search: '', sort: '' },
-          }));
-        },
-        toggleInfiniteScroll(): void {
-          patchState(store, (state: IProductsState) => ({
-            useInfiniteScroll: !state.useInfiniteScroll,
-            filter: { ...state.filter, pageIndex: DEFAULT_PAGE_INDEX },
-          }));
-          this.initProducts(snapshot.filter());
-        },
+        handleFilterDialogResult: rxMethod<IBrandTypeFilter>(
+          pipe(
+            distinctUntilChanged(),
+            tap((filters) =>
+              patchState(store, (state: IProductsState) => ({ filter: { ...state.filter, ...filters, pageIndex: DEFAULT_PAGE_INDEX } }))
+            ),
+            tap(() => initProducts(snapshot.filter()))
+          )
+        ),
+        updateSearch: rxMethod<string>(
+          pipe(
+            distinctUntilChanged(),
+            tap((search) =>
+              patchState(store, (state: IProductsState) => ({
+                filter: { ...state.filter, search, pageIndex: DEFAULT_PAGE_INDEX },
+              }))
+            ),
+            tap(() => initProducts(snapshot.filter()))
+          )
+        ),
+        updateSort: rxMethod<string>(
+          pipe(
+            distinctUntilChanged(),
+            tap((sort) =>
+              patchState(store, (state: IProductsState) => ({
+                filter: { ...state.filter, sort, pageIndex: DEFAULT_PAGE_INDEX },
+              }))
+            ),
+            tap(() => initProducts(snapshot.filter()))
+          )
+        ),
+        updateFilters: rxMethod<IBrandTypeFilter>(
+          pipe(
+            distinctUntilChanged(),
+            tap((filters) =>
+              patchState(store, (state: IProductsState) => ({
+                filter: { ...state.filter, ...filters, pageIndex: DEFAULT_PAGE_INDEX },
+              }))
+            ),
+            tap(() => initProducts(snapshot.filter()))
+          )
+        ),
+        updatePagination: rxMethod<IBasePaginationParams>(
+          pipe(
+            distinctUntilChanged(),
+            tap((pagination) =>
+              patchState(store, (state: IProductsState) => ({
+                filter: { ...state.filter, ...pagination },
+              }))
+            ),
+            tap(() => initProducts(snapshot.filter()))
+          )
+        ),
+        resetFilters: rxMethod<void>(
+          pipe(
+            tap(() =>
+              patchState(store, (state: IProductsState) => ({
+                filter: { ...state.filter, brands: [], types: [], search: '', sort: '' },
+              }))
+            )
+          )
+        ),
+        toggleInfiniteScroll: rxMethod<void>(
+          pipe(
+            tap(() =>
+              patchState(store, (state: IProductsState) => ({
+                useInfiniteScroll: !state.useInfiniteScroll,
+                filter: { ...state.filter, pageIndex: DEFAULT_PAGE_INDEX },
+              }))
+            ),
+            tap(() => initProducts(snapshot.filter()))
+          )
+        ),
       };
     })
   );

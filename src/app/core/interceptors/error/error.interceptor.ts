@@ -12,10 +12,10 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
     catchError((err: HttpErrorResponse) => {
       switch (err.status) {
         case 400:
+          snackbar.error(err.error.title || err.error);
           if (err.error.errors) {
             handleModelStateErrors(err.error.errors);
           }
-          snackbar.error(err.error.title || err.error);
           break;
         case 401:
           snackbar.error(err.error.title || err.error);

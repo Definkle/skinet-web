@@ -1,15 +1,11 @@
 import type { CartItem as CartItemDto, ShoppingCart as ShoppingCartDto } from '@api-models';
 
-import type { IVoucher } from '@features/cart/models/voucher.model';
-
 import type { TRequired } from '@shared/types/generics.type';
 
 export interface CartItem extends TRequired<CartItemDto> {}
 
 export interface ShoppingCart extends TRequired<ShoppingCartDto> {
   items: CartItem[];
-  deliveryFee: number;
-  vouchers: IVoucher[];
 }
 
 export function mapCartItemFromDto(dto: CartItemDto): CartItem {
@@ -36,8 +32,6 @@ export function mapCartFromDto(dto: ShoppingCartDto): ShoppingCart {
   return {
     id: dto.id,
     items: dto.items?.map(mapCartItemFromDto) ?? [],
-    deliveryFee: 0,
-    vouchers: [],
     deliveryMethodId: dto.deliveryMethodId ?? null,
     clientSecret: dto.clientSecret ?? null,
     paymentIntentId: dto.paymentIntentId ?? null,
@@ -60,11 +54,13 @@ export function mapCartToDto(cart: ShoppingCart): ShoppingCartDto {
   return {
     id: cart.id,
     items: cart.items.map(mapCartItemToDto),
+    deliveryMethodId: cart.deliveryMethodId,
+    clientSecret: cart.clientSecret,
+    paymentIntentId: cart.paymentIntentId,
   };
 }
 
 export class Cart implements ShoppingCart {
-  deliveryFee = 0;
   vouchers = [];
   id = crypto.randomUUID();
   items = [];

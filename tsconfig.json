@@ -21,9 +21,10 @@
     "paths": {
       "@app/*": ["src/app/*"],
       "@core/*": ["src/app/core/*"],
-      "@guards/*": ["src/app/core/guards/*"],
-      "@interceptors/*": ["src/app/core/interceptors/*"],
       "@constants/*": ["src/app/core/constants/*"],
+      "@guards/*": ["src/app/core/route-access/guards/*"],
+      "@interceptors/*": ["src/app/core/interceptors/*"],
+      "@resolvers/*": ["src/app/core/route-access/resolvers/*"],
       "@features/*": ["src/app/features/*"],
       "@models/cart": ["src/app/features/cart/models/cart.models.ts"],
       "@models/product": ["src/app/features/products/models/product.model.ts"],

@@ -1,1 +1,14 @@
-<p>checkout-delivery works!</p>
+<div class="w-full" [class.hidden]="!CheckoutStore.deliveryMethods().length">
+  <mat-radio-group class="grid grid-cols-2 gap-4" [value]="CartStore.deliveryMethodId()">
+    @for (deliveryMethod of CheckoutStore.deliveryMethods(); track deliveryMethod.id) {
+      <label for="" class="h-full w-full cursor-pointer border border-gray-200 p-3 hover:bg-blue-100">
+        <mat-radio-button class="h-full w-full" [value]="deliveryMethod.id" (change)="CheckoutStore.selectDeliveryMethod(deliveryMethod)">
+          <div class="flex h-full w-full flex-col">
+            <strong>{{ deliveryMethod.shortName }} - {{ deliveryMethod.price | currency }}</strong>
+            <span class="text-sm">{{ deliveryMethod.description }}</span>
+          </div>
+        </mat-radio-button>
+      </label>
+    }
+  </mat-radio-group>
+</div>

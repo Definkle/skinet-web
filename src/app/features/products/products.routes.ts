@@ -1,6 +1,6 @@
 import { type Routes } from '@angular/router';
 
-import { productDetailResolver } from './pages/product-detail/product-detail.resolver';
+import { productDetailResolver } from '@resolvers/product-detail/product-detail.resolver';
 
 export const productsRoutes: Routes = [
   {

@@ -5,14 +5,14 @@ import { MatCheckbox } from '@angular/material/checkbox';
 import { MatStep, MatStepContent, MatStepLabel, MatStepper, MatStepperNext, MatStepperPrevious } from '@angular/material/stepper';
 import { RouterLink } from '@angular/router';
 
-import type { AddressDto } from '@api-models';
-
 import { SnackbarService } from '@core/services/snackbar/snackbar.service';
 
 import { CartSummaryComponent } from '@features/cart/components/cart-summary/cart-summary.component';
 import { CheckoutAddressComponent } from '@features/checkout/components/checkout-address/checkout-address.component';
 import { CheckoutDeliveryComponent } from '@features/checkout/components/checkout-delivery/checkout-delivery.component';
 import { CheckoutPaymentComponent } from '@features/checkout/components/checkout-payment/checkout-payment.component';
+import { mapStripeAddressToAddressDto } from '@features/checkout/models/stripe.models';
+import { CheckoutStore } from '@features/checkout/state/checkout';
 import { StripeStore } from '@features/checkout/state/stripe';
 
 import { AuthStore } from '@state/auth';
@@ -42,6 +42,7 @@ import { CartStore } from '@state/cart';
 })
 export class CheckoutPageComponent implements OnDestroy {
   protected readonly CartStore = inject(CartStore);
+  protected readonly CheckoutStore = inject(CheckoutStore);
   private readonly _AuthStore = inject(AuthStore);
   private readonly _Snackbar = inject(SnackbarService);
   private readonly _StripeStore = inject(StripeStore);
@@ -52,7 +53,7 @@ export class CheckoutPageComponent implements OnDestroy {
     this._StripeStore.resetStore();
   }
 
-  onClickNextStep() {
+  onClickNextAddress() {
     if (this.checkbox.field().value()) {
       const stripeAddress = this._StripeStore.addressValue();
 
@@ -61,15 +62,11 @@ export class CheckoutPageComponent implements OnDestroy {
         return;
       }
 
-      const address: AddressDto = {
-        line1: stripeAddress.line1,
-        line2: stripeAddress.line2 ?? '',
-        city: stripeAddress.city,
-        state: stripeAddress.state,
-        country: stripeAddress.country,
-        postalCode: stripeAddress.postal_code,
-      };
-      this._AuthStore.updateAddress(address);
+      this._AuthStore.updateAddress(mapStripeAddressToAddressDto(stripeAddress));
     }
+  }
+
+  onClickNextDelivery() {
+    this._StripeStore.updatePaymentIntent(this.CartStore.id());
   }
 }

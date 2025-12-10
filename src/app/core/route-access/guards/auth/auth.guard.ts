@@ -14,12 +14,12 @@ interface AuthGuardConfig {
 
 function createAuthGuard(config: AuthGuardConfig): CanActivateFn {
   return (_route, state) => {
-    const authStore = inject(AuthStore);
-    const globalStore = inject(GlobalStore);
+    const { isLoggedIn } = inject(AuthStore);
+    const { isInitialized } = inject(GlobalStore);
     const router = inject(Router);
 
     const checkAuth = () => {
-      const isAllowed = config.requireAuth ? authStore.isLoggedIn() : !authStore.isLoggedIn();
+      const isAllowed = config.requireAuth ? isLoggedIn() : !isLoggedIn();
 
       if (isAllowed) return true;
 
@@ -27,11 +27,11 @@ function createAuthGuard(config: AuthGuardConfig): CanActivateFn {
       return router.createUrlTree([config.redirectTo], { queryParams });
     };
 
-    if (globalStore.isInitialized()) {
+    if (isInitialized()) {
       return checkAuth();
     }
 
-    return toObservable(globalStore.isInitialized).pipe(filter(Boolean), first(), map(checkAuth));
+    return toObservable(isInitialized).pipe(filter(Boolean), first(), map(checkAuth));
   };
 }
 

@@ -123,11 +123,9 @@ export const authMethods = () => {
               switchMap((address) =>
                 accountRepo.updateAddress$(address).pipe(
                   tapResponse({
-                    next: () => patchState(store, (state) => ({ ...state, user: { ...snapshot.user(), address: address } })),
+                    next: () => patchState(store, (state) => ({ ...state, user: { ...snapshot.user(), address } })),
                     error: handleAuthError,
-                    finalize: () => {
-                      patchState(store, { isLoading: false });
-                    },
+                    finalize: () => patchState(store, { isLoading: false }),
                   })
                 )
               )

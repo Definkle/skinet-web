@@ -1,5 +1,4 @@
-import { ChangeDetectionStrategy, Component, DestroyRef, inject, signal, ViewChild } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ChangeDetectionStrategy, Component, effect, inject, signal, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Field, form } from '@angular/forms/signals';
 import { MatButton, MatIconButton } from '@angular/material/button';
@@ -9,9 +8,9 @@ import { MatFormField, MatInput, MatSuffix } from '@angular/material/input';
 import { MatListOption, MatSelectionList, MatSelectionListChange } from '@angular/material/list';
 import { MatMenu, MatMenuTrigger } from '@angular/material/menu';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { distinctUntilChanged, filter, tap } from 'rxjs';
+import { filter, tap } from 'rxjs';
 
-import { DEFAULT_PAGE_SIZE_OPTIONS } from '@core/constants/default-pagination-values.constant';
+import { DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE_OPTIONS } from '@core/constants/default-pagination-values.constant';
 import { SORT_OPTIONS } from '@core/constants/sort-options.constant';
 
 import { ProductFilterDialogComponent } from '../../dialogs/product-filter-dialog/product-filter-dialog.component';
@@ -47,20 +46,27 @@ export class ProductFilterComponent {
 
   protected readonly ProductsStore = inject(ProductsStore);
   private readonly _DialogService = inject(MatDialog);
-  private readonly _destroyRef = inject(DestroyRef);
 
   protected readonly DEFAULT_PAGE_SIZE_OPTIONS = DEFAULT_PAGE_SIZE_OPTIONS;
 
   protected readonly searchForm = form(signal<ISearchModel>({ search: this.ProductsStore.filter().search }));
   protected readonly sortOptions = SORT_OPTIONS;
 
+  constructor() {
+    effect(() => {
+      if (this.ProductsStore.filter().pageIndex === DEFAULT_PAGE_INDEX) {
+        if (this.paginator) {
+          this.paginator.firstPage();
+        }
+      }
+    });
+  }
+
   onSelectSortOption(event: MatSelectionListChange) {
-    this._resetPagination();
     this.ProductsStore.updateSort(event.source.selectedOptions.selected[0].value);
   }
 
   onSubmitSearchForm() {
-    this._resetPagination();
     this.ProductsStore.updateSearch(this.searchForm().value().search);
   }
 
@@ -73,12 +79,7 @@ export class ProductFilterComponent {
       .afterClosed()
       .pipe(
         filter((value) => value),
-        distinctUntilChanged(),
-        tap((value) => {
-          this._resetPagination();
-          this.ProductsStore.updateFilters(value);
-        }),
-        takeUntilDestroyed(this._destroyRef)
+        tap((value) => this.ProductsStore.handleFilterDialogResult(value))
       )
       .subscribe();
   }
@@ -88,12 +89,6 @@ export class ProductFilterComponent {
       pageIndex: this._toBackendPageIndex($event.pageIndex),
       pageSize: $event.pageSize,
     });
-  }
-
-  private _resetPagination() {
-    if (this.paginator) {
-      this.paginator.firstPage();
-    }
   }
 
   private _toBackendPageIndex(materialPageIndex: number): number {
