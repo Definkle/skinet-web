@@ -79,7 +79,7 @@ export const stripeMethods = () => {
               return paymentsApi.createOrUpdatePaymentIntent$(cartId).pipe(
                 tapResponse({
                   next: (cart) => {
-                    cartStore.updateCartState(cart);
+                    cartStore.updateCart(cart);
 
                     const elements = stripeInstance.elements({
                       clientSecret: cart.clientSecret!,
@@ -173,7 +173,7 @@ export const stripeMethods = () => {
             switchMap((cartId) =>
               paymentsApi.createOrUpdatePaymentIntent$(cartId).pipe(
                 tapResponse({
-                  next: (cart) => cartStore.updateCartState(cart),
+                  next: (cart) => cartStore.updateCart(cart),
                   error: handleStripeError,
                   finalize: () => patchState(store, { isLoading: false }),
                 })

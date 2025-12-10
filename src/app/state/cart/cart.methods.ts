@@ -1,4 +1,4 @@
-import { inject } from '@angular/core';
+import { computed, inject, type Signal } from '@angular/core';
 import { tapResponse } from '@ngrx/operators';
 import { patchState, signalStoreFeature, withMethods } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
@@ -11,7 +11,7 @@ import { CartApiService } from '@features/cart/services/cart-api/cart-api.servic
 import type { DeliveryMethod } from '@features/checkout/models/delivery-method.models';
 import { type Product } from '@features/products/models/product.model';
 
-import type { CartItem, ShoppingCart } from '@models/cart';
+import type { ShoppingCart } from '@models/cart';
 
 import { createStoreErrorHandler } from '@shared/utils/store-error.util';
 import { getStoreSnapshot } from '@shared/utils/store-snapshot.util';
@@ -23,16 +23,23 @@ export const cartMethods = () => {
   return signalStoreFeature(
     withMethods((store, cartRepo = inject(CartApiService), errorHandler = inject(ErrorHandlerService)) => {
       const snapshot = getStoreSnapshot<ICartState>(store);
-
       const handleCartError = createStoreErrorHandler('CartStore', errorHandler);
 
-      const updateCartItems = rxMethod<CartItem[]>(
+      const getStoreAsPayload: Signal<ShoppingCart> = computed(() => ({
+        id: snapshot.id(),
+        items: snapshot.items(),
+        clientSecret: snapshot.clientSecret(),
+        deliveryMethodId: snapshot.deliveryMethodId(),
+        paymentIntentId: snapshot.paymentIntentId(),
+      }));
+
+      const updateCart = rxMethod<ShoppingCart>(
         pipe(
           tap(() => patchState(store, { isLoading: true })),
           debounceTime(300),
           distinctUntilChanged(),
-          switchMap((items) => {
-            if (!items.length) {
+          switchMap((params) => {
+            if (!params.items.length) {
               return cartRepo.deleteCart$(snapshot.id()).pipe(
                 tapResponse({
                   next: () => {
@@ -47,35 +54,27 @@ export const cartMethods = () => {
                 })
               );
             }
-            return cartRepo
-              .updateCart$({
-                id: snapshot.id(),
-                clientSecret: snapshot.clientSecret(),
-                deliveryMethodId: snapshot.deliveryMethodId(),
-                paymentIntentId: snapshot.paymentIntentId(),
-                items,
+            return cartRepo.updateCart$(params).pipe(
+              tapResponse({
+                next: (cart) => patchState(store, cart),
+                error: handleCartError,
+                finalize: () => patchState(store, { isLoading: false }),
               })
-              .pipe(
-                tapResponse({
-                  next: (cart) => patchState(store, cart),
-                  error: handleCartError,
-                  finalize: () => patchState(store, { isLoading: false }),
-                })
-              );
+            );
           })
         )
       );
 
-      const updateCart = rxMethod<ShoppingCart>(
-        pipe(
-          tap(() => patchState(store, { isLoading: true })),
-          switchMap((params) => cartRepo.updateCart$(params))
-        )
-      );
-
       return {
-        updateCartState: rxMethod<ShoppingCart>(pipe(tap((shoppingCart) => patchState(store, { ...shoppingCart })))),
-        updateDeliveryMethodState: rxMethod<DeliveryMethod>(pipe(tap((deliveryMethod) => patchState(store, { deliveryMethod })))),
+        updateCart,
+        updateDeliveryMethodState: rxMethod<DeliveryMethod>(
+          pipe(
+            tap((deliveryMethod) => {
+              patchState(store, { deliveryMethod, deliveryMethodId: deliveryMethod.id });
+              updateCart(getStoreAsPayload());
+            })
+          )
+        ),
         addProduct: rxMethod<Product>(
           pipe(
             tap((product) => {
@@ -87,8 +86,8 @@ export const cartMethods = () => {
               const cartItem = mapProductToCartItem(product);
               const items = snapshot.items();
               const consolidatedItems = consolidateCartItems([...items, cartItem]);
-
-              updateCartItems(consolidatedItems);
+              patchState(store, { items: consolidatedItems });
+              updateCart(getStoreAsPayload());
             })
           )
         ),
@@ -97,8 +96,8 @@ export const cartMethods = () => {
             tap((productId) => {
               const items = snapshot.items();
               const filteredItems = items.filter((item) => item.productId !== productId);
-
-              updateCartItems(filteredItems);
+              patchState(store, { items: filteredItems });
+              updateCart(getStoreAsPayload());
             })
           )
         ),
@@ -108,15 +107,15 @@ export const cartMethods = () => {
               if (quantity <= 0) {
                 const items = snapshot.items();
                 const filteredItems = items.filter((item) => item.productId !== productId);
+                patchState(store, { items: filteredItems });
 
-                updateCartItems(filteredItems);
                 return;
               }
 
               const items = snapshot.items();
               const updatedItems = items.map((item) => (item.productId === productId ? { ...item, quantity } : item));
-
-              updateCartItems(updatedItems);
+              patchState(store, { items: updatedItems });
+              updateCart(getStoreAsPayload());
             })
           )
         ),
@@ -134,8 +133,6 @@ export const cartMethods = () => {
             )
           )
         ),
-        updateCart,
-        updateCartItems,
       };
     })
   );
