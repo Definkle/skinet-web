@@ -1,5 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
+import type { StripeError } from '@stripe/stripe-js';
 
 import { LoggerService } from '@core/services/logger/logger.service';
 import { SnackbarService } from '@core/services/snackbar/snackbar.service';
@@ -32,6 +33,12 @@ export class ErrorHandlerService {
 
     if (error instanceof Error) {
       return error.message;
+    }
+
+    const stripeError = error as StripeError;
+
+    if (stripeError.message) {
+      return stripeError.message;
     }
 
     return 'An unexpected error occurred.';

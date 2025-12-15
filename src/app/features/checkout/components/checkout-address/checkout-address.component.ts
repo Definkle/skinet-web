@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, type OnInit } from '@angular/core';
 import { MatError } from '@angular/material/input';
 
-import { StripeStore } from '@features/checkout/state/stripe';
+import { CheckoutStore } from '@features/checkout/state/checkout';
 
 import { CartStore } from '@state/cart';
 
@@ -14,12 +14,11 @@ import { CartStore } from '@state/cart';
 })
 export class CheckoutAddressComponent implements OnInit {
   protected readonly CartStore = inject(CartStore);
-  protected readonly StripeStore = inject(StripeStore);
+  protected readonly CheckoutStore = inject(CheckoutStore);
 
-  protected readonly isLoading = this.StripeStore.isLoading;
-  protected readonly error = this.StripeStore.error;
+  protected readonly error = this.CheckoutStore.error;
 
   ngOnInit() {
-    this.StripeStore.initializeStripe();
+    this.CheckoutStore.initializeStripe();
   }
 }

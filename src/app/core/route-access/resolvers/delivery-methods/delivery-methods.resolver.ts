@@ -7,11 +7,10 @@ import { CheckoutStore } from '@features/checkout/state/checkout';
 
 export const deliveryMethodsResolver: ResolveFn<boolean> = () => {
   const store = inject(CheckoutStore);
-
-  if (!store.isInitialized()) {
+  if (!store.isDeliveryMethodsInitialized()) {
     store.initializeDeliveryMethods();
-    return toObservable(store.isInitialized).pipe(filter((isLoading) => !isLoading));
+    return toObservable(store.isDeliveryMethodsInitialized).pipe(filter((isLoading) => !isLoading));
   }
 
-  return toObservable(store.isInitialized);
+  return toObservable(store.isDeliveryMethodsInitialized);
 };

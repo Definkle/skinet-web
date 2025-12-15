@@ -1,6 +1,6 @@
 import type { AddressDto } from '@api-models';
 
-import type { IStripeAddress } from '@features/checkout/state/stripe';
+import type { IStripeAddress } from '@features/checkout/state/checkout';
 
 export function mapStripeAddressToAddressDto(stripeAddress: IStripeAddress): AddressDto {
   return {

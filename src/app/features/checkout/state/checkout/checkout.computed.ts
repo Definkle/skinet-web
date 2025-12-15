@@ -8,8 +8,34 @@ export const checkoutComputed = (
 ) => {
   return signalStoreFeature(
     initialState,
-    withComputed(({ deliveryMethods, isLoading }) => ({
-      isInitialized: computed(() => !!deliveryMethods()?.length && !isLoading()),
-    }))
+    withComputed(
+      ({
+        deliveryMethods,
+        deliveryLoading,
+        instance,
+        elements,
+        addressElement,
+        addressValue,
+        paymentElement,
+        isAddressComplete,
+        stripeLoading,
+        stripeInitialized,
+        confirmationToken,
+        error,
+      }) => ({
+        isDeliveryMethodsInitialized: computed(() => !!deliveryMethods()?.length && !deliveryLoading()),
+        isInitialized: computed(() => !!deliveryMethods()?.length && !deliveryLoading() && stripeInitialized()),
+
+        isReady: computed(() => stripeInitialized() && instance() !== null && !stripeLoading()),
+        hasElements: computed(() => elements() !== null),
+        hasAddressElement: computed(() => addressElement() !== null),
+        hasPaymentElement: computed(() => paymentElement() !== null),
+        hasAddressValue: computed(() => addressValue() !== null && isAddressComplete()),
+        hasError: computed(() => error() !== null),
+        canInitializeElements: computed(() => instance() !== null && !stripeLoading()),
+        shippingFromToken: computed(() => confirmationToken()?.shipping),
+        cardDetailsFromToken: computed(() => confirmationToken()?.payment_method_preview),
+      })
+    )
   );
 };

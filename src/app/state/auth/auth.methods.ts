@@ -58,12 +58,15 @@ export const authMethods = () => {
               switchMap((params) =>
                 accountRepo.register$(params).pipe(
                   tapResponse({
-                    next: () => patchState(store, { isLoading: false }),
-                    error: handleAuthError,
-                    finalize: () => {
+                    next: () => {
+                      patchState(store, { isLoading: false });
                       snackbar.success('Registration successful - you can now login!');
                       void router.navigateByUrl('/login');
                     },
+                    error: (error) => {
+                      handleAuthError(error);
+                    },
+                    finalize: () => patchState(store, { isLoading: false }),
                   })
                 )
               )

@@ -1,1 +1,7 @@
-<p>checkout-payment works!</p>
+<div>
+  @if (error()) {
+    <mat-error>{{ error() }}</mat-error>
+  }
+
+  <div id="paymentElement" [class.invisible]="!CheckoutStore.hasPaymentElement()"></div>
+</div>

@@ -6,8 +6,22 @@ import type { ICheckoutState } from './checkout.types';
 
 const initialState: ICheckoutState = {
   deliveryMethods: [],
-  isLoading: false,
   selectedDeliveryMethod: null,
+  deliveryLoading: false,
+
+  instance: null,
+  elements: null,
+  addressElement: null,
+  addressValue: null,
+  paymentElement: null,
+  confirmationToken: null,
+  isAddressComplete: false,
+  isPaymentComplete: false,
+  clientSecret: null,
+  stripeLoading: false,
+  stripeInitialized: false,
+
+  error: null,
 };
 
 export const CheckoutStore = signalStore(

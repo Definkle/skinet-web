@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 
-import { CheckoutDeliveryComponent } from './checkout-delivery.component';
+import { CheckoutSuccessComponent } from './checkout-success.component';
 
-describe('CheckoutDeliveryComponent', () => {
-  let component: CheckoutDeliveryComponent;
-  let fixture: ComponentFixture<CheckoutDeliveryComponent>;
+describe('CheckoutSuccessComponent', () => {
+  let component: CheckoutSuccessComponent;
+  let fixture: ComponentFixture<CheckoutSuccessComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CheckoutDeliveryComponent],
+      imports: [CheckoutSuccessComponent],
       providers: [provideRouter([])],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(CheckoutDeliveryComponent);
+    fixture = TestBed.createComponent(CheckoutSuccessComponent);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

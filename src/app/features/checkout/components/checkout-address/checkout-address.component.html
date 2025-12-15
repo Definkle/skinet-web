@@ -3,5 +3,5 @@
     <mat-error>{{ error() }}</mat-error>
   }
 
-  <div id="addressElement" [class.hidden]="!StripeStore.hasAddressElement()"></div>
+  <div id="addressElement" [class.invisible]="!CheckoutStore.hasAddressElement()"></div>
 </div>

@@ -59,7 +59,7 @@ export function buildOrderSummary({ items, vouchers, deliveryFee = 0 }: IOrderSu
     totalPrice: totalPrice <= 0 ? 0 : totalPrice,
     deliveryFee,
     discount,
-    subtotal,
+    subtotal: subtotal <= 0 ? 0 : subtotal,
     vouchers,
   };
 }
@@ -70,7 +70,7 @@ export function mapProductToCartItem(product: Product): CartItem {
     productName: product.name,
     productPrice: product.price,
     brand: product.brand,
-    quantity: product.quantity ?? 0,
+    quantity: product?.quantity ?? 0,
     type: product.type,
     pictureUrl: product.pictureUrl,
   };

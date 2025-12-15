@@ -1,7 +1,7 @@
 <div class="mt-32 flex w-full gap-6">
   <div class="w-3/4">
-    <mat-stepper class="border border-gray-200 bg-white shadow-sm">
-      <mat-step label="Address">
+    <mat-stepper class="border border-gray-200 bg-white shadow-sm" [linear]="true">
+      <mat-step label="Address" [completed]="CheckoutStore.isAddressComplete()">
         <ng-template matStepLabel>Address</ng-template>
         <ng-template matStepContent>
           <app-checkout-address></app-checkout-address>
@@ -10,29 +10,33 @@
 
           <div class="mt-6 flex justify-between">
             <button routerLink="/shop" mat-stroked-button>Continue shopping</button>
-            <button mat-flat-button matStepperNext (click)="onClickNextAddress()">Next</button>
+            <button mat-flat-button matStepperNext [disabled]="!CheckoutStore.isAddressComplete()" (click)="onClickNextAddress()">
+              Next
+            </button>
           </div>
         </ng-template>
       </mat-step>
 
-      <mat-step label="Delivery">
+      <mat-step label="Delivery" [completed]="CheckoutStore.selectedDeliveryMethod()">
         <ng-template matStepLabel>Delivery</ng-template>
         <ng-template matStepContent>
           <app-checkout-delivery></app-checkout-delivery>
           <div class="mt-6 flex justify-between">
             <button mat-stroked-button matStepperPrevious>Back</button>
-            <button mat-flat-button matStepperNext (click)="onClickNextDelivery()">Next</button>
+            <button mat-flat-button matStepperNext [disabled]="!CheckoutStore.selectedDeliveryMethod()" (click)="onClickNextDelivery()">
+              Next
+            </button>
           </div>
         </ng-template>
       </mat-step>
 
-      <mat-step label="Payment">
+      <mat-step label="Payment" [completed]="CheckoutStore.isPaymentComplete()">
         <ng-template matStepLabel>Payment</ng-template>
         <ng-template matStepContent>
           <app-checkout-payment></app-checkout-payment>
           <div class="mt-6 flex justify-between">
             <button mat-stroked-button matStepperPrevious>Back</button>
-            <button mat-flat-button matStepperNext>Next</button>
+            <button mat-flat-button matStepperNext [disabled]="!CheckoutStore.isPaymentComplete()">Next</button>
           </div>
         </ng-template>
       </mat-step>
@@ -40,10 +44,20 @@
       <mat-step label="Review">
         <ng-template matStepLabel>Review</ng-template>
         <ng-template matStepContent>
-          <p>This content was rendered lazily</p>
+          <app-checkout-review></app-checkout-review>
           <div class="mt-6 flex justify-between">
             <button mat-stroked-button matStepperPrevious>Back</button>
-            <button mat-flat-button>Checkout</button>
+            <button
+              mat-flat-button
+              [disabled]="CheckoutStore.stripeLoading() || !CheckoutStore.confirmationToken()"
+              (click)="CheckoutStore.confirmPayment(CheckoutStore.confirmationToken()!)"
+            >
+              @if (CheckoutStore.stripeLoading()) {
+                <mat-spinner diameter="20"></mat-spinner>
+              } @else {
+                Pay {{ CartStore.orderSummary().totalPrice | currency }}
+              }
+            </button>
           </div>
         </ng-template>
       </mat-step>

@@ -1,4 +1,4 @@
-<div class="w-full" [class.hidden]="!CheckoutStore.deliveryMethods().length">
+<div class="w-full" [class.invisible]="!CheckoutStore.deliveryMethods().length">
   <mat-radio-group class="grid grid-cols-2 gap-4" [value]="CartStore.deliveryMethodId()">
     @for (deliveryMethod of CheckoutStore.deliveryMethods(); track deliveryMethod.id) {
       <label for="" class="h-full w-full cursor-pointer border border-gray-200 p-3 hover:bg-blue-100">

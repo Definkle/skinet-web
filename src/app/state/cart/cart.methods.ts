@@ -46,6 +46,8 @@ export const cartMethods = () => {
                     patchState(store, () => ({
                       id: null,
                       items: [],
+                      vouchers: [],
+                      deliveryMethod: null,
                     }));
                     localStorage.removeItem(CART_ID_STORAGE_KEY);
                   },
@@ -65,7 +67,31 @@ export const cartMethods = () => {
         )
       );
 
+      const deleteCart = rxMethod<string>(
+        pipe(
+          tap(() => patchState(store, { isLoading: true })),
+          switchMap((cartId) =>
+            cartRepo.deleteCart$(cartId).pipe(
+              tapResponse({
+                next: () => {
+                  patchState(store, () => ({
+                    id: null,
+                    items: [],
+                    deliveryMethod: null,
+                    vouchers: [],
+                  }));
+                  localStorage.removeItem(CART_ID_STORAGE_KEY);
+                },
+                error: handleCartError,
+                finalize: () => patchState(store, { isLoading: false }),
+              })
+            )
+          )
+        )
+      );
+
       return {
+        deleteCart,
         updateCart,
         updateDeliveryMethodState: rxMethod<DeliveryMethod>(
           pipe(
@@ -104,15 +130,15 @@ export const cartMethods = () => {
         updateProductQuantity: rxMethod<IUpdateCartQuantityParams>(
           pipe(
             tap(({ productId, quantity }) => {
+              const items = snapshot.items();
+
               if (quantity <= 0) {
-                const items = snapshot.items();
                 const filteredItems = items.filter((item) => item.productId !== productId);
                 patchState(store, { items: filteredItems });
 
                 return;
               }
 
-              const items = snapshot.items();
               const updatedItems = items.map((item) => (item.productId === productId ? { ...item, quantity } : item));
               patchState(store, { items: updatedItems });
               updateCart(getStoreAsPayload());
