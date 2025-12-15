@@ -3,20 +3,15 @@ import { of, throwError } from 'rxjs';
 import { describe, expect, vi, type Mocked } from 'vitest';
 
 import { CART_ID_STORAGE_KEY } from '@constants/storage-keys.constant';
-
 import { ErrorHandlerService } from '@core/services/error-handler/error-handler.service';
-
 import { CartApiService } from '@features/cart/services/cart-api/cart-api.service';
-
-import { type ShoppingCart } from '@models/cart';
-import type { Product } from '@models/product';
-
+import { type IShoppingCart } from '@models/cart';
+import type { IProduct } from '@models/product';
 import type { TRequired } from '@shared/types/generics.type';
-
 import { mapProductToCartItem } from '@state/cart/cart.helpers';
 import { CartStore } from '@state/cart/cart.store';
 
-const mockProduct: TRequired<Product> = {
+const mockProduct: TRequired<IProduct> = {
   id: 1,
   name: 'Product 1',
   price: 100,
@@ -28,7 +23,7 @@ const mockProduct: TRequired<Product> = {
   quantityInStock: 10,
 };
 
-const mockProduct2: TRequired<Product> = {
+const mockProduct2: TRequired<IProduct> = {
   id: 2,
   name: 'Product 2',
   price: 200,
@@ -40,7 +35,7 @@ const mockProduct2: TRequired<Product> = {
   quantityInStock: 20,
 };
 
-const mockCart: ShoppingCart = {
+const mockCart: IShoppingCart = {
   id: 'cart1',
   items: [],
   deliveryMethodId: null,
@@ -64,7 +59,7 @@ describe('CartStore', () => {
       updateCart$: vi
         .fn()
         .mockReturnValue(
-          of({ id: 'cart1', items: [mockCartItem], deliveryMethodId: null, paymentIntentId: null, clientSecret: null } as ShoppingCart)
+          of({ id: 'cart1', items: [mockCartItem], deliveryMethodId: null, paymentIntentId: null, clientSecret: null } as IShoppingCart)
         ),
     } as unknown as Mocked<CartApiService>;
 

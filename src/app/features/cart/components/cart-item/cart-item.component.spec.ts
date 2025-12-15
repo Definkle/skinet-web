@@ -2,14 +2,14 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { beforeEach, describe, expect, it } from 'vitest';
 
-import { type CartItem } from '@models/cart';
+import { type ICartItem } from '@models/cart';
 
 import { CartItemComponent } from './cart-item.component';
 
 describe('CartItemComponent', () => {
   let component: CartItemComponent;
   let fixture: ComponentFixture<CartItemComponent>;
-  const mockCartItem: CartItem = {
+  const mockCartItem: ICartItem = {
     productId: 1,
     type: '',
     brand: '',

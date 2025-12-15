@@ -1,11 +1,9 @@
 import { Injectable } from '@angular/core';
+import type { ShoppingCart as ShoppingCartDto } from '@api-models';
 import { map } from 'rxjs';
 
-import type { ShoppingCart as ShoppingCartDto } from '@api-models';
-
 import { RepositoryHelperService } from '@core/services/repository.helper';
-
-import { mapCartFromDto, mapCartToDto, type ShoppingCart } from '@features/cart/models/cart.models';
+import { mapCartFromDto, mapCartToDto, type IShoppingCart } from '@features/cart/models/cart.models';
 
 @Injectable({
   providedIn: 'root',
@@ -21,7 +19,7 @@ export class CartApiService extends RepositoryHelperService {
       .pipe(map(mapCartFromDto));
   }
 
-  updateCart$(cart: ShoppingCart) {
+  updateCart$(cart: IShoppingCart) {
     return this.http.post<ShoppingCartDto>(this._baseUrl, mapCartToDto(cart)).pipe(map(mapCartFromDto));
   }
 

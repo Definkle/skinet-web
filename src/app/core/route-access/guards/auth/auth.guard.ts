@@ -6,13 +6,13 @@ import { filter, first, map } from 'rxjs';
 import { AuthStore } from '@state/auth';
 import { GlobalStore } from '@state/global';
 
-interface AuthGuardConfig {
+interface IAuthGuardConfig {
   requireAuth: boolean;
   redirectTo: string;
   preserveReturnUrl?: boolean;
 }
 
-function createAuthGuard(config: AuthGuardConfig): CanActivateFn {
+function createAuthGuard(config: IAuthGuardConfig): CanActivateFn {
   return (_route, state) => {
     const { isLoggedIn } = inject(AuthStore);
     const { isInitialized } = inject(GlobalStore);

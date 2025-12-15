@@ -1,7 +1,7 @@
 import type { ConfirmationToken, Stripe, StripeElements, StripePaymentElement } from '@stripe/stripe-js';
 import type { StripeAddressElement } from '@stripe/stripe-js/dist/stripe-js/elements/address';
 
-import type { DeliveryMethod } from '@features/checkout/models/delivery-method.models';
+import type { IDeliveryMethod } from '@features/checkout/models/delivery-method.models';
 
 export interface IStripeAddress {
   name: string;
@@ -14,8 +14,8 @@ export interface IStripeAddress {
 }
 
 export interface ICheckoutState {
-  deliveryMethods: DeliveryMethod[];
-  selectedDeliveryMethod: DeliveryMethod | null;
+  deliveryMethods: IDeliveryMethod[];
+  selectedDeliveryMethod: IDeliveryMethod | null;
   deliveryLoading: boolean;
 
   instance: Stripe | null;

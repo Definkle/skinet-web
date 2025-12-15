@@ -2,9 +2,9 @@ import type { DeliveryMethod as DeliveryMethodDto } from '@api-models';
 
 import type { TRequired } from '@shared/types/generics.type';
 
-export interface DeliveryMethod extends TRequired<DeliveryMethodDto> {}
+export interface IDeliveryMethod extends TRequired<DeliveryMethodDto> {}
 
-export function mapDeliveryMethodsFromDto(deliveryMethodsDtos: DeliveryMethodDto[]): DeliveryMethod[] {
+export function mapDeliveryMethodsFromDto(deliveryMethodsDtos: DeliveryMethodDto[]): IDeliveryMethod[] {
   return deliveryMethodsDtos
     .map((dto) => {
       if (!dto.id || !dto.shortName || dto.price === undefined || !dto.description || !dto.deliveryTime) {

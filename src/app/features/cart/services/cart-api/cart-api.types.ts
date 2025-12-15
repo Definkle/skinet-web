@@ -1,6 +1,6 @@
-import { type CartItem } from '@models/cart';
+import { type ICartItem } from '@models/cart';
 
 export interface ICartResponse {
   id: string;
-  items: CartItem[];
+  items: ICartItem[];
 }

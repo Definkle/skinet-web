@@ -2,13 +2,13 @@ import type { CartItem as CartItemDto, ShoppingCart as ShoppingCartDto } from '@
 
 import type { TRequired } from '@shared/types/generics.type';
 
-export interface CartItem extends TRequired<CartItemDto> {}
+export interface ICartItem extends TRequired<CartItemDto> {}
 
-export interface ShoppingCart extends TRequired<ShoppingCartDto> {
-  items: CartItem[];
+export interface IShoppingCart extends TRequired<ShoppingCartDto> {
+  items: ICartItem[];
 }
 
-export function mapCartItemFromDto(dto: CartItemDto): CartItem {
+export function mapCartItemFromDto(dto: CartItemDto): ICartItem {
   if (!dto.productId || !dto.productName || dto.productPrice === undefined || !dto.quantity) {
     throw new Error(`Invalid cart item: missing required fields. Received: ${JSON.stringify(dto)}`);
   }
@@ -24,7 +24,7 @@ export function mapCartItemFromDto(dto: CartItemDto): CartItem {
   };
 }
 
-export function mapCartFromDto(dto: ShoppingCartDto): ShoppingCart {
+export function mapCartFromDto(dto: ShoppingCartDto): IShoppingCart {
   if (!dto.id) {
     throw new Error('Invalid shopping cart: missing id');
   }
@@ -38,7 +38,7 @@ export function mapCartFromDto(dto: ShoppingCartDto): ShoppingCart {
   };
 }
 
-export function mapCartItemToDto(item: CartItem): CartItemDto {
+export function mapCartItemToDto(item: ICartItem): CartItemDto {
   return {
     productId: item.productId,
     productName: item.productName,
@@ -50,7 +50,7 @@ export function mapCartItemToDto(item: CartItem): CartItemDto {
   };
 }
 
-export function mapCartToDto(cart: ShoppingCart): ShoppingCartDto {
+export function mapCartToDto(cart: IShoppingCart): ShoppingCartDto {
   return {
     id: cart.id,
     items: cart.items.map(mapCartItemToDto),
@@ -60,7 +60,7 @@ export function mapCartToDto(cart: ShoppingCart): ShoppingCartDto {
   };
 }
 
-export class Cart implements ShoppingCart {
+export class Cart implements IShoppingCart {
   vouchers = [];
   id = crypto.randomUUID();
   items = [];

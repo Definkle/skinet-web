@@ -1,4 +1,4 @@
-import { type Product } from '@features/products/models/product.model';
+import { type IProduct } from '@features/products/models/product.model';
 
 export interface IBrandTypeFilter {
   brands: string[];
@@ -13,7 +13,7 @@ export interface IFilter extends IBrandTypeFilter {
 }
 
 export interface IProductsState {
-  products: Product[];
+  products: IProduct[];
   productsCount: number;
   brands: string[];
   types: string[];
@@ -21,5 +21,5 @@ export interface IProductsState {
   isLoadingMore: boolean;
   useInfiniteScroll: boolean;
   filter: IFilter;
-  activeProduct: Product | null;
+  activeProduct: IProduct | null;
 }

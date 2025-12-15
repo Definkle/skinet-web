@@ -1,15 +1,15 @@
-import { type CartItem, type ShoppingCart } from '@features/cart/models/cart.models';
+import { type ICartItem, type IShoppingCart } from '@features/cart/models/cart.models';
 import { type IVoucher } from '@features/cart/models/voucher.model';
-import type { DeliveryMethod } from '@features/checkout/models/delivery-method.models';
-import { type Product } from '@features/products/models/product.model';
+import type { IDeliveryMethod } from '@features/checkout/models/delivery-method.models';
+import { type IProduct } from '@features/products/models/product.model';
 
-export interface IProductInCart extends Product {
+export interface IProductInCart extends IProduct {
   quantity: number;
 }
 
-export interface ICartState extends ShoppingCart {
+export interface ICartState extends IShoppingCart {
   vouchers: IVoucher[];
-  deliveryMethod: null | DeliveryMethod;
+  deliveryMethod: null | IDeliveryMethod;
   isLoading: boolean;
 }
 
@@ -19,7 +19,7 @@ export interface IUpdateCartQuantityParams {
 }
 
 export interface IOrderSummaryParams {
-  items: CartItem[];
+  items: ICartItem[];
   vouchers: IVoucher[];
   deliveryFee?: number;
 }

@@ -11,8 +11,8 @@ import { ErrorHandlerService } from '@core/services/error-handler/error-handler.
 
 import { environment } from '@env/environment';
 
-import type { User } from '@features/auth/models/user.model';
-import type { DeliveryMethod } from '@features/checkout/models/delivery-method.models';
+import type { IUser } from '@features/auth/models/user.model';
+import type { IDeliveryMethod } from '@features/checkout/models/delivery-method.models';
 import { PaymentsApiService } from '@features/checkout/services/payments/payments-api.service';
 
 import { createStoreErrorHandler } from '@shared/utils/store-error.util';
@@ -63,7 +63,7 @@ export const checkoutMethods = () => {
           )
         );
 
-        const selectDeliveryMethod = rxMethod<DeliveryMethod>(
+        const selectDeliveryMethod = rxMethod<IDeliveryMethod>(
           pipe(
             tap((selectedDeliveryMethod) => {
               patchState(store, { selectedDeliveryMethod });
@@ -434,7 +434,7 @@ export const checkoutMethods = () => {
   );
 };
 
-function buildAddressElementOptions(user: User | null) {
+function buildAddressElementOptions(user: IUser | null) {
   const options: StripeAddressElementOptions = {
     mode: 'shipping',
   };

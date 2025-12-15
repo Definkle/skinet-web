@@ -7,7 +7,7 @@ import { MatIcon } from '@angular/material/icon';
 import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
 import { MatDivider } from '@angular/material/list';
 
-import { type Product } from '@features/products/models/product.model';
+import { type IProduct } from '@features/products/models/product.model';
 
 import { CartStore } from '@state/cart';
 
@@ -40,7 +40,7 @@ export class ProductDetailComponent {
       this.CartStore.isLoading() || this.form().invalid() || this.form.quantity().value() <= this.ProductStore.activeProductQuantityInCart()
   );
 
-  onClickAddToCart(product: Product) {
+  onClickAddToCart(product: IProduct) {
     const formValue = this.form().value;
     this.CartStore.addProduct({
       ...product,

@@ -2,11 +2,11 @@ import type { CreateProductDto, Product as ProductDto } from '@api-models';
 
 import type { TRequired } from '@shared/types/generics.type';
 
-export interface Product extends TRequired<ProductDto> {
+export interface IProduct extends TRequired<ProductDto> {
   quantity?: number;
 }
 
-export interface CreateProduct {
+export interface ICreateProduct {
   name: string;
   description: string;
   price: number;
@@ -16,7 +16,7 @@ export interface CreateProduct {
   quantityInStock: number;
 }
 
-export function mapProductFromDto(dto: ProductDto): Product {
+export function mapProductFromDto(dto: ProductDto): IProduct {
   if (!dto.id || !dto.name || dto.price === undefined) {
     throw new Error('Invalid product: missing required fields');
   }
@@ -33,7 +33,7 @@ export function mapProductFromDto(dto: ProductDto): Product {
   };
 }
 
-export function mapProductToDto(product: Product): ProductDto {
+export function mapProductToDto(product: IProduct): ProductDto {
   return {
     id: product.id,
     name: product.name,
@@ -46,7 +46,7 @@ export function mapProductToDto(product: Product): ProductDto {
   };
 }
 
-export function mapCreateProductToDto(product: CreateProduct): CreateProductDto {
+export function mapCreateProductToDto(product: ICreateProduct): CreateProductDto {
   return {
     name: product.name,
     description: product.description,

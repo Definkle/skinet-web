@@ -6,13 +6,10 @@ import { debounceTime, distinctUntilChanged, pipe, switchMap, tap } from 'rxjs';
 
 import { CART_ID_STORAGE_KEY } from '@core/constants/storage-keys.constant';
 import { ErrorHandlerService } from '@core/services/error-handler/error-handler.service';
-
 import { CartApiService } from '@features/cart/services/cart-api/cart-api.service';
-import type { DeliveryMethod } from '@features/checkout/models/delivery-method.models';
-import { type Product } from '@features/products/models/product.model';
-
-import type { ShoppingCart } from '@models/cart';
-
+import type { IDeliveryMethod } from '@features/checkout/models/delivery-method.models';
+import { type IProduct } from '@features/products/models/product.model';
+import type { IShoppingCart } from '@models/cart';
 import { createStoreErrorHandler } from '@shared/utils/store-error.util';
 import { getStoreSnapshot } from '@shared/utils/store-snapshot.util';
 
@@ -25,7 +22,7 @@ export const cartMethods = () => {
       const snapshot = getStoreSnapshot<ICartState>(store);
       const handleCartError = createStoreErrorHandler('CartStore', errorHandler);
 
-      const getStoreAsPayload: Signal<ShoppingCart> = computed(() => ({
+      const getStoreAsPayload: Signal<IShoppingCart> = computed(() => ({
         id: snapshot.id(),
         items: snapshot.items(),
         clientSecret: snapshot.clientSecret(),
@@ -33,7 +30,7 @@ export const cartMethods = () => {
         paymentIntentId: snapshot.paymentIntentId(),
       }));
 
-      const updateCart = rxMethod<ShoppingCart>(
+      const updateCart = rxMethod<IShoppingCart>(
         pipe(
           tap(() => patchState(store, { isLoading: true })),
           debounceTime(300),
@@ -93,7 +90,7 @@ export const cartMethods = () => {
       return {
         deleteCart,
         updateCart,
-        updateDeliveryMethodState: rxMethod<DeliveryMethod>(
+        updateDeliveryMethodState: rxMethod<IDeliveryMethod>(
           pipe(
             tap((deliveryMethod) => {
               patchState(store, { deliveryMethod, deliveryMethodId: deliveryMethod.id });
@@ -101,7 +98,7 @@ export const cartMethods = () => {
             })
           )
         ),
-        addProduct: rxMethod<Product>(
+        addProduct: rxMethod<IProduct>(
           pipe(
             tap((product) => {
               if (!snapshot.id()) {

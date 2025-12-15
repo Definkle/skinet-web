@@ -4,7 +4,7 @@ import { type AddressDto, type RegisterDto } from '@api-models';
 
 import { RepositoryHelperService } from '@core/services/repository.helper';
 
-import { type User } from '@features/auth/models/user.model';
+import { type IUser } from '@features/auth/models/user.model';
 import type { IGetAuthStateResponse } from '@features/auth/services/account-api/account-api.types';
 
 @Injectable({
@@ -18,7 +18,7 @@ export class AccountApiService extends RepositoryHelperService {
   }
 
   getUserInfo$() {
-    return this.http.get<User>(this._baseUrl + '/user-info');
+    return this.http.get<IUser>(this._baseUrl + '/user-info');
   }
 
   logout$() {

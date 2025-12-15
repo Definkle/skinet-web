@@ -1,8 +1,7 @@
 import { CART_ID_STORAGE_KEY } from '@core/constants/storage-keys.constant';
-
-import { Cart, type CartItem } from '@features/cart/models/cart.models';
+import { Cart, type ICartItem } from '@features/cart/models/cart.models';
 import { type IVoucher } from '@features/cart/models/voucher.model';
-import { type Product } from '@features/products/models/product.model';
+import { type IProduct } from '@features/products/models/product.model';
 
 import { type IOrderSummary, type IOrderSummaryParams } from './cart.types';
 
@@ -19,8 +18,8 @@ export function initializeCartId(): string {
   return cartId;
 }
 
-export function consolidateCartItems(cartItems: CartItem[]): CartItem[] {
-  const consolidatedMap = new Map<number, CartItem>();
+export function consolidateCartItems(cartItems: ICartItem[]): ICartItem[] {
+  const consolidatedMap = new Map<number, ICartItem>();
 
   cartItems.forEach((item) => {
     const existingItem = consolidatedMap.get(item.productId);
@@ -42,11 +41,11 @@ export function calculateTotalDiscount(vouchers: IVoucher[]) {
   return vouchers.reduce((sum, voucher) => sum + voucher.discount, 0);
 }
 
-export function calculateTotalItemsCount(cartItems: CartItem[]): number {
+export function calculateTotalItemsCount(cartItems: ICartItem[]): number {
   return cartItems.reduce((total, item) => total + item.quantity, 0);
 }
 
-export function calculateSubtotal(cartItems: CartItem[]): number {
+export function calculateSubtotal(cartItems: ICartItem[]): number {
   return cartItems.reduce((sum, item) => sum + item.productPrice * item.quantity, 0);
 }
 
@@ -64,7 +63,7 @@ export function buildOrderSummary({ items, vouchers, deliveryFee = 0 }: IOrderSu
   };
 }
 
-export function mapProductToCartItem(product: Product): CartItem {
+export function mapProductToCartItem(product: IProduct): ICartItem {
   return {
     productId: product.id,
     productName: product.name,
